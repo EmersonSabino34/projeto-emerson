@@ -1,0 +1,413 @@
+/* ==========================================================================
+   ONBOARDING · telas 1 a 9
+   --------------------------------------------------------------------------
+   Todas ocupam a altura da viewport e travam o botão principal no rodapé:
+   no celular, o polegar não deve ter de caçar o "Continuar" depois de rolar.
+   ========================================================================== */
+
+.onboarding-shell {
+  min-height: 100svh;
+}
+
+.onboarding {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--sp-8) var(--gutter) var(--sp-7);
+}
+
+.onboarding-center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.onboarding-body { flex: 1; }
+
+/* O rodapé do fluxo: sempre embaixo, com respiro para a barra do sistema. */
+.onboarding-foot {
+  padding-top: var(--sp-6);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.onboarding-foot .btn-block { margin-top: var(--sp-3); }
+
+.onboarding-title {
+  margin: var(--sp-5) 0 0;
+  font-size: var(--fs-3xl);
+}
+
+.onboarding-lede {
+  max-width: 42ch;
+  margin: var(--sp-3) 0 var(--sp-6);
+  color: var(--text-secondary);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+}
+
+/* O segmentado do onboarding vem logo abaixo do título e precisa do próprio
+   respiro — nas telas do app ele herda isso de .section. */
+.onboarding-body > .segmented { margin-top: var(--sp-5); }
+
+.onboarding-signature {
+  margin-top: var(--sp-8);
+  color: var(--text-muted);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   Pontinhos de etapa
+   -------------------------------------------------------------------------- */
+.step-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.step-dot {
+  height: 5px;
+  width: 5px;
+  border-radius: var(--r-full);
+  background: var(--track);
+  transition: width var(--t-mid) var(--ease-out),
+              background var(--t-mid) var(--ease-out);
+}
+
+/* A etapa atual vira um traço, não um ponto maior: a diferença fica legível
+   mesmo para quem não distingue bem as cores. */
+.step-dot-on {
+  width: 20px;
+  background: linear-gradient(90deg, var(--brand-from), var(--brand-to));
+}
+
+/* --------------------------------------------------------------------------
+   Splash
+   -------------------------------------------------------------------------- */
+.splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-5);
+  animation: rise-in var(--t-lazy) var(--ease-out-expo);
+}
+
+.splash .vyra-logo-word { text-align: center; }
+.splash .vyra-logo-word strong { font-size: var(--fs-3xl); }
+
+.splash-lede {
+  max-width: 24ch;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-md);
+  text-align: center;
+}
+
+.splash-skip { margin-top: var(--sp-6); }
+
+/* --------------------------------------------------------------------------
+   Boas-vindas · foto em tela cheia
+   -------------------------------------------------------------------------- */
+.onboarding-cover {
+  justify-content: flex-end;
+  max-width: none;
+  padding: 0;
+}
+
+.cover-photo,
+.cover-shade {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cover-photo {
+  background-position: center;
+  background-size: cover;
+}
+
+/* O texto é sempre branco sobre a foto, então o véu não depende do tipo
+   ativo — ele precisa funcionar de dia e de noite igual. */
+.cover-shade {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 6, 20, .30) 0%,
+    rgba(8, 6, 20, .55) 45%,
+    rgba(8, 6, 20, .92) 100%
+  );
+}
+
+.cover-content {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--sp-9) var(--gutter) calc(var(--sp-8) + env(safe-area-inset-bottom));
+  color: #fff;
+  animation: rise-in var(--t-lazy) var(--ease-out-expo);
+}
+
+.cover-title {
+  margin: var(--sp-6) 0 0;
+  color: #fff;
+  font-size: var(--fs-display);
+}
+
+.cover-lede {
+  max-width: 30ch;
+  margin: var(--sp-4) 0 0;
+  color: rgba(255, 255, 255, .82);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+}
+
+.cover-actions { margin-top: var(--sp-8); }
+
+/* Sobre a foto, o botão fantasma precisa da própria borda clara para existir. */
+.cover-actions .btn-ghost {
+  border-color: rgba(255, 255, 255, .38);
+  background: rgba(255, 255, 255, .10);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.cover-signature {
+  margin: var(--sp-8) 0 0;
+  color: rgba(255, 255, 255, .62);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   Idioma
+   -------------------------------------------------------------------------- */
+.lang-row { padding: var(--sp-4); }
+.lang-flag { font-size: 1.4rem; line-height: 1; }
+.lang-check {
+  display: grid;
+  place-items: center;
+  height: 22px;
+  width: 22px;
+  border-radius: var(--r-full);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+}
+.lang-check svg { height: 13px; width: 13px; }
+
+/* --------------------------------------------------------------------------
+   Marcação genérica de rádio
+   --------------------------------------------------------------------------
+   .theme-picker-dot também é usado fora das Configurações (formas de
+   pagamento, por exemplo), onde quem manda é o aria-checked do próprio botão
+   e não o data-theme do documento.
+   -------------------------------------------------------------------------- */
+[role="radio"][aria-checked="true"] .theme-picker-dot {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 4px var(--accent);
+}
+[role="radio"][aria-checked="true"].choice-row {
+  border-color: var(--border-accent);
+  background: var(--accent-soft);
+}
+
+.pay-row .choice-icon { font-weight: 700; }
+.secure-note { text-align: center; }
+.order-summary { margin-bottom: var(--sp-6); }
+.order-summary strong small { font-weight: 400; opacity: .7; }
+
+/* --------------------------------------------------------------------------
+   Planos
+   -------------------------------------------------------------------------- */
+.plan-grid {
+  display: grid;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+}
+
+@media (min-width: 560px) {
+  .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.plan-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-6) var(--sp-5);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  text-align: start;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.plan-card[aria-checked="true"] {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md), var(--ring);
+}
+
+@media (hover: hover) {
+  .plan-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+}
+
+.plan-badge {
+  position: absolute;
+  top: calc(var(--sp-3) * -1);
+  inset-inline-start: var(--sp-5);
+  padding: 3px var(--sp-3);
+  border-radius: var(--r-full);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 16px var(--brand-glow);
+}
+
+.plan-name {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.plan-price {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  letter-spacing: -.03em;
+}
+.plan-price small {
+  font-family: var(--font-ui);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.plan-billing,
+.plan-summary {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.plan-features {
+  margin: var(--sp-4) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.plan-features li > span {
+  display: grid;
+  place-items: center;
+  height: 17px;
+  width: 17px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.plan-features li svg { height: 11px; width: 11px; }
+
+/* --------------------------------------------------------------------------
+   Confirmação
+   -------------------------------------------------------------------------- */
+.success-ring {
+  display: grid;
+  place-items: center;
+  height: 86px;
+  width: 86px;
+  margin: 0 auto;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-full);
+  color: var(--accent-text);
+  box-shadow: 0 0 40px var(--brand-glow);
+  animation: scale-in var(--t-slow) var(--ease-spring);
+}
+.success-ring svg { height: 34px; width: 34px; }
+
+.pronto-quote {
+  margin: var(--sp-7) 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-lg);
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   Tutorial · as três fotos em leque
+   -------------------------------------------------------------------------- */
+.fan {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--sp-6);
+  /* as fotos se sobrepõem, então o espaço negativo é intencional */
+  gap: calc(var(--sp-6) * -1);
+}
+
+.fan span {
+  height: 168px;
+  width: 116px;
+  border-radius: var(--r-lg);
+  border: 3px solid var(--surface);
+  background-position: center;
+  background-size: cover;
+  box-shadow: var(--shadow-lg);
+}
+
+.fan span:first-child { transform: rotate(-9deg) translateY(8px); }
+.fan span:last-child { transform: rotate(9deg) translateY(8px); }
+.fan span:nth-child(2) { z-index: 1; height: 192px; width: 130px; }
+
+.tutorial-list {
+  margin: var(--sp-7) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.tutorial-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-md);
+}
+
+.tutorial-check {
+  display: grid;
+  place-items: center;
+  height: 26px;
+  width: 26px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.tutorial-check svg { height: 14px; width: 14px; }

@@ -1,0 +1,153 @@
+/* ==========================================================================
+   MOTION · keyframes, entradas em cascata, transições de tema
+   Tudo aqui é desligado por prefers-reduced-motion no fim do arquivo.
+   ========================================================================== */
+
+@keyframes aurora-drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-7vw, 9vh, 0) scale(1.14); }
+}
+@keyframes aurora-drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1.08); }
+  to   { transform: translate3d(8vw, -7vh, 0) scale(1); }
+}
+
+/* A foto do cenário entra em fade: na troca de dia para noite a paisagem
+   muda de imagem, e o corte seco denunciaria o truque. */
+@keyframes scene-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* O véu da aurora: atravessa o topo da tela devagar, sem nunca sair dele. */
+@keyframes aurora-veil {
+  from { transform: translate3d(-6vw, -2vh, 0) scaleY(.9); opacity: .75; }
+  to   { transform: translate3d(6vw, 3vh, 0) scaleY(1.15); opacity: 1; }
+}
+
+/* As estrelas não piscam uma a uma: o campo inteiro respira. */
+@keyframes star-breathe {
+  from { opacity: calc(var(--star-opacity) * .55); }
+  to   { opacity: var(--star-opacity); }
+}
+
+/* O anel de progresso preenche do zero até o valor final. */
+@keyframes ring-fill {
+  from { --ring-value: 0; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translate3d(-14px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes fill-track {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(320%); }
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+@keyframes pulse-ring {
+  0%   { opacity: .55; transform: scale(.82); }
+  70%  { opacity: 0;   transform: scale(1.5); }
+  100% { opacity: 0;   transform: scale(1.5); }
+}
+
+@keyframes theme-sweep {
+  from { clip-path: circle(0% at var(--sweep-x, 50%) var(--sweep-y, 50%)); }
+  to   { clip-path: circle(150% at var(--sweep-x, 50%) var(--sweep-y, 50%)); }
+}
+
+/* --------------------------------------------------------------------------
+   Entrada da página em cascata.
+   Cada filho direto de .stagger entra com um atraso derivado de --i,
+   então a página se monta de cima para baixo em vez de aparecer de uma vez.
+   -------------------------------------------------------------------------- */
+.stagger > * {
+  animation: rise-in var(--t-slow) var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+/* --i vem do próprio CSS em vez de um style inline em cada filho */
+.stagger > *:nth-child(1) { --i: 0; }
+.stagger > *:nth-child(2) { --i: 1; }
+.stagger > *:nth-child(3) { --i: 2; }
+.stagger > *:nth-child(4) { --i: 3; }
+.stagger > *:nth-child(5) { --i: 4; }
+.stagger > *:nth-child(6) { --i: 5; }
+.stagger > *:nth-child(n + 7) { --i: 6; }
+
+/* --------------------------------------------------------------------------
+   Scroll reveal — a classe .reveal começa oculta e o componente <Reveal>
+   adiciona .is-visible quando o elemento entra na viewport.
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity var(--t-slow) var(--ease-out-expo),
+              transform var(--t-slow) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Transição de tema: o novo tema é revelado por um círculo que cresce
+   a partir do botão clicado (View Transitions API nativa).
+   -------------------------------------------------------------------------- */
+::view-transition-old(root) { animation: none; }
+::view-transition-new(root) {
+  animation: theme-sweep var(--t-slow) var(--ease-out);
+  mix-blend-mode: normal;
+}
+::view-transition-group(root) { z-index: 1; }
+/* o overlay não deve engolir cliques durante a animação */
+::view-transition { pointer-events: none; }
+
+/* --------------------------------------------------------------------------
+   Acessibilidade: quem pediu menos movimento recebe o layout final,
+   sem deriva, sem cascata, sem sweep — mas com tudo visível.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+  .reveal { opacity: 1; transform: none; }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(root) {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+  }
+}

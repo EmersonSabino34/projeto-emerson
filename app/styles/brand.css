@@ -1,0 +1,80 @@
+/* ==========================================================================
+   MARCA · símbolo, assinatura e o gradiente de ouro do VYRA
+   --------------------------------------------------------------------------
+   O gradiente da marca vive aqui e não dentro do SVG: assim o mesmo símbolo
+   serve a fundo claro e escuro só trocando --brand-from/--brand-to, e não
+   existe id de <linearGradient> duplicado quando a marca aparece duas vezes
+   na mesma tela.
+   ========================================================================== */
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  height: 36px;
+  width: 36px;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  box-shadow: 0 8px 22px var(--brand-glow);
+  transition: background var(--t-mid) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.brand-mark-lg {
+  height: 54px;
+  width: 54px;
+  border-radius: var(--r-lg);
+}
+
+/* Halo da splash: o símbolo pulsando dentro do próprio brilho. */
+.brand-mark-halo {
+  position: relative;
+  isolation: isolate;
+}
+.brand-mark-halo::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(circle, var(--brand-glow), transparent 70%);
+  animation: pulse-ring 3.2s var(--ease-in-out) infinite;
+}
+
+/* ---------- Símbolo + palavra ---------- */
+
+.vyra-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.vyra-logo-word strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  /* A palavra respira: é o único lugar do app com tracking positivo. */
+  letter-spacing: .22em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.vyra-logo-word span {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* A marca centrada da splash e do "Sobre o VYRA". */
+.vyra-logo-stacked {
+  flex-direction: column;
+  gap: var(--sp-4);
+  text-align: center;
+}
+.vyra-logo-stacked .vyra-logo-word strong { font-size: var(--fs-3xl); }

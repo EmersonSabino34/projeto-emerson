@@ -1,0 +1,242 @@
+/* ==========================================================================
+   FORMULÁRIOS · campos, validação e as telas de cadastro/login
+   ========================================================================== */
+
+.auth-wrap {
+  display: flex;
+  min-height: calc(100svh - 180px);
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-8) var(--gutter) var(--sp-9);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  background: var(--surface);
+  padding: var(--sp-8) var(--sp-7);
+  box-shadow: var(--shadow-lg);
+  animation: rise-in var(--t-slow) var(--ease-out-expo);
+  transition: background var(--t-mid) var(--ease-out),
+              border-color var(--t-mid) var(--ease-out);
+}
+
+.auth-head { margin-bottom: var(--sp-7); }
+.auth-head h1 {
+  margin: var(--sp-3) 0 var(--sp-2);
+  font-size: var(--fs-2xl);
+}
+.auth-head p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Campo
+   -------------------------------------------------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+}
+
+.field label {
+  color: var(--text-secondary);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-sunken);
+  padding: var(--sp-4);
+  color: var(--text);
+  font-size: var(--fs-md);
+  transition: border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out);
+}
+.field input::placeholder { color: var(--text-muted); }
+
+.field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: var(--ring);
+}
+
+/* Só marcamos o campo de vermelho depois da primeira tentativa de envio,
+   não enquanto a pessoa ainda está digitando. */
+.field input[aria-invalid="true"] {
+  border-color: #d4183d;
+}
+.field input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(212, 24, 61, .26);
+}
+
+.field-hint {
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+}
+
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: #d4183d;
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  animation: slide-in-left var(--t-mid) var(--ease-out);
+}
+:root[data-theme="dark"] .field-error,
+:root[data-theme="dark"] .field input[aria-invalid="true"] { color: #ff8fa6; }
+:root[data-theme="dark"] .field input[aria-invalid="true"] { border-color: #ff8fa6; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .field-error { color: #ff8fa6; }
+  :root:not([data-theme="light"]) .field input[aria-invalid="true"] { border-color: #ff8fa6; }
+}
+
+/* --------------------------------------------------------------------------
+   Alerta do formulário (erro vindo da API)
+   -------------------------------------------------------------------------- */
+.form-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+  border: 1px solid rgba(212, 24, 61, .34);
+  border-radius: var(--r-md);
+  background: rgba(212, 24, 61, .08);
+  padding: var(--sp-4);
+  color: #b3122f;
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  animation: rise-in var(--t-mid) var(--ease-out);
+}
+.form-alert strong { display: block; margin-bottom: 2px; }
+:root[data-theme="dark"] .form-alert { color: #ffb3c1; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .form-alert { color: #ffb3c1; }
+}
+
+/* --------------------------------------------------------------------------
+   Botão em estado de envio
+   -------------------------------------------------------------------------- */
+.btn[aria-busy="true"],
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: .7;
+}
+.btn[aria-busy="true"] { pointer-events: none; }
+
+/* pontinhos pulsando enquanto envia */
+.btn-spinner {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: orbit-spin 700ms linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Pé do cartão: alternar entre entrar e criar conta
+   -------------------------------------------------------------------------- */
+.auth-alt {
+  margin-top: var(--sp-6);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-5);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  text-align: center;
+}
+.auth-alt a {
+  color: var(--accent-text);
+  font-weight: 700;
+  transition: color var(--t-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .auth-alt a:hover { color: var(--accent-hover); }
+}
+
+/* Caixa com as credenciais de teste — só faz sentido no protótipo */
+.auth-demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-4);
+  margin-top: var(--sp-5);
+  border: 1px dashed var(--border-accent);
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-2xs);
+}
+.auth-demo p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.auth-demo code {
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  padding: 2px 6px;
+  color: var(--accent-text);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 600;
+}
+.auth-demo button {
+  margin-left: auto;
+  color: var(--accent-text);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  transition: transform var(--t-fast) var(--ease-spring);
+}
+.auth-demo button:active { transform: scale(.94); }
+
+/* --------------------------------------------------------------------------
+   Select e textarea
+   --------------------------------------------------------------------------
+   Herdam as mesmas regras do input em vez de reescrevê-las: o seletor abaixo
+   repete o bloco de .field input para os dois elementos, porque um `select`
+   não é atingido por `.field input`.
+   -------------------------------------------------------------------------- */
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-sunken);
+  padding: var(--sp-4);
+  color: var(--text);
+  font-size: var(--fs-md);
+  transition: border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out);
+}
+
+.field textarea {
+  min-height: 108px;
+  resize: vertical;
+  line-height: 1.55;
+}
+.field textarea::placeholder { color: var(--text-muted); }
+
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: var(--ring);
+}
+
+.field select[aria-invalid="true"] { border-color: #d4183d; }

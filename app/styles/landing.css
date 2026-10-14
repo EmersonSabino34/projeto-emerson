@@ -1,0 +1,474 @@
+/* ==========================================================================
+   LANDING + SHELL PÚBLICO
+   Telas do grupo (site): landing de entrada, cadastro e login.
+   ========================================================================== */
+
+.site-shell {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   Cabeçalho público
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  border-bottom: 1px solid transparent;
+  background: var(--surface-glass);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  padding: var(--sp-3) var(--gutter);
+  transition: border-color var(--t-mid) var(--ease-out),
+              background var(--t-mid) var(--ease-out);
+}
+/* a borda só aparece depois que a página rola um pouco */
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: header-border linear both;
+    animation-timeline: scroll();
+    animation-range: 0 120px;
+  }
+}
+@keyframes header-border {
+  to { border-bottom-color: var(--border); }
+}
+
+.site-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+.site-brand-mark {
+  display: grid;
+  place-items: center;
+  height: 34px;
+  width: 34px;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  font-size: .95rem;
+  box-shadow: 0 8px 22px var(--brand-glow);
+  transition: transform var(--t-mid) var(--ease-spring);
+}
+@media (hover: hover) {
+  .site-brand:hover .site-brand-mark { transform: rotate(-12deg) scale(1.08); }
+}
+
+/* A palavra VYRA respira, como em .vyra-logo. */
+.site-brand strong { letter-spacing: .18em; }
+
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.site-header-link {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  transition: color var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .site-header-link:hover { background: var(--surface-subtle); color: var(--text); }
+}
+
+/* o brand some em telas muito estreitas para os CTAs respirarem */
+@media (max-width: 420px) {
+  .site-brand strong { display: none; }
+}
+
+.site-main { flex: 1; }
+
+/* --------------------------------------------------------------------------
+   Rodapé público
+   -------------------------------------------------------------------------- */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  border-top: 1px solid var(--border);
+  padding: var(--sp-6) var(--gutter);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+.site-footer p { margin: 0; }
+.site-footer nav { display: flex; gap: var(--sp-5); }
+.site-footer a { transition: color var(--t-fast) var(--ease-out); }
+@media (hover: hover) {
+  .site-footer a:hover { color: var(--accent-text); }
+}
+
+/* --------------------------------------------------------------------------
+   Botões: variantes de tamanho usadas no funil
+   -------------------------------------------------------------------------- */
+.btn-sm {
+  padding: var(--sp-2) var(--sp-4);
+  font-size: var(--fs-2xs);
+}
+.btn-lg {
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-7);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+}
+
+/* --------------------------------------------------------------------------
+   HERO da landing
+   -------------------------------------------------------------------------- */
+.lp-section {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.lp-hero {
+  display: grid;
+  gap: var(--sp-9);
+  padding-block: var(--sp-9) var(--sp-10);
+}
+
+.lp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  padding: var(--sp-2) var(--sp-4);
+  color: var(--accent-text);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.lp-badge span:first-child { animation: float-soft 4.5s var(--ease-in-out) infinite; }
+
+.lp-title {
+  margin: var(--sp-5) 0 var(--sp-4);
+  font-size: clamp(2.5rem, 1.6rem + 4.4vw, 4.5rem);
+  line-height: .95;
+  letter-spacing: -.055em;
+}
+/* a palavra-chave recebe o gradiente da marca */
+.lp-title em {
+  font-style: normal;
+  background: linear-gradient(115deg, var(--v-500), var(--rose));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lp-lede {
+  max-width: 44ch;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-lg);
+  line-height: 1.6;
+}
+
+.lp-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-7);
+}
+.lp-cta-note {
+  margin: var(--sp-4) 0 0;
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+}
+
+/* Faixa de números sob o hero */
+.lp-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-7);
+  margin-top: var(--sp-8);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-5);
+}
+.lp-stats div { display: flex; flex-direction: column; gap: 2px; }
+.lp-stats strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+}
+.lp-stats span {
+  color: var(--text-muted);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   Colagem de fotos do hero — três cartões flutuando em alturas diferentes
+   -------------------------------------------------------------------------- */
+.lp-collage {
+  position: relative;
+  height: clamp(300px, 62vw, 430px);
+}
+.lp-collage-card {
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  animation: float-soft 7s var(--ease-in-out) infinite;
+}
+.lp-collage-card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.lp-collage-card figcaption {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  left: var(--sp-3);
+  border-radius: var(--r-sm);
+  background: rgba(10, 9, 16, .55);
+  backdrop-filter: blur(10px);
+  padding: var(--sp-2) var(--sp-3);
+  color: #fff;
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+}
+
+.lp-collage-card:nth-child(1) {
+  top: 0;
+  left: 0;
+  width: 58%;
+  height: 62%;
+  rotate: -3deg;
+  animation-delay: 0s;
+}
+.lp-collage-card:nth-child(2) {
+  top: 18%;
+  right: 0;
+  width: 46%;
+  height: 54%;
+  rotate: 4deg;
+  animation-delay: -2.4s;
+  z-index: 2;
+}
+.lp-collage-card:nth-child(3) {
+  bottom: 0;
+  left: 12%;
+  width: 52%;
+  height: 40%;
+  rotate: 2deg;
+  animation-delay: -4.8s;
+}
+
+/* Etiqueta de progresso colada na colagem, reforçando o 3º ponto forte */
+.lp-collage-chip {
+  position: absolute;
+  z-index: 3;
+  right: 2%;
+  bottom: 6%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  padding: var(--sp-3) var(--sp-4);
+  box-shadow: var(--shadow-lg);
+  animation: float-soft 8s var(--ease-in-out) -1.2s infinite;
+}
+.lp-collage-chip strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+.lp-collage-chip span {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 900px) {
+  .lp-hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    align-items: center;
+    padding-block: var(--sp-10);
+  }
+  .lp-collage { height: 480px; }
+}
+
+/* --------------------------------------------------------------------------
+   OS 4 PONTOS FORTES
+   -------------------------------------------------------------------------- */
+.lp-features { padding-block: var(--sp-9); }
+
+.lp-section-head { max-width: 52ch; margin-bottom: var(--sp-8); }
+.lp-section-head h2 {
+  margin: var(--sp-3) 0 var(--sp-3);
+  font-size: var(--fs-3xl);
+}
+.lp-section-head p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+}
+
+.lp-feature-grid {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.lp-feature {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-out),
+              border-color var(--t-mid) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+/* filete de gradiente que cresce no topo do cartão em hover */
+.lp-feature::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--v-500), var(--rose));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--t-slow) var(--ease-out);
+}
+
+.lp-feature-num {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-5);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 3.25rem;
+  font-weight: 600;
+  line-height: 1;
+  opacity: .07;
+  transition: opacity var(--t-mid) var(--ease-out), transform var(--t-mid) var(--ease-out);
+}
+
+.lp-feature-icon {
+  display: grid;
+  place-items: center;
+  height: 52px;
+  width: 52px;
+  margin-bottom: var(--sp-5);
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: 1.6rem;
+  transition: transform var(--t-mid) var(--ease-spring),
+              background var(--t-mid) var(--ease-out);
+}
+
+.lp-feature h3 {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-xl);
+}
+.lp-feature p {
+  margin: 0 0 var(--sp-5);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.lp-feature .text-link { margin-top: auto; align-self: flex-start; }
+
+@media (hover: hover) {
+  .lp-feature:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-accent);
+    box-shadow: var(--shadow-lg);
+  }
+  .lp-feature:hover::before { transform: scaleX(1); }
+  .lp-feature:hover .lp-feature-num { opacity: .16; transform: scale(1.06); }
+  .lp-feature:hover .lp-feature-icon {
+    transform: scale(1.1) rotate(-7deg);
+    background: var(--accent-soft-hover);
+  }
+}
+
+@media (min-width: 760px) {
+  .lp-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1100px) {
+  .lp-feature-grid { gap: var(--sp-5); }
+  .lp-feature { padding: var(--sp-7); }
+}
+
+/* --------------------------------------------------------------------------
+   Faixa de CTA final
+   -------------------------------------------------------------------------- */
+.lp-cta-band {
+  position: relative;
+  overflow: hidden;
+  margin-block: var(--sp-8) var(--sp-10);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--r-2xl);
+  background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+  padding: var(--sp-9) var(--sp-7);
+  text-align: center;
+  color: var(--hero-text);
+  box-shadow: var(--shadow-lg);
+}
+.lp-cta-band h2 {
+  margin: var(--sp-3) auto var(--sp-4);
+  max-width: 22ch;
+  font-size: var(--fs-3xl);
+}
+.lp-cta-band p {
+  margin: 0 auto var(--sp-6);
+  max-width: 46ch;
+  color: var(--hero-body);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.lp-cta-band .btn { margin: 0 auto; }
+.lp-cta-glow {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  height: 320px;
+  width: 320px;
+  border-radius: 50%;
+  background: var(--hero-glow);
+  filter: blur(60px);
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: float-soft 10s var(--ease-in-out) infinite;
+}

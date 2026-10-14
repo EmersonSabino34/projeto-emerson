@@ -1,0 +1,1599 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manual VYRA</title>
+<meta name="description" content="Onde o VYRA está em 24/09/2026: a sequência de etapas, o que está pronto, o que falta e a comparação com Perfectly Happy, Storyflow e Canva.">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("vyra-manual-tema");
+      if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  /* ==========================================================================
+     Tokens: dia (marfim e ouro) e noite (índigo e lilás), como no app VYRA.
+     Dados: paleta validada pela skill de visualização (azul de destaque,
+     cinza de contexto, cores de status e degraus sequenciais do azul).
+     ========================================================================== */
+  :root {
+    color-scheme: light;
+    --page: #fbf7f1;
+    --surface: #fffdf9;
+    --surface-2: #f4eee3;
+    --line: #e6ddcd;
+    --ink: #1d1913;
+    --ink-2: #574e42;
+    --ink-3: #6f6556;
+    --accent: #855608;
+    --accent-soft: #f6e8cc;
+    --brand: #c9973a;
+    --viz-emph: #2a78d6;
+    --viz-proj: #86b6ef;
+    --viz-muted: #898781;
+    --viz-track: #ece5d8;
+    --viz-grid: #ebe3d5;
+    --good: #0ca30c;
+    --warning: #fab219;
+    --serious: #ec835a;
+    --critical: #d03b3b;
+    --ord-1: #184f95;
+    --ord-2: #2a78d6;
+    --ord-3: #86b6ef;
+    --hm-0: #f4eee3;
+    --hm-1: #cde2fb;
+    --hm-2: #86b6ef;
+    --hm-3: #256abf;
+    --hm-4: #184f95;
+    --hm-5: #0d366b;
+    --hm-ink-0: #574e42;
+    --hm-ink-1: #1d1913;
+    --hm-ink-2: #1d1913;
+    --hm-ink-3: #ffffff;
+    --hm-ink-4: #ffffff;
+    --hm-ink-5: #ffffff;
+    --sombra: 0 1px 2px rgba(29, 25, 19, .05), 0 10px 28px -16px rgba(29, 25, 19, .22);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #080614;
+      --surface: #141126;
+      --surface-2: #1d1935;
+      --line: #2d2849;
+      --ink: #f3f0fb;
+      --ink-2: #c6bfdc;
+      --ink-3: #9f97bb;
+      --accent: #c7b6ff;
+      --accent-soft: #2a2352;
+      --brand: #e0b45a;
+      --viz-emph: #3987e5;
+      --viz-proj: #1c5cab;
+      --viz-muted: #898781;
+      --viz-track: #262142;
+      --viz-grid: #26213f;
+      --ord-1: #9ec5f4;
+      --ord-2: #3987e5;
+      --ord-3: #1c5cab;
+      --hm-0: #1d1935;
+      --hm-1: #184f95;
+      --hm-2: #3987e5;
+      --hm-3: #6da7ec;
+      --hm-4: #9ec5f4;
+      --hm-5: #cde2fb;
+      --hm-ink-0: #c6bfdc;
+      --hm-ink-1: #ffffff;
+      --hm-ink-2: #0b0b0b;
+      --hm-ink-3: #0b0b0b;
+      --hm-ink-4: #0b0b0b;
+      --hm-ink-5: #0b0b0b;
+      --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -16px rgba(0, 0, 0, .75);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #080614;
+    --surface: #141126;
+    --surface-2: #1d1935;
+    --line: #2d2849;
+    --ink: #f3f0fb;
+    --ink-2: #c6bfdc;
+    --ink-3: #9f97bb;
+    --accent: #c7b6ff;
+    --accent-soft: #2a2352;
+    --brand: #e0b45a;
+    --viz-emph: #3987e5;
+    --viz-proj: #1c5cab;
+    --viz-muted: #898781;
+    --viz-track: #262142;
+    --viz-grid: #26213f;
+    --ord-1: #9ec5f4;
+    --ord-2: #3987e5;
+    --ord-3: #1c5cab;
+    --hm-0: #1d1935;
+    --hm-1: #184f95;
+    --hm-2: #3987e5;
+    --hm-3: #6da7ec;
+    --hm-4: #9ec5f4;
+    --hm-5: #cde2fb;
+    --hm-ink-0: #c6bfdc;
+    --hm-ink-1: #ffffff;
+    --hm-ink-2: #0b0b0b;
+    --hm-ink-3: #0b0b0b;
+    --hm-ink-4: #0b0b0b;
+    --hm-ink-5: #0b0b0b;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -16px rgba(0, 0, 0, .75);
+  }
+
+  html { background: var(--page); scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  [hidden] { display: none !important; }
+  h1, h2, h3 { text-wrap: balance; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+  .pular { position: absolute; left: -999px; top: 0; }
+  .pular:focus { left: 1rem; top: 1rem; z-index: 60; background: var(--surface); padding: .5rem .75rem; border: 1px solid var(--line); border-radius: 8px; }
+
+  .topo { background: color-mix(in srgb, var(--page) 92%, transparent); border-bottom: 1px solid var(--line); z-index: 40; }
+  @media (min-width: 768px) {
+    .topo { position: sticky; top: env(safe-area-inset-top, 0px); backdrop-filter: saturate(140%) blur(10px); }
+  }
+  .topo nav a { color: var(--ink-2); text-decoration: none; padding-block: .25rem; border-bottom: 1.5px solid transparent; }
+  .topo nav a:hover { color: var(--ink); border-bottom-color: var(--brand); }
+  .marca { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; color: var(--brand); background: color-mix(in srgb, var(--brand) 14%, transparent); }
+  .marca svg { width: 1.35rem; height: 1.35rem; }
+
+  .secao { scroll-margin-top: 5.5rem; padding-block: 3.5rem 0; }
+  .sobretitulo { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 .5rem; }
+  .lede { color: var(--ink-2); max-width: 65ch; margin: .75rem 0 0; }
+  .cartao { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--sombra); }
+  .titulo-fig { font-size: .9375rem; font-weight: 600; color: var(--ink); margin: 0; }
+  .apoio-fig { font-size: .8125rem; color: var(--ink-2); margin: .25rem 0 0; }
+
+  .filtro {
+    display: inline-flex; align-items: center; gap: .4rem;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink-2);
+    border-radius: 999px; padding: .375rem .8rem;
+    font: inherit; font-size: .8125rem; font-weight: 500; cursor: pointer;
+    transition: background-color .15s, color .15s, border-color .15s;
+  }
+  .filtro:hover { border-color: var(--ink-3); color: var(--ink); }
+  .filtro[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--page); }
+  .filtro .contagem { font-variant-numeric: tabular-nums; opacity: .75; }
+
+  .botao-texto {
+    font: inherit; font-size: .8125rem; font-weight: 600; color: var(--accent);
+    background: none; border: 0; padding: .25rem 0; cursor: pointer;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  .botao-tema {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font: inherit; font-size: .8125rem; font-weight: 500; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    padding: .375rem .8rem .375rem .55rem; cursor: pointer;
+  }
+  .botao-tema svg { width: 1.1rem; height: 1.1rem; color: var(--brand); }
+
+  .pilula {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .75rem; font-weight: 600; color: var(--ink);
+    background: var(--surface-2); border-radius: 999px; padding: .2rem .6rem .2rem .45rem; white-space: nowrap;
+  }
+  .etiqueta {
+    display: inline-flex; align-items: center; font-size: .6875rem; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--ink-2); border: 1px solid var(--line); border-radius: 6px;
+    padding: .05rem .4rem; white-space: nowrap;
+  }
+  .icone-nivel {
+    display: inline-block; flex: none; width: .75rem; height: .75rem; border-radius: 50%;
+    border: 1.5px solid var(--cor); background: conic-gradient(var(--cor) var(--fracao), transparent 0);
+  }
+
+  .kpi-rotulo { font-size: .8125rem; font-weight: 500; color: var(--ink-2); margin: 0; }
+  .kpi-valor { font-size: 2.25rem; font-weight: 600; line-height: 1.15; letter-spacing: -.02em; color: var(--ink); margin: .35rem 0 .15rem; }
+  .kpi-apoio { font-size: .8125rem; color: var(--ink-2); margin: 0; }
+
+  .alerta {
+    display: flex; gap: .875rem; align-items: flex-start;
+    border: 1px solid color-mix(in srgb, var(--critical) 45%, var(--line));
+    background: color-mix(in srgb, var(--critical) 7%, var(--surface));
+    border-radius: 12px; padding: 1rem 1.125rem;
+  }
+  .alerta svg { flex: none; width: 1.375rem; height: 1.375rem; color: var(--critical); margin-top: .1rem; }
+
+  /* Gráfico de barras horizontais: uma escala para barras, grade, referências e eixo. */
+  .barras { display: grid; grid-template-columns: minmax(4.5rem, max-content) minmax(0, 1fr); column-gap: .75rem; }
+  .barras-rotulos, .barras-linhas { display: grid; grid-auto-rows: 2.25rem; }
+  .barras-rotulos { padding-top: var(--espaco-refs, 0rem); }
+  .barras-rotulo { display: flex; align-items: center; font-size: .875rem; color: var(--ink); white-space: nowrap; }
+  .barras-area { position: relative; padding-top: var(--espaco-refs, 0rem); }
+  .barras-grade { position: absolute; top: var(--espaco-refs, 0rem); right: 0; bottom: 0; left: 0; pointer-events: none; }
+  .barras-grade span { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--viz-grid); }
+  .barras-ref { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px solid var(--ink-3); pointer-events: none; }
+  .barras-ref-rotulo { position: absolute; left: .3rem; font-size: .75rem; line-height: 1.125rem; color: var(--ink-2); white-space: nowrap; }
+  .barras-ref-rotulo.a-esquerda { left: auto; right: .3rem; }
+  .barra-linha { position: relative; border-radius: 4px; }
+  .barra-linha:hover .barra, .barra-linha:focus-visible .barra { filter: brightness(1.1); }
+  .barra { position: absolute; left: 0; top: 50%; height: 1.25rem; transform: translateY(-50%); border-radius: 0 4px 4px 0; }
+  .barra-valor { position: absolute; top: 50%; transform: translateY(-50%); font-size: .8125rem; font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .barras-eixo { position: relative; height: 1.5rem; font-size: .75rem; color: var(--ink-3); }
+  .barras-eixo span { position: absolute; top: .375rem; transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+  .barras-eixo span:first-child { transform: none; }
+
+  /* Barra empilhada: partes de um todo, com 2px de respiro entre os pedaços. */
+  .empilhada { display: flex; gap: 2px; height: 1.25rem; }
+  .empilhada-seg { flex-basis: 0; min-width: .25rem; }
+  .empilhada-seg:last-child { border-radius: 0 4px 4px 0; }
+  .empilhada-seg:hover, .empilhada-seg:focus-visible { filter: brightness(1.1); }
+  .legenda { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; list-style: none; margin: .875rem 0 0; padding: 0; font-size: .8125rem; color: var(--ink-2); }
+  .legenda li { display: inline-flex; align-items: center; gap: .4rem; }
+  .legenda strong { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .chave { display: inline-block; flex: none; width: .75rem; height: .75rem; border-radius: 3px; }
+  .chave-linha { display: inline-block; flex: none; width: 1rem; height: 0; border-top: 1.5px solid var(--ink-3); }
+
+  .tabela { width: 100%; border-collapse: collapse; font-size: .8125rem; }
+  .tabela th, .tabela td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tabela thead th { font-size: .75rem; font-weight: 600; color: var(--ink-2); background: var(--surface-2); }
+  .tabela .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tabela tr.grupo th { background: var(--surface-2); font-size: .6875rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+  .tabela .col-vyra { background: color-mix(in srgb, var(--viz-emph) 7%, transparent); }
+  .celula { display: flex; align-items: center; gap: .45rem; font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .nota { display: block; margin-top: .2rem; color: var(--ink-2); font-size: .75rem; line-height: 1.4; font-weight: 400; }
+
+  .calor td.hm { text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; border: 2px solid var(--surface); padding: .6rem .5rem; }
+  .calor th[scope="row"] { font-weight: 500; color: var(--ink); white-space: nowrap; }
+  .calor tr.ativa th[scope="row"] { background: var(--accent-soft); font-weight: 700; }
+
+  .dica {
+    position: fixed; z-index: 50; max-width: 18rem;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 8px; box-shadow: var(--sombra); padding: .5rem .65rem;
+    font-size: .8125rem; line-height: 1.4; pointer-events: none;
+  }
+  .dica .valor { font-size: .9375rem; font-weight: 700; }
+  .dica .sec { color: var(--ink-2); }
+
+  .etapa { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: .25rem .875rem; padding-block: 1rem; border-bottom: 1px solid var(--line); }
+  .etapa:first-child { border-top: 1px solid var(--line); }
+  .etapa-num { font-variant-numeric: tabular-nums; font-weight: 600; font-size: .875rem; color: var(--ink-3); padding-top: .15rem; }
+  .etapa summary { cursor: pointer; font-size: .8125rem; color: var(--accent); font-weight: 600; width: fit-content; }
+
+  .lista-check { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+  .lista-check li { position: relative; padding-left: 1.5rem; color: var(--ink); }
+  .lista-check li::before {
+    content: ""; position: absolute; left: .3rem; top: .3rem; width: .4rem; height: .75rem;
+    border: solid var(--good); border-width: 0 2px 2px 0; transform: rotate(45deg);
+  }
+  .lista-simples { margin: 0; padding-left: 1.1rem; display: grid; gap: .45rem; color: var(--ink); list-style: disc; }
+  ol.lista-simples { list-style: decimal; padding-left: 1.3rem; }
+  .lista-simples li::marker { color: var(--ink-3); }
+
+  .gravidade { display: inline-flex; align-items: center; gap: .4rem; font-size: .75rem; font-weight: 700; color: var(--ink); white-space: nowrap; }
+  .gravidade::before { content: ""; width: .6rem; height: .6rem; border-radius: 2px; background: var(--cor); transform: rotate(45deg); }
+
+  .citacao { font-family: "Fraunces", "Iowan Old Style", Georgia, serif; font-weight: 500; font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem); line-height: 1.25; color: var(--ink); margin: 0; max-width: 32ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3/dist/index.global.js"></script>
+<style type="text/tailwindcss">
+  @theme inline {
+    --color-page: var(--page);
+    --color-surface: var(--surface);
+    --color-surface-2: var(--surface-2);
+    --color-line: var(--line);
+    --color-ink: var(--ink);
+    --color-ink-2: var(--ink-2);
+    --color-ink-3: var(--ink-3);
+    --color-accent: var(--accent);
+    --color-accent-soft: var(--accent-soft);
+    --color-brand: var(--brand);
+  }
+  @theme {
+    --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+</style>
+</head>
+<body class="bg-page text-ink font-sans">
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex flex-wrap items-center gap-x-8 gap-y-2">
+    <a href="#agora" class="flex items-center gap-2.5 no-underline">
+      <span class="marca" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9.1" opacity=".45"/>
+          <path d="M5.6 7.3a8 8 0 0 0 0 9.4" opacity=".8"/>
+          <path d="M18.4 7.3a8 8 0 0 1 0 9.4" opacity=".8"/>
+          <path d="M12 6.2c.5 3.1 2.2 4.8 5.3 5.3-3.1.5-4.8 2.2-5.3 5.3-.5-3.1-2.2-4.8-5.3-5.3 3.1-.5 4.8-2.2 5.3-5.3Z"/>
+          <circle cx="18.4" cy="5.6" r="1.25" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      <span class="flex flex-col leading-tight">
+        <strong class="font-display text-lg tracking-[.14em]">VYRA</strong>
+        <span class="text-xs text-ink-2">Manual · 24 de setembro de 2026</span>
+      </span>
+    </a>
+    <nav aria-label="Seções do manual" class="order-3 w-full md:order-none md:w-auto md:flex-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+      <a href="#agora">Agora</a>
+      <a href="#etapas">Etapas</a>
+      <a href="#pronto">Pronto</a>
+      <a href="#falta">Falta</a>
+      <a href="#concorrentes">Concorrentes</a>
+      <a href="#destino">Destino</a>
+      <a href="#metodo">Método</a>
+    </nav>
+    <button id="botao-tema" type="button" class="botao-tema ms-auto md:ms-0"></button>
+  </div>
+</header>
+
+<main id="conteudo" class="mx-auto max-w-6xl px-4 sm:px-6 pb-24">
+
+  <!-- ===================================================== ONDE ESTAMOS -->
+  <section id="agora" class="secao">
+    <p class="sobretitulo">Onde estamos · 24/09/2026</p>
+    <h1 class="font-display text-4xl sm:text-5xl font-semibold tracking-tight">Manual do VYRA</h1>
+    <p class="lede">
+      O que já funciona, o que falta e como o app se compara a três concorrentes.
+      Os números saem do código lido em 24/09 e do plano
+      <span class="font-medium text-ink">24-setembro-pastas.md</span>.
+    </p>
+
+    <div class="alerta mt-6" role="note" aria-label="Alerta crítico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
+        <path d="M12 9v4.5M12 17.2v.1"/>
+      </svg>
+      <div>
+        <p class="m-0 font-semibold">Crítico: o repositório git de C:/dev continua sumido</p>
+        <p class="m-0 mt-1 text-sm text-ink-2 max-w-[70ch]">
+          Sem ele, não dá para revisar nem desfazer as mudanças pelo git. Por decisão sua,
+          o trabalho segue com backup: antes de cada rodada, a pasta do app é copiada para
+          C:\dev\projeto-emerson\backups (a primeira cópia é 2026-09-24_1248). Os 8 arquivos
+          removidos na Etapa 1 só voltam pelo remoto (origin, commit 3d16470).
+        </p>
+      </div>
+    </div>
+
+    <div id="kpis" class="mt-6 grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+
+    <div class="mt-3 grid gap-3 items-start lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+      <figure class="cartao m-0 p-4 sm:p-5">
+        <figcaption>
+          <p class="titulo-fig">As 25 funções de mercado, no VYRA de hoje</p>
+          <p class="apoio-fig" id="niveis-apoio"></p>
+        </figcaption>
+        <div id="niveis-vyra" class="mt-4"></div>
+        <button type="button" class="botao-texto mt-3" data-alterna="niveis-tabela" aria-expanded="false">Ver como tabela</button>
+        <div id="niveis-tabela" class="mt-2 overflow-x-auto" hidden></div>
+      </figure>
+
+      <div class="cartao p-4 sm:p-5">
+        <p class="titulo-fig">Resumo</p>
+        <ul id="resumo" class="lista-simples mt-3 text-sm"></ul>
+      </div>
+    </div>
+
+    <div class="mt-3 cartao p-4 sm:p-5">
+      <p class="titulo-fig">Linha do tempo</p>
+      <ol class="mt-3 grid gap-3 sm:grid-cols-5 list-none p-0 m-0 text-sm">
+        <li><span class="block font-semibold tabular-nums">07/09</span><span class="text-ink-2">Projeto criado com Next.js.</span></li>
+        <li><span class="block font-semibold tabular-nums">09/09</span><span class="text-ink-2">Primeiro commit no remoto, ainda sem route groups.</span></li>
+        <li><span class="block font-semibold tabular-nums">10/09</span><span class="text-ink-2">Plano inicial: landing, cadastro e login prontos.</span></li>
+        <li><span class="block font-semibold tabular-nums">11/09</span><span class="text-ink-2">VYRA em três route groups. O merge com origin/main traz 7 rotas antigas e quebra o build.</span></li>
+        <li><span class="block font-semibold tabular-nums">24/09</span><span class="text-ink-2">Revisão completa e duas rodadas de correções. O .git some; a segunda rodada segue com backup e passa em 14 de 14 checagens no navegador.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================================================== ETAPAS -->
+  <section id="etapas" class="secao">
+    <p class="sobretitulo">Plano de 24/09</p>
+    <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tight">Sequência de etapas</h2>
+    <p class="lede">
+      As 17 etapas do plano, na ordem de execução. Nos percentuais, uma etapa parcial vale meia.
+      Todas as pendentes esperam o repositório git voltar.
+    </p>
+
+    <figure class="cartao m-0 mt-6 p-4 sm:p-5">
+      <figcaption>
+        <p class="titulo-fig">Andamento do plano</p>
+        <p class="apoio-fig" id="plano-apoio"></p>
+      </figcaption>
+      <div id="plano-grafico" class="mt-4"></div>
+      <button type="button" class="botao-texto mt-3" data-alterna="plano-tabela" aria-expanded="false">Ver como tabela</button>
+      <div id="plano-tabela" class="mt-2 overflow-x-auto" hidden></div>
+    </figure>
+
+    <div class="mt-6 flex flex-wrap gap-2" role="group" aria-label="Filtrar etapas" id="filtros-etapas"></div>
+    <ol id="lista-etapas" class="mt-4 list-none p-0 m-0"></ol>
+  </section>
+
+  <!-- ===================================================== PRONTO -->
+  <section id="pronto" class="secao">
+    <p class="sobretitulo">Base conquistada</p>
+    <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tight">O que está pronto</h2>
+    <p class="lede">
+      Tudo o que foi verificado até 24/09. A base visual e técnica está de pé. O que falta
+      fica atrás das telas, em salvar dados e nas funções que o mercado já oferece.
+    </p>
+
+    <div class="mt-6 grid gap-3 md:grid-cols-2">
+      <div class="cartao p-4 sm:p-5">
+        <h3 class="text-base font-semibold m-0">Base técnica</h3>
+        <ul class="lista-check mt-3 text-sm">
+          <li>Next.js 16.3 com React 19.2 e TypeScript.</li>
+          <li>Build de produção passa, com 51 páginas geradas.</li>
+          <li>ESLint sem nenhum aviso e TypeScript sem erros.</li>
+          <li>24 páginas de detalhe geradas no build: 4 objetivos, 3 sonhos, 11 categorias e 6 áreas.</li>
+          <li>Página inicial estática, regenerada a cada hora.</li>
+          <li>Fontes Fraunces e Inter servidas pelo próprio app.</li>
+          <li>Cerca de 680 linhas de CSS sem uso removidas em 24/09. O components.css caiu de 1.217 para 538 linhas.</li>
+          <li>Endereços antigos /categorias e /ia levam para /explorar e /mural.</li>
+        </ul>
+      </div>
+
+      <div class="cartao p-4 sm:p-5">
+        <h3 class="text-base font-semibold m-0">Design e acessibilidade</h3>
+        <ul class="lista-check mt-3 text-sm">
+          <li>Dois visuais, dia e noite, mais o automático, sem piscar ao abrir.</li>
+          <li>Fotografia de paisagem em toda tela, com a interface em vidro por cima.</li>
+          <li>Três larguras: barra inferior no celular, trilha lateral e terceira coluna no desktop.</li>
+          <li>13 pares de cor texto e fundo passam WCAG AA, segundo a checagem de 10/09.</li>
+          <li>Foco visível, movimento reduzido respeitado e botões com estado para leitor de tela.</li>
+        </ul>
+      </div>
+
+      <div class="cartao p-4 sm:p-5">
+        <h3 class="text-base font-semibold m-0">Telas e fluxos</h3>
+        <ul class="lista-check mt-3 text-sm">
+          <li>30 telas: 3 públicas, 8 de onboarding e 19 internas.</li>
+          <li>Funil completo: landing, splash, boas-vindas, idioma, cadastro, personalização, planos, pagamento, pronto, tutorial e início.</li>
+          <li>Navegação do app: barra no celular, trilha no computador.</li>
+          <li>Endereço inválido de sonho, categoria ou objetivo mostra 404.</li>
+        </ul>
+      </div>
+
+      <div class="cartao p-4 sm:p-5">
+        <h3 class="text-base font-semibold m-0">Dados reais</h3>
+        <ul class="lista-check mt-3 text-sm">
+          <li>Cadastro e login gravam e leem da API de teste (json-server, porta 3333).</li>
+          <li>Formulários validam, mostram o erro no campo e levam o foco ao primeiro erro.</li>
+          <li>E-mail inexistente e senha errada recebem a mesma mensagem.</li>
+          <li>npm run dev sobe a API antes do app.</li>
+        </ul>
+      </div>
+
+      <div class="cartao p-4 sm:p-5 md:col-span-2">
+        <h3 class="text-base font-semibold m-0">Protótipos que funcionam na tela</h3>
+        <p class="m-0 mt-1 text-sm text-ink-2">Funcionam enquanto a tela está aberta. Nada é salvo.</p>
+        <ul class="lista-check mt-3 text-sm grid md:grid-cols-2 gap-x-8">
+          <li>Mural: 5 layouts de colagem, editor com Trocar, Ajustar, Texto e Filtros, e pré-visualização do papel de parede.</li>
+          <li>Objetivos: filtro por status, plano de ação com checklist e contagem sincronizada, e formulário de novo objetivo com validação.</li>
+          <li>Frases e Fotos: galeria em 3 categorias e criador de posts com 4 formatos, 3 posições de texto e 4 filtros.</li>
+          <li>Explorar: busca que ignora acentos em templates, frases e lugares.</li>
+          <li>Conquistas com filtro Todos, Recentes e Por categoria.</li>
+          <li>6 telas de área: Vibração, Mentalizar, Saúde, Profissão, Religião e Lugares.</li>
+          <li>Frase do dia que muda sozinha.</li>
+          <li>Configurações com o seletor Dia, Noite e Automático.</li>
+        </ul>
+      </div>
+
+      <div class="cartao p-4 sm:p-5 md:col-span-2">
+        <h3 class="text-base font-semibold m-0">Correções de 24/09, em duas rodadas</h3>
+        <ul class="lista-check mt-3 text-sm grid md:grid-cols-2 gap-x-8">
+          <li>Build destravado: 7 rotas duplicadas e o BottomNav removidos.</li>
+          <li>Funil do onboarding reconectado: o cadastro segue para a personalização.</li>
+          <li>Perfil com os mesmos números da Home.</li>
+          <li>404 para endereço inválido, e sonhos e categorias gerados no build.</li>
+          <li>Contagem do plano de ação acompanha as etapas marcadas.</li>
+          <li>Data no fuso de quem vê e frase do dia sem congelar.</li>
+          <li>Legenda do mural sem chave repetida.</li>
+          <li>README e rodapé atualizados.</li>
+          <li>Código morto fora: DreamCard, CategoryCard e cerca de 680 linhas de CSS.</li>
+          <li>Título na aba de 7 telas: Entrar, Criar conta, Idioma, Personalização, Planos, Novo objetivo e Novo mural.</li>
+          <li>O editor do mural leva legenda, filtro e ordem das fotos para a pré-visualização, e de volta.</li>
+          <li>Rolagem suave ajustada ao Next 16: a troca de página abre no topo na hora.</li>
+          <li>Verificado no navegador: 14 de 14 checagens e console sem avisos em 27 telas.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== FALTA -->
+  <section id="falta" class="secao">
+    <p class="sobretitulo">Lacunas</p>
+    <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tight">O que falta</h2>
+    <p class="lede">
+      Primeiro os bloqueios, depois cada função de mercado que o VYRA ainda não entrega por
+      completo, com a fase do roteiro em que ela fica pronta. Por último, os riscos.
+    </p>
+
+    <div class="mt-6 cartao p-4 sm:p-5">
+      <h3 class="text-base font-semibold m-0">Agora, antes de qualquer fase</h3>
+      <ol class="lista-simples mt-3 text-sm">
+        <li><strong>Recuperar o repositório git</strong> de C:/dev. Enquanto isso, cada rodada começa com um backup da pasta do app.</li>
+        <li><strong>Medir no DevTools</strong> a largura das fotos das colagens e das miniaturas (Etapa 11) e conferir o contorno do anel de progresso (Etapa 12).</li>
+        <li><strong>Testar o cadastro de ponta a ponta</strong> no navegador, criando e depois apagando uma conta de teste (Etapa 10).</li>
+        <li><strong>Decidir</strong> os 11 pontos de produto (Etapa 16) e o rastreamento do projeto-financ (Etapa 15).</li>
+      </ol>
+    </div>
+
+    <div class="mt-3 cartao p-4 sm:p-5">
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 class="text-base font-semibold m-0">Funções que o VYRA ainda não entrega por completo</h3>
+        <p class="m-0 text-sm text-ink-2" id="lacunas-contagem"></p>
+      </div>
+      <div id="lacunas" class="mt-3 grid gap-x-8 gap-y-5 md:grid-cols-2"></div>
+    </div>
+
+    <div class="mt-3 cartao p-4 sm:p-5">
+      <h3 class="text-base font-semibold m-0">Riscos</h3>
+      <ul class="mt-3 list-none p-0 m-0 grid gap-3 text-sm">
+        <li class="grid sm:grid-cols-[6.5rem_minmax(0,1fr)] gap-1 sm:gap-3">
+          <span class="gravidade" style="--cor: var(--critical)">Crítico</span>
+          <span>O repositório git sumiu. Até ele voltar, o único jeito de desfazer uma mudança é o backup em C:\dev\projeto-emerson\backups.</span>
+        </li>
+        <li class="grid sm:grid-cols-[6.5rem_minmax(0,1fr)] gap-1 sm:gap-3">
+          <span class="gravidade" style="--cor: var(--serious)">Sério</span>
+          <span>Senha em texto puro no db.json e sessão editável no navegador. Serve só para protótipo.</span>
+        </li>
+        <li class="grid sm:grid-cols-[6.5rem_minmax(0,1fr)] gap-1 sm:gap-3">
+          <span class="gravidade" style="--cor: var(--serious)">Sério</span>
+          <span>A landing promete o que o app ainda não faz: "Mural montado por IA" e "Sem cartão de crédito". Ela também fala em 3 estilos de mural, e o app tem 5 layouts.</span>
+        </li>
+        <li class="grid sm:grid-cols-[6.5rem_minmax(0,1fr)] gap-1 sm:gap-3">
+          <span class="gravidade" style="--cor: var(--warning)">Atenção</span>
+          <span>Não existe nenhum teste automatizado.</span>
+        </li>
+        <li class="grid sm:grid-cols-[6.5rem_minmax(0,1fr)] gap-1 sm:gap-3">
+          <span class="gravidade" style="--cor: var(--warning)">Atenção</span>
+          <span>As fotos vêm do Unsplash por endereço fixo. Em produção, use a API oficial, que exige crédito ao fotógrafo, ou hospede as imagens.</span>
+        </li>
+        <li class="grid sm:grid-cols-[6.5rem_minmax(0,1fr)] gap-1 sm:gap-3">
+          <span class="gravidade" style="--cor: var(--warning)">Atenção</span>
+          <span>O anual do PLUS (€ 119,88) custa mais do que o dobro do anual do Perfectly Happy (US$ 58,99), que hoje entrega mais funções.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================================================== CONCORRENTES -->
+  <section id="concorrentes" class="secao">
+    <p class="sobretitulo">Mercado</p>
+    <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tight">Três concorrentes, 25 funções</h2>
+    <p class="lede">
+      Cada concorrente cobre um pedaço do que o VYRA quer ser. O Perfectly Happy é o app dedicado
+      mais completo, na mesma faixa de preço. O Storyflow faz o plano de ação com IA. O Canva é
+      onde as pessoas já montam murais, papéis de parede e posts.
+    </p>
+
+    <div class="mt-6 flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por pilar" id="filtros-pilar"></div>
+    <p class="mt-2 text-sm text-ink-2" id="pilar-legenda"></p>
+
+    <div class="mt-4 grid gap-3 items-start lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+      <figure class="cartao m-0 p-4 sm:p-5">
+        <figcaption>
+          <p class="titulo-fig" id="cobertura-titulo">Cobertura das funções de mercado</p>
+          <p class="apoio-fig">VYRA em destaque; os concorrentes em cinza. As linhas marcam a média dos três e o mercado somado.</p>
+        </figcaption>
+        <div id="cobertura-grafico" class="mt-4"></div>
+        <button type="button" class="botao-texto mt-2" data-alterna="cobertura-tabela" aria-expanded="false">Ver como tabela</button>
+        <div id="cobertura-tabela" class="mt-2 overflow-x-auto" hidden></div>
+      </figure>
+
+      <figure class="cartao m-0 p-4 sm:p-5">
+        <figcaption>
+          <p class="titulo-fig">Cobertura por pilar</p>
+          <p class="apoio-fig">Quanto mais escuro, maior a cobertura. "Mercado somado" pega o melhor dos três em cada função.</p>
+        </figcaption>
+        <div id="calor" class="mt-4 overflow-x-auto"></div>
+        <ul class="legenda" id="calor-legenda" aria-label="Escala de cores"></ul>
+      </figure>
+    </div>
+
+    <div id="cartoes-concorrentes" class="mt-3 grid gap-3 lg:grid-cols-3"></div>
+
+    <figure class="cartao m-0 mt-3 p-4 sm:p-5">
+      <figcaption class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="titulo-fig">Função por função</p>
+          <p class="apoio-fig">
+            VYRA: Pronto (funciona e salva) · Protótipo (funciona na tela, sem salvar) · Só tela · Falta.
+            Concorrentes: Tem · Parcial · Não anunciado.
+          </p>
+        </div>
+        <label class="inline-flex items-center gap-2 text-sm font-medium cursor-pointer" for="so-lacunas">
+          <input id="so-lacunas" type="checkbox" class="size-4 accent-[var(--viz-emph)]">
+          Só o que falta no VYRA
+        </label>
+      </figcaption>
+      <div id="matriz" class="mt-4 overflow-x-auto"></div>
+    </figure>
+
+    <div class="mt-3 grid gap-3 items-start lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      <div class="cartao p-4 sm:p-5">
+        <p class="titulo-fig">Preços</p>
+        <p class="apoio-fig">Preços de lista dos concorrentes nos EUA, em dólar. O VYRA está em euro. Sem conversão de câmbio.</p>
+        <div class="mt-3 overflow-x-auto">
+          <table class="tabela min-w-[34rem]">
+            <thead>
+              <tr><th scope="col">Plano</th><th scope="col" class="num">Mensal</th><th scope="col" class="num">Anual</th><th scope="col">Grátis ou teste</th></tr>
+            </thead>
+            <tbody>
+              <tr class="col-vyra"><th scope="row">VYRA PLUS</th><td class="num">€ 11,99</td><td class="num">€ 119,88</td><td>Não definido. A landing diz "Sem cartão de crédito".</td></tr>
+              <tr class="col-vyra"><th scope="row">VYRA PRO</th><td class="num">€ 19,99</td><td class="num">€ 203,88</td><td>Não definido.</td></tr>
+              <tr><th scope="row">Perfectly Happy</th><td class="num">US$ 10,99</td><td class="num">US$ 58,99</td><td>Grátis com 1 mural e 7 dias de teste.</td></tr>
+              <tr><th scope="row">Storyflow Plus</th><td class="num">US$ 9,99</td><td class="num">US$ 95,88</td><td>Sem teste. Plano grátis previsto até o fim de 2026.</td></tr>
+              <tr><th scope="row">Storyflow Pro</th><td class="num">US$ 19</td><td class="num">US$ 168</td><td>Sem teste.</td></tr>
+              <tr><th scope="row">Canva Pro</th><td class="num">US$ 15 a 18</td><td class="num">US$ 120 a 144</td><td>Plano grátis.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cartao p-4 sm:p-5">
+        <p class="titulo-fig">No radar, sem nota</p>
+        <p class="apoio-fig">Outros nomes que aparecem nos rankings de 2026. Não foram pontuados.</p>
+        <ul class="lista-simples mt-3 text-sm">
+          <li><strong>Dreamer:</strong> vision board no iPhone, com widgets, papel de parede e diário, limitado a 9 imagens.</li>
+          <li><strong>Horizons:</strong> iOS e Android, com plano de ação e diário de progresso sobre fotos do Unsplash.</li>
+          <li><strong>Vision Board ++:</strong> iPhone, com áudio de afirmações, widgets e apresentação em slides.</li>
+          <li><strong>ManifestedMe:</strong> iOS e Android, junta mural, humor, afirmações, meditações e metas. Preço não publicado.</li>
+          <li><strong>Pinterest e Notion:</strong> usados para montar murais e metas, sem lembretes nem afirmações.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== DESTINO -->
+  <section id="destino" class="secao">
+    <p class="sobretitulo">Destino</p>
+    <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tight">Onde queremos chegar</h2>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-start">
+      <div>
+        <p class="citacao">Sonho vira objetivo, objetivo vira plano de ação, e tudo vira um mural que você vê todos os dias.</p>
+        <p class="lede">
+          A meta é juntar num app só o que hoje está espalhado em três produtos: o mural do Canva,
+          as afirmações e os lembretes do Perfectly Happy e o plano de ação com IA do Storyflow.
+          Por cima disso, o VYRA mostra o progresso de cada objetivo, coisa que nenhum dos três faz.
+        </p>
+        <p class="lede" id="metas-texto"></p>
+      </div>
+
+      <div class="cartao p-4 sm:p-5">
+        <p class="titulo-fig">As quatro promessas da landing, hoje</p>
+        <ul id="promessas" class="mt-3 list-none p-0 m-0 grid gap-3 text-sm"></ul>
+      </div>
+    </div>
+
+    <div class="mt-3 grid gap-3 md:grid-cols-2" id="planos-vyra"></div>
+
+    <figure class="cartao m-0 mt-3 p-4 sm:p-5">
+      <figcaption>
+        <p class="titulo-fig">Roteiro: cobertura do VYRA ao fim de cada fase</p>
+        <p class="apoio-fig">Projeção: a cobertura que o VYRA teria se as funções de cada fase ficassem prontas, somando as fases anteriores.</p>
+      </figcaption>
+      <div id="roteiro-grafico" class="mt-4"></div>
+      <ul class="legenda">
+        <li><span class="chave" style="background: var(--viz-emph)"></span>Hoje</li>
+        <li><span class="chave" style="background: var(--viz-proj)"></span>Projeção</li>
+        <li><span class="chave-linha"></span>Média dos três concorrentes e mercado somado</li>
+      </ul>
+      <button type="button" class="botao-texto mt-3" data-alterna="roteiro-tabela" aria-expanded="false">Ver como tabela</button>
+      <div id="roteiro-tabela" class="mt-2 overflow-x-auto" hidden></div>
+    </figure>
+
+    <ol id="fases" class="mt-3 list-none p-0 m-0 grid gap-3 md:grid-cols-2 xl:grid-cols-3"></ol>
+  </section>
+
+  <!-- ===================================================== MÉTODO -->
+  <section id="metodo" class="secao">
+    <p class="sobretitulo">Método</p>
+    <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tight">Como os percentuais foram calculados</h2>
+
+    <div class="mt-6 grid gap-3 md:grid-cols-2">
+      <div class="cartao p-4 sm:p-5 text-sm">
+        <h3 class="text-base font-semibold m-0">Pontuação</h3>
+        <ul class="lista-simples mt-3">
+          <li><strong>VYRA:</strong> Pronto = 1 (funciona e salva) · Protótipo = 0,5 (funciona na tela, com dados fixos ou sem salvar) · Só tela = 0,25 (a tela existe e a ação principal não funciona) · Falta = 0.</li>
+          <li><strong>Concorrentes:</strong> Tem = 1 · Parcial = 0,5 · Não anunciado = 0. Uma função que existe sem ser anunciada fica de fora, então o percentual de um concorrente pode estar abaixo do real.</li>
+          <li><strong>Cobertura:</strong> soma dos pontos dividida pelo número de funções. São 25 funções em 5 pilares.</li>
+          <li><strong>Mercado somado:</strong> em cada função, a nota do melhor dos três concorrentes.</li>
+          <li><strong>Plano de 24/09:</strong> concluída = 1, parcial = 0,5 e pendente = 0, sobre 17 etapas.</li>
+          <li><strong>Roteiro:</strong> a cobertura se as funções de cada fase ficarem prontas, acumulando as fases.</li>
+          <li>O VYRA foi pontuado lendo o código em 24/09/2026. Os concorrentes, por páginas públicas lidas no mesmo dia.</li>
+        </ul>
+      </div>
+
+      <div class="cartao p-4 sm:p-5 text-sm">
+        <h3 class="text-base font-semibold m-0">Fontes</h3>
+        <ul class="lista-simples mt-3">
+          <li><a class="underline underline-offset-2" href="https://apps.apple.com/us/app/vision-board-perfectly-happy/id1486165358" target="_blank" rel="noopener">Perfectly Happy na App Store</a> e <a class="underline underline-offset-2" href="https://perfectlyhappy.com/" target="_blank" rel="noopener">site oficial</a></li>
+          <li><a class="underline underline-offset-2" href="https://perfectlyhappy.com/digital-vision-board-app/" target="_blank" rel="noopener">Ranking de apps de vision board do Perfectly Happy</a> (feito pelo próprio app)</li>
+          <li><a class="underline underline-offset-2" href="https://storyflow.so/pricing" target="_blank" rel="noopener">Preços do Storyflow</a> e <a class="underline underline-offset-2" href="https://storyflow.so/ai-vision-board-generator" target="_blank" rel="noopener">gerador de vision board com IA</a></li>
+          <li><a class="underline underline-offset-2" href="https://storyflow.so/blog/best-vision-board-apps-2026" target="_blank" rel="noopener">Ranking de apps do Storyflow</a> (feito pelo próprio app)</li>
+          <li><a class="underline underline-offset-2" href="https://www.canva.com/create/vision-boards/" target="_blank" rel="noopener">Vision Board Maker do Canva</a> e <a class="underline underline-offset-2" href="https://www.canva.com/magic-design/" target="_blank" rel="noopener">Magic Design</a></li>
+          <li>Preço do Canva Pro: <a class="underline underline-offset-2" href="https://www.stylefactoryproductions.com/blog/canva-pricing" target="_blank" rel="noopener">Style Factory</a> e <a class="underline underline-offset-2" href="https://www.usecarly.com/blog/canva-pricing/" target="_blank" rel="noopener">Carly</a></li>
+          <li><a class="underline underline-offset-2" href="https://www.manifested.me/blog/best-vision-board-apps-2026" target="_blank" rel="noopener">ManifestedMe</a> (radar)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="mt-16 pt-6 border-t border-line text-sm text-ink-2">
+    Manual gerado em 24/09/2026 a partir do código do VYRA e do plano 24-setembro-pastas.md.
+    Para atualizar os números, edite o bloco de dados no script no fim deste arquivo.
+  </footer>
+</main>
+
+<div id="dica" class="dica" role="tooltip" hidden></div>
+
+<script>
+"use strict";
+
+/* ==========================================================================
+   DADOS · a única fonte dos números do manual. Edite aqui para atualizar.
+   ========================================================================== */
+
+const NIVEL_VYRA = {
+  pronto:    { rotulo: "Pronto",    valor: 1,    cor: "var(--ord-1)" },
+  prototipo: { rotulo: "Protótipo", valor: 0.5,  cor: "var(--ord-2)" },
+  so_tela:   { rotulo: "Só tela",   valor: 0.25, cor: "var(--ord-3)" },
+  falta:     { rotulo: "Falta",     valor: 0,    cor: "var(--ink-3)" },
+};
+
+const NIVEL_MERCADO = {
+  tem:     { rotulo: "Tem",           valor: 1,   cor: "var(--ink-2)" },
+  parcial: { rotulo: "Parcial",       valor: 0.5, cor: "var(--ink-2)" },
+  nao:     { rotulo: "Não anunciado", valor: 0,   cor: "var(--ink-3)" },
+};
+
+const PILARES = [
+  { id: "mural",     nome: "Mural" },
+  { id: "objetivos", nome: "Objetivos e progresso" },
+  { id: "mente",     nome: "Mentalização e bem-estar" },
+  { id: "frases",    nome: "Frases e posts" },
+  { id: "conta",     nome: "Conta e plataforma" },
+];
+
+const PRODUTOS = [
+  { id: "vyra", nome: "VYRA" },
+  { id: "ph",   nome: "Perfectly Happy" },
+  { id: "sf",   nome: "Storyflow" },
+  { id: "cv",   nome: "Canva" },
+];
+
+const CONC = ["ph", "sf", "cv"];
+
+/* fase = fase do roteiro em que a função fica pronta no VYRA (0 = já pronta). */
+const FUNCOES = [
+  { id: "A1", pilar: "mural", nome: "Montar mural com fotos (colagem)", fase: 1,
+    vyra: ["prototipo", "5 layouts e editor com Trocar, Ajustar, Texto e Filtros. Não salva."],
+    ph: ["tem", "Mural com fotos, vídeos e música."],
+    sf: ["tem", "Canvas com cartões e imagens."],
+    cv: ["tem", "Criador de vision board com modelos."] },
+  { id: "A2", pilar: "mural", nome: "Enviar fotos próprias", fase: 2,
+    vyra: ["falta", "Usa 20 fotos fixas do Unsplash."],
+    ph: ["tem", "Fotos próprias ou da biblioteca."],
+    sf: ["tem", "Envio de arquivos."],
+    cv: ["tem", "Envio de fotos."] },
+  { id: "A3", pilar: "mural", nome: "Biblioteca de imagens com busca", fase: 2,
+    vyra: ["falta", "Não há escolha nem busca de imagens."],
+    ph: ["tem", "Duas bibliotecas e busca na web dentro do app."],
+    sf: ["nao", "Não anuncia banco de imagens."],
+    cv: ["tem", "Banco de imagens e elementos."] },
+  { id: "A4", pilar: "mural", nome: "IA que monta o mural ou gera imagens", fase: 5,
+    vyra: ["falta", "Prometido na landing e no plano PRO."],
+    ph: ["nao", "Tem voz de IA, mas não monta o mural."],
+    sf: ["tem", "Monta temas e marcos a partir da descrição; gera imagens no Pro."],
+    cv: ["tem", "Magic Design e Magic Media."] },
+  { id: "A5", pilar: "mural", nome: "Salvar como papel de parede ou baixar a imagem", fase: 2,
+    vyra: ["so_tela", "Pré-visualização pronta; o botão não salva."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["tem", "Exporta PNG, SVG e PDF."],
+    cv: ["tem", "Baixa JPG, PNG ou PDF no tamanho de papel de parede."] },
+  { id: "A6", pilar: "mural", nome: "Widget na tela do celular", fase: 5,
+    vyra: ["falta", "Exige app nativo."],
+    ph: ["tem", "Widgets na tela inicial."],
+    sf: ["nao", "Só funciona no navegador."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "A7", pilar: "mural", nome: "Compartilhar e colaborar", fase: 2,
+    vyra: ["falta", "Nenhuma forma de compartilhar."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["tem", "Link de leitura ou edição; convidados entram grátis."],
+    cv: ["tem", "Compartilha e edita em equipe."] },
+
+  { id: "B0", pilar: "objetivos", nome: "Organizar por áreas da vida", fase: 1,
+    vyra: ["prototipo", "11 categorias e 9 áreas com telas próprias; conteúdo fixo."],
+    ph: ["parcial", "Afirmações organizadas por área da vida."],
+    sf: ["parcial", "A IA pergunta as áreas que importam e agrupa os temas."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "B1", pilar: "objetivos", nome: "Criar objetivos com prazo", fase: 1,
+    vyra: ["prototipo", "O formulário valida, mas não salva."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["tem", "Metas e marcos no canvas."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "B2", pilar: "objetivos", nome: "Plano de ação em etapas, com datas", fase: 1,
+    vyra: ["prototipo", "Checklist marca e conta na tela; não salva e não tem datas."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["tem", "Marcos viram plano com etapas e datas."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "B3", pilar: "objetivos", nome: "Progresso em percentual", fase: 1,
+    vyra: ["prototipo", "Anel e barras com números fixos."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "B4", pilar: "objetivos", nome: "Lembretes e notificações", fase: 4,
+    vyra: ["falta", "O sino não faz nada."],
+    ph: ["tem", "Lembrete diário e afirmações que aparecem na tela."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "B5", pilar: "objetivos", nome: "Hábitos diários com sequência", fase: 4,
+    vyra: ["so_tela", "Tela de Saúde com valores fixos; não registra."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "B6", pilar: "objetivos", nome: "Conquistas e estatísticas da evolução", fase: 1,
+    vyra: ["prototipo", "Conquistas com filtro e dados fixos; abas Hoje, Semana e Mês sem efeito."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+
+  { id: "C1", pilar: "mente", nome: "Afirmações", fase: 4,
+    vyra: ["prototipo", "4 afirmações fixas em Mentalizar."],
+    ph: ["tem", "Mais de 6.000 afirmações e frases."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "C2", pilar: "mente", nome: "Áudio guiado (visualização e meditação)", fase: 5,
+    vyra: ["so_tela", "4 sessões com duração, sem áudio."],
+    ph: ["tem", "Meditações guiadas, música e afirmações faladas."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "C3", pilar: "mente", nome: "Registro de humor (vibração do dia)", fase: 4,
+    vyra: ["so_tela", "Grade \"Como você está hoje?\" sem registro."],
+    ph: ["tem", "Rastreador de humor."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "C4", pilar: "mente", nome: "Diário ou gratidão", fase: 4,
+    vyra: ["falta", "Não existe."],
+    ph: ["tem", "Diário de gratidão."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+
+  { id: "D1", pilar: "frases", nome: "Frase do dia", fase: 0,
+    vyra: ["pronto", "Muda todo dia; a página regenera a cada hora."],
+    ph: ["tem", "365 afirmações diárias."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["nao", "Não anunciado."] },
+  { id: "D2", pilar: "frases", nome: "Arte com frase para redes (story e post)", fase: 2,
+    vyra: ["prototipo", "Editor com 4 formatos, 3 posições de texto e 4 filtros; ainda não baixa a imagem."],
+    ph: ["nao", "Não anunciado."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["tem", "Modelos de post e story, com download."] },
+
+  { id: "E1", pilar: "conta", nome: "Conta com login seguro", fase: 1,
+    vyra: ["prototipo", "Cadastro e login na API de teste; senha em texto puro e sessão no navegador."],
+    ph: ["tem", "Conta com sincronização entre aparelhos, segundo o fabricante."],
+    sf: ["tem", "Conta na web."],
+    cv: ["tem", "Conta na web e no app."] },
+  { id: "E2", pilar: "conta", nome: "Dados salvos na nuvem", fase: 1,
+    vyra: ["falta", "Só a conta vai para a API; objetivos e murais somem ao recarregar."],
+    ph: ["tem", "Sincroniza entre aparelhos, segundo o fabricante."],
+    sf: ["tem", "Projetos salvos na conta."],
+    cv: ["tem", "Designs salvos na conta."] },
+  { id: "E3", pilar: "conta", nome: "Assinatura com cobrança real", fase: 3,
+    vyra: ["so_tela", "Planos e forma de pagamento prontos na tela; nada é cobrado."],
+    ph: ["tem", "US$ 10,99/mês ou US$ 58,99/ano, com 7 dias de teste."],
+    sf: ["tem", "Plus, Pro e Max; sem teste."],
+    cv: ["tem", "Plano grátis e Pro pago."] },
+  { id: "E4", pilar: "conta", nome: "App no celular (lojas ou instalável)", fase: 3,
+    vyra: ["falta", "Site responsivo; sem PWA e sem app nas lojas."],
+    ph: ["tem", "iPhone, iPad e Android."],
+    sf: ["nao", "Só no navegador."],
+    cv: ["tem", "iOS e Android."] },
+  { id: "E5", pilar: "conta", nome: "Vários idiomas", fase: 5,
+    vyra: ["so_tela", "A tela de idioma existe; o app só fala português."],
+    ph: ["tem", "14 idiomas, com português."],
+    sf: ["nao", "Não anunciado."],
+    cv: ["tem", "Interface em português e em outros idiomas."] },
+];
+
+const FASES = [
+  { n: 1, nome: "Fundação", resumo: "Banco de dados, login seguro e tudo salvo.",
+    extras: ["Banco de dados real no lugar do db.json e do mock em código (itens 9 e 10 do plano de 10/09)", "Senha com hash, sessão em cookie httpOnly e rotas internas protegidas", "Progresso calculado a partir das etapas", "Testes automatizados, que hoje não existem"] },
+  { n: 2, nome: "Mural completo", resumo: "Fotos próprias, busca de imagens, download e compartilhamento.",
+    extras: ["Biblioteca pela API do Unsplash, que exige crédito ao fotógrafo"] },
+  { n: 3, nome: "Lançamento", resumo: "Cobrança real e app instalável.",
+    extras: ["Teste grátis ou plano grátis, e a landing alinhada com isso", "Termos, privacidade e exclusão de conta (LGPD e RGPD)"] },
+  { n: 4, nome: "Engajamento diário", resumo: "Lembretes, hábitos, humor, diário e afirmações próprias.",
+    extras: ["Abas Hoje, Semana e Mês da Home funcionando"] },
+  { n: 5, nome: "IA, áudio e alcance", resumo: "IA que monta o mural, áudio guiado, inglês e widgets.",
+    extras: ["Widgets exigem app nativo"] },
+];
+
+/* status: feito | parcial | pendente · quem: agente | voce | ambos */
+const ETAPAS = [
+  { n: 0, titulo: "Diagnóstico completo", status: "feito", quem: "agente",
+    resumo: "37 páginas, 28 componentes, 8 módulos de lib/, configuração e histórico do git lidos. 10 achados classificados por gravidade.",
+    detalhe: "Build e dev estavam quebrados pelas rotas legadas que o merge de 11/09 trouxe de volta." },
+  { n: 1, titulo: "Remover as rotas legadas que quebravam o build", status: "feito", quem: "agente",
+    resumo: "7 páginas antigas e o BottomNav removidos. /categorias e /ia redirecionam para /explorar e /mural.",
+    detalhe: "Build passa com 51 páginas, ESLint sem avisos, TypeScript sem erros e 19 rotas conferidas no servidor." },
+  { n: 2, titulo: "Remover código morto", status: "feito", quem: "agente",
+    resumo: "DreamCard, CategoryCard e cerca de 680 linhas de CSS sem uso removidos. O components.css caiu de 1.217 para 538 linhas.",
+    detalhe: "A segunda parte foi feita com a sua autorização e com backup, porque o .git segue sumido." },
+  { n: 3, titulo: "Reconectar o funil de onboarding", status: "feito", quem: "agente",
+    resumo: "O cadastro segue para /personalizacao. As telas 5 a 9 voltaram a ter caminho.", detalhe: "" },
+  { n: 4, titulo: "Perfil com os mesmos números da Home", status: "feito", quem: "agente",
+    resumo: "O perfil mostra 4 objetivos, 4 áreas e 50%, como a Home. Antes mostrava 41%.", detalhe: "" },
+  { n: 5, titulo: "404 para endereço inválido e pré-renderização", status: "feito", quem: "agente",
+    resumo: "/sonho/999 e /categoria/xyz dão 404. As 3 páginas de sonho e as 11 de categoria são geradas no build.", detalhe: "" },
+  { n: 6, titulo: "Contagem do plano de ação sincronizada", status: "feito", quem: "agente",
+    resumo: "As duas contagens \"2 de 7\" mudam junto com a lista de etapas.", detalhe: "" },
+  { n: 7, titulo: "Data e frase do dia sem congelar", status: "feito", quem: "agente",
+    resumo: "A data aparece no fuso de quem vê e a página inicial é regenerada a cada hora.", detalhe: "" },
+  { n: 8, titulo: "Chaves repetidas na legenda do mural", status: "feito", quem: "agente",
+    resumo: "Linhas iguais ou em branco na legenda não geram mais chave duplicada.", detalhe: "" },
+  { n: 9, titulo: "README e rodapé", status: "feito", quem: "agente",
+    resumo: "Estrutura de pastas, chave do tema e marca do rodapé atualizadas.", detalhe: "" },
+  { n: 10, titulo: "Verificação completa", status: "feito", quem: "agente",
+    resumo: "14 de 14 checagens no navegador e console sem avisos em 27 telas, além de build, lint, TypeScript e 19 rotas.",
+    detalhe: "O único aviso da primeira execução, do Next 16 sobre rolagem suave, foi corrigido com data-scroll-behavior no layout. Não testado: o cadastro de ponta a ponta, que gravaria uma conta de teste no db.json." },
+  { n: 11, titulo: "Tamanho das imagens", status: "pendente", quem: "voce",
+    resumo: "Toda foto é pedida a 900 px, até as miniaturas das colagens.",
+    detalhe: "Meça no DevTools a largura real de cada uso e passe os números; a leitura dessas medidas foi negada pelo controle de permissões nesta sessão. De 900 para 400 px, as colagens baixariam cerca de 5 vezes menos." },
+  { n: 12, titulo: "Contorno do Tailwind no anel de progresso", status: "pendente", quem: "voce",
+    resumo: "Suspeita de que o utilitário ring do Tailwind desenhe um contorno de 1 px no anel.",
+    detalhe: "Confirme no DevTools; inspecionar o CSS gerado foi negado pelo controle de permissões nesta sessão. Se confirmar, renomear a classe ou importar o Tailwind sem os utilitários." },
+  { n: 13, titulo: "Títulos das páginas \"use client\"", status: "feito", quem: "agente",
+    resumo: "7 telas ganharam título na aba, com a parte interativa em componentes cliente.",
+    detalhe: "O /splash manteve de propósito o título padrão da marca." },
+  { n: 14, titulo: "Editor do mural perde as edições", status: "feito", quem: "agente",
+    resumo: "Legenda, filtro e ordem das fotos vão para a pré-visualização e voltam para o editor pela URL.",
+    detalhe: "O botão Trocar perdeu o aria-pressed. Pelo botão voltar do navegador, o editor pode abrir sem a edição até a API salvar o mural." },
+  { n: 15, titulo: "Repositório C:/dev", status: "pendente", quem: "voce",
+    resumo: "O projeto-financ continuava rastreado mesmo estando no .gitignore.",
+    detalhe: "Situação de antes de o .git sumir. Revisar quando o repositório voltar." },
+  { n: 16, titulo: "Decisões de produto", status: "pendente", quem: "voce",
+    resumo: "11 pontos que dependem de escolha sua ou da tela de referência.",
+    detalhe: "/sonho sem entrada, telas sem cenário, \"Sem cartão de crédito\", meta mais próxima fixa, controles sem efeito, escolhas do onboarding não guardadas, taxonomias diferentes, frases repetidas, Apple Pay, os itens 9 e 10 do plano de 10/09 e a data fixa no celular da pré-visualização." },
+];
+
+const STATUS_ETAPA = {
+  feito:    { rotulo: "Concluída", plural: "Concluídas", valor: 1,   cor: "var(--good)",      barra: "var(--good)" },
+  parcial:  { rotulo: "Parcial",   plural: "Parciais",   valor: 0.5, cor: "var(--warning)",   barra: "var(--warning)" },
+  pendente: { rotulo: "Pendente",  plural: "Pendentes",  valor: 0,   cor: "var(--ink-3)",     barra: "var(--viz-track)" },
+};
+const QUEM = { agente: "Agente", voce: "Você", ambos: "Você e agente" };
+
+const CONCORRENTES = [
+  { id: "ph", nome: "Perfectly Happy",
+    tipo: "App dedicado de vision board, afirmações e bem-estar.",
+    fatos: [
+      ["Plataformas", "iPhone, iPad e Android"],
+      ["Preço", "Grátis com 1 mural · US$ 10,99/mês ou US$ 58,99/ano · 7 dias de teste"],
+      ["Tração", "Nota 4,8 na App Store (4,6 mil avaliações) e 4,6 no Google Play · mais de 250 mil usuários, segundo o fabricante"],
+    ],
+    forte: ["Biblioteca de imagens com busca", "Mais de 6.000 afirmações por área da vida", "Vídeo do mural com música e voz", "Widgets, lembrete diário, diário de gratidão e humor", "14 idiomas, com português"],
+    fraco: ["Não tem metas nem plano de ação", "Não cria arte para redes sociais", "Não usa IA para montar o mural"],
+    aprende: ["O mural precisa aparecer sem a pessoa abrir o app. Widget e lembrete diário fazem isso.", "A versão grátis com 1 mural e o teste de 7 dias baixam a barreira de entrada."] },
+  { id: "sf", nome: "Storyflow",
+    tipo: "Canvas visual com IA para equipes criativas. O vision board é um dos usos.",
+    fatos: [
+      ["Plataformas", "Navegador (web)"],
+      ["Preço", "Plus US$ 9,99/mês (US$ 95,88/ano) · Pro US$ 19/mês (US$ 168/ano) · Max US$ 49/mês"],
+      ["Acesso", "Pago durante o acesso antecipado, sem teste · plano grátis previsto até o fim de 2026"],
+    ],
+    forte: ["IA monta temas e marcos a partir da descrição", "Marcos viram plano com etapas e datas", "Exporta PNG, SVG e PDF", "Compartilha por link e aceita colaboradores", "Gera imagens com IA no plano Pro"],
+    fraco: ["Só funciona no navegador", "Sem afirmações, lembretes ou registro de humor", "Feito para equipes criativas, não para a rotina pessoal"],
+    aprende: ["O Storyflow já faz o que a landing do VYRA promete em \"Mural montado por IA\". A IA lê o mural e propõe o plano.", "Os planos se chamam Plus e Pro, com preços perto dos do VYRA. A comparação de valor vai ser direta."] },
+  { id: "cv", nome: "Canva",
+    tipo: "Ferramenta de design generalista, muito usada para montar murais, papéis de parede e posts.",
+    fatos: [
+      ["Plataformas", "Web, iOS e Android"],
+      ["Preço", "Grátis · Pro por cerca de US$ 15 a 18/mês ou US$ 120 a 144/ano"],
+      ["Observação", "O preço varia por região e subiu mais de uma vez desde 2024. O site do Canva bloqueou a leitura automática; os valores vêm de levantamentos de 2026."],
+    ],
+    forte: ["Modelos prontos de vision board e de papel de parede", "Banco grande de imagens e elementos", "IA do Magic Studio: Magic Design e Magic Media", "Baixa em JPG, PNG ou PDF", "Modelos de post e story"],
+    fraco: ["Não acompanha objetivos nem mede progresso", "Não lembra a pessoa de nada, e o mural fica parado depois de pronto", "Sem afirmações nem áudio"],
+    aprende: ["Ele é a régua de qualidade do editor. A pessoa espera baixar a arte com um toque.", "Modelos prontos resolvem a página em branco."] },
+];
+
+const PROMESSAS = [
+  { titulo: "Mural montado por IA", nivel: "falta", nota: "O mural existe como protótipo; a IA ainda não." },
+  { titulo: "11 áreas da vida", nivel: "prototipo", nota: "11 categorias com telas; conteúdo fixo." },
+  { titulo: "Progresso que se vê", nivel: "prototipo", nota: "Anel e barras com números fixos." },
+  { titulo: "Frases prontas para postar", nivel: "prototipo", nota: "O editor funciona; ainda não baixa a arte." },
+];
+
+const PLANOS_VYRA = [
+  { nome: "VYRA PLUS", preco: "€ 11,99/mês", anual: "€ 9,99/mês no anual", recursos: [
+    ["Todos os pilares", "prototipo"],
+    ["Layouts básicos", "prototipo"],
+    ["Até 15 fotos no mural", "falta", "não há limite por plano"],
+    ["Frases e postagens", "prototipo"],
+    ["Suporte por e-mail", "falta", "a tela de Ajuda não tem contato"],
+  ] },
+  { nome: "VYRA PRO", preco: "€ 19,99/mês", anual: "€ 16,99/mês no anual", recursos: [
+    ["Layouts premium", "falta", "nenhum layout é marcado como premium"],
+    ["Até 20 fotos no mural", "falta", "não há limite por plano"],
+    ["Plano de ação personalizado", "prototipo"],
+    ["Sugestões com IA", "falta"],
+    ["Novos conteúdos mensais", "falta"],
+  ] },
+];
+
+/* ==========================================================================
+   CÁLCULOS
+   ========================================================================== */
+
+function pontos(f, id) {
+  const tabela = id === "vyra" ? NIVEL_VYRA : NIVEL_MERCADO;
+  return tabela[f[id][0]].valor;
+}
+function soma(funcs, id) { return funcs.reduce((s, f) => s + pontos(f, id), 0); }
+function cobertura(funcs, id) { return funcs.length ? soma(funcs, id) / funcs.length : 0; }
+function melhorDoMercado(f) { return Math.max(...CONC.map((c) => pontos(f, c))); }
+function somaMercado(funcs) { return funcs.reduce((s, f) => s + melhorDoMercado(f), 0); }
+function coberturaMercado(funcs) { return funcs.length ? somaMercado(funcs) / funcs.length : 0; }
+function mediaConcorrentes(funcs) { return CONC.reduce((s, c) => s + cobertura(funcs, c), 0) / CONC.length; }
+function projecao(ateFase) {
+  const total = FUNCOES.reduce((s, f) => s + (f.fase > 0 && f.fase <= ateFase ? 1 : pontos(f, "vyra")), 0);
+  return total / FUNCOES.length;
+}
+function contaNiveis() {
+  const c = { pronto: 0, prototipo: 0, so_tela: 0, falta: 0 };
+  for (const f of FUNCOES) c[f.vyra[0]] += 1;
+  return c;
+}
+function progressoPlano() {
+  const c = { feito: 0, parcial: 0, pendente: 0 };
+  for (const e of ETAPAS) c[e.status] += 1;
+  const valor = ETAPAS.reduce((s, e) => s + STATUS_ETAPA[e.status].valor, 0) / ETAPAS.length;
+  return { c, valor };
+}
+
+const pct = (v) => `${Math.round(v * 100)}%`;
+const num = (v) => v.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+
+/* ==========================================================================
+   DOM
+   ========================================================================== */
+
+function h(tag, props, ...filhos) {
+  const no = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") no.className = v;
+    else if (k === "style") {
+      for (const [p, val] of Object.entries(v)) {
+        if (p.startsWith("--")) no.style.setProperty(p, val);
+        else no.style[p] = val;
+      }
+    } else if (k.startsWith("on") && typeof v === "function") no.addEventListener(k.slice(2), v);
+    else no.setAttribute(k, v === true ? "" : v);
+  }
+  for (const f of filhos.flat(Infinity)) {
+    if (f == null || f === false) continue;
+    no.append(f instanceof Node ? f : document.createTextNode(String(f)));
+  }
+  return no;
+}
+const $ = (sel) => document.querySelector(sel);
+
+function iconeNivel(valor, cor) {
+  return h("span", { class: "icone-nivel", "aria-hidden": "true", style: { "--cor": cor, "--fracao": `${valor * 360}deg` } });
+}
+
+/* ---------- Dica (tooltip): aparece no hover e no foco, nunca é o único caminho até o valor. */
+const dica = $("#dica");
+function mostrarDica(linhas, x, y) {
+  dica.replaceChildren(...linhas.map((l, i) => h("div", { class: i === 0 ? "valor" : "sec" }, l)));
+  dica.hidden = false;
+  const r = dica.getBoundingClientRect();
+  const margem = 12;
+  let left = x + 14;
+  let top = y + 14;
+  if (left + r.width > window.innerWidth - margem) left = x - r.width - 14;
+  if (top + r.height > window.innerHeight - margem) top = y - r.height - 14;
+  dica.style.left = `${Math.max(margem, left)}px`;
+  dica.style.top = `${Math.max(margem, top)}px`;
+}
+function esconderDica() { dica.hidden = true; }
+function ligarDica(alvo, linhas) {
+  alvo.tabIndex = 0;
+  alvo.addEventListener("pointermove", (e) => mostrarDica(linhas(), e.clientX, e.clientY));
+  alvo.addEventListener("pointerleave", esconderDica);
+  alvo.addEventListener("focus", () => {
+    const r = alvo.getBoundingClientRect();
+    mostrarDica(linhas(), r.left + r.width / 2, r.top + r.height / 2);
+  });
+  alvo.addEventListener("blur", esconderDica);
+}
+window.addEventListener("scroll", esconderDica, { passive: true });
+
+/* ---------- Gráfico de barras horizontais */
+const escala = (v) => `calc(${v} * (100% - 3rem))`;
+
+function graficoBarras(alvo, { linhas, refs = [] }) {
+  const espacoRefs = refs.length ? refs.length * 1.125 + 0.25 : 0;
+  const rotulos = h("div", { class: "barras-rotulos", "aria-hidden": "true" });
+  const area = h("div", { class: "barras-area" });
+  const grade = h("div", { class: "barras-grade", "aria-hidden": "true" });
+  for (const t of [0, 0.25, 0.5, 0.75, 1]) grade.append(h("span", { style: { left: escala(t) } }));
+  area.append(grade);
+
+  refs.forEach((r, i) => {
+    area.append(h("div", { class: "barras-ref", style: { left: escala(r.valor) }, "aria-hidden": "true" },
+      h("span", { class: r.valor > 0.6 ? "barras-ref-rotulo a-esquerda" : "barras-ref-rotulo", style: { top: `${i * 1.125}rem` } }, r.rotulo)));
+  });
+
+  const corpo = h("div", { class: "barras-linhas" });
+  for (const l of linhas) {
+    rotulos.append(h("div", { class: l.destaque ? "barras-rotulo font-semibold" : "barras-rotulo" }, l.rotulo));
+    const linha = h("div", { class: "barra-linha", role: "img", "aria-label": `${l.rotulo}: ${pct(l.valor)}` },
+      h("div", { class: "barra", style: { width: escala(l.valor), background: l.cor } }),
+      h("span", { class: "barra-valor", style: { left: `calc(${escala(l.valor)} + 0.375rem)` } }, pct(l.valor)));
+    ligarDica(linha, () => l.dica);
+    corpo.append(linha);
+  }
+  area.append(corpo);
+
+  const eixo = h("div", { class: "barras-eixo", "aria-hidden": "true" });
+  for (const t of [0, 0.25, 0.5, 0.75, 1]) eixo.append(h("span", { style: { left: escala(t) } }, pct(t)));
+
+  alvo.replaceChildren(h("div", { class: "barras", style: { "--espaco-refs": `${espacoRefs}rem` } }, rotulos, area, h("div"), eixo));
+}
+
+/* ---------- Barra empilhada (parte de um todo) */
+function barraEmpilhada(alvo, segmentos, total, rotuloTotal) {
+  const barra = h("div", { class: "empilhada" });
+  for (const s of segmentos) {
+    if (!s.valor) continue;
+    const seg = h("div", { class: "empilhada-seg", role: "img", "aria-label": `${s.rotulo}: ${s.valor} de ${total}`, style: { flexGrow: String(s.valor), background: s.cor } });
+    ligarDica(seg, () => [`${s.valor} de ${total} · ${pct(s.valor / total)}`, `${s.rotulo} · ${rotuloTotal}`]);
+    barra.append(seg);
+  }
+  const legenda = h("ul", { class: "legenda" },
+    segmentos.map((s) => h("li", {}, s.icone, h("span", {}, s.rotulo), h("strong", {}, String(s.valor)), h("span", {}, `(${pct(s.valor / total)})`))));
+  alvo.replaceChildren(barra, legenda);
+}
+
+/* ---------- Tabela simples a partir de linhas */
+function tabela(cabecalho, linhas, classeMin = "min-w-[22rem]") {
+  return h("table", { class: `tabela ${classeMin}` },
+    h("thead", {}, h("tr", {}, cabecalho.map((c, i) => h("th", { scope: "col", class: i > 0 ? "num" : null }, c)))),
+    h("tbody", {}, linhas.map((l) => h("tr", {}, l.map((c, i) => (i === 0 ? h("th", { scope: "row" }, c) : h("td", { class: "num" }, c)))))));
+}
+
+/* ==========================================================================
+   RENDERIZAÇÃO
+   ========================================================================== */
+
+function renderKpis() {
+  const plano = progressoPlano();
+  const vyra = cobertura(FUNCOES, "vyra");
+  const media = mediaConcorrentes(FUNCOES);
+  const tiles = [
+    { rotulo: "Plano de 24/09", valor: pct(plano.valor), apoio: `${num(plano.c.feito + plano.c.parcial * 0.5)} de ${ETAPAS.length} etapas, contando parcial como meia` },
+    { rotulo: "Funções de mercado no VYRA", valor: pct(vyra), apoio: `${num(soma(FUNCOES, "vyra"))} de ${FUNCOES.length} pontos · média dos concorrentes ${pct(media)}` },
+    { rotulo: "Telas navegáveis", valor: "30", apoio: "2 com dados reais: cadastro e login" },
+    { rotulo: "Build de produção", valor: "51", apoio: "páginas geradas · lint sem avisos · TypeScript sem erros · 14 de 14 no navegador" },
+  ];
+  $("#kpis").replaceChildren(...tiles.map((t) =>
+    h("div", { class: "cartao p-4 sm:p-5" },
+      h("p", { class: "kpi-rotulo" }, t.rotulo),
+      h("p", { class: "kpi-valor" }, t.valor),
+      h("p", { class: "kpi-apoio" }, t.apoio))));
+}
+
+function renderNiveisVyra() {
+  const c = contaNiveis();
+  const total = FUNCOES.length;
+  const segs = [
+    { rotulo: "Pronto", valor: c.pronto, cor: NIVEL_VYRA.pronto.cor, icone: h("span", { class: "chave", style: { background: NIVEL_VYRA.pronto.cor } }) },
+    { rotulo: "Protótipo", valor: c.prototipo, cor: NIVEL_VYRA.prototipo.cor, icone: h("span", { class: "chave", style: { background: NIVEL_VYRA.prototipo.cor } }) },
+    { rotulo: "Só tela", valor: c.so_tela, cor: NIVEL_VYRA.so_tela.cor, icone: h("span", { class: "chave", style: { background: NIVEL_VYRA.so_tela.cor } }) },
+    { rotulo: "Falta", valor: c.falta, cor: "var(--viz-track)", icone: h("span", { class: "chave", style: { background: "var(--viz-track)", outline: "1px solid var(--line)" } }) },
+  ];
+  barraEmpilhada($("#niveis-vyra"), segs, total, "funções no VYRA");
+
+  const temTela = c.pronto + c.prototipo + c.so_tela;
+  const funciona = c.pronto + c.prototipo;
+  $("#niveis-apoio").textContent =
+    `${pct(temTela / total)} já têm tela, ${pct(funciona / total)} funcionam na tela e ${pct(c.pronto / total)} estão prontas de verdade.`;
+
+  $("#niveis-tabela").replaceChildren(tabela(["Nível", "Funções", "Parte"],
+    segs.map((s) => [s.rotulo, String(s.valor), pct(s.valor / total)])));
+}
+
+function renderResumo() {
+  const c = contaNiveis();
+  const vyra = cobertura(FUNCOES, "vyra");
+  const media = mediaConcorrentes(FUNCOES);
+  const obj = FUNCOES.filter((f) => f.pilar === "objetivos");
+  const melhorObj = Math.max(...CONC.map((id) => cobertura(obj, id)));
+  const itens = [
+    "30 telas navegáveis, build de produção passando e 14 de 14 checagens no navegador. A base visual do app está pronta.",
+    `Das ${FUNCOES.length} funções que o mercado oferece, ${c.pronto + c.prototipo + c.so_tela} já têm tela no VYRA, ${c.pronto + c.prototipo} funcionam na tela e ${c.pronto} está pronta de verdade, a frase do dia. Além da conta, nada é salvo.`,
+    `Os três concorrentes cobrem em média ${pct(media)} das funções, e o VYRA cobre ${pct(vyra)}. Em objetivos e progresso o VYRA já está na frente (${pct(cobertura(obj, "vyra"))} contra ${pct(melhorObj)} do melhor concorrente), mesmo como protótipo.`,
+    "As maiores lacunas estão no mural (enviar fotos, buscar imagens, baixar), em conta e plataforma (salvar na nuvem, cobrar, app no celular) e em mentalização (áudio, humor, diário).",
+  ];
+  $("#resumo").replaceChildren(...itens.map((t) => h("li", {}, t)));
+}
+
+/* ---------- Etapas */
+let filtroEtapas = "todas";
+
+function renderPlanoGrafico() {
+  const { c, valor } = progressoPlano();
+  const total = ETAPAS.length;
+  const segs = ["feito", "parcial", "pendente"].map((k) => ({
+    rotulo: STATUS_ETAPA[k].plural,
+    valor: c[k],
+    cor: STATUS_ETAPA[k].barra,
+    icone: iconeNivel(STATUS_ETAPA[k].valor, STATUS_ETAPA[k].cor),
+  }));
+  barraEmpilhada($("#plano-grafico"), segs, total, "etapas do plano");
+  $("#plano-apoio").textContent = `${pct(valor)} do plano, com parcial valendo meia. ${c.feito} de ${total} etapas concluídas (${pct(c.feito / total)}).`;
+  $("#plano-tabela").replaceChildren(tabela(["Status", "Etapas", "Parte"], segs.map((s) => [s.rotulo, String(s.valor), pct(s.valor / total)])));
+}
+
+function etapaVisivel(e) {
+  if (filtroEtapas === "todas") return true;
+  if (filtroEtapas === "voce") return e.quem === "voce" || e.quem === "ambos";
+  return e.status === filtroEtapas;
+}
+
+function renderFiltrosEtapas() {
+  const opcoes = [
+    ["todas", "Todas", ETAPAS.length],
+    ["feito", "Concluídas", ETAPAS.filter((e) => e.status === "feito").length],
+    ["parcial", "Parciais", ETAPAS.filter((e) => e.status === "parcial").length],
+    ["pendente", "Pendentes", ETAPAS.filter((e) => e.status === "pendente").length],
+    ["voce", "Precisam de você", ETAPAS.filter((e) => e.quem !== "agente").length],
+  ];
+  $("#filtros-etapas").replaceChildren(...opcoes.map(([id, rotulo, n]) =>
+    h("button", { type: "button", class: "filtro", "aria-pressed": String(filtroEtapas === id), onclick: () => { filtroEtapas = id; renderFiltrosEtapas(); renderListaEtapas(); } },
+      rotulo, h("span", { class: "contagem" }, String(n)))));
+}
+
+function renderListaEtapas() {
+  $("#lista-etapas").replaceChildren(...ETAPAS.filter(etapaVisivel).map((e) => {
+    const st = STATUS_ETAPA[e.status];
+    return h("li", { class: "etapa" },
+      h("span", { class: "etapa-num" }, String(e.n).padStart(2, "0")),
+      h("div", {},
+        h("div", { class: "flex flex-wrap items-center gap-x-3 gap-y-1.5" },
+          h("h3", { class: "m-0 text-base font-semibold" }, e.titulo),
+          h("span", { class: "pilula" }, iconeNivel(st.valor, st.cor), st.rotulo),
+          h("span", { class: "etiqueta" }, QUEM[e.quem])),
+        h("p", { class: "m-0 mt-1 text-sm text-ink-2 max-w-[75ch]" }, e.resumo),
+        e.detalhe ? h("details", { class: "mt-1.5" }, h("summary", {}, "Detalhes"), h("p", { class: "m-0 mt-1.5 text-sm text-ink-2 max-w-[75ch]" }, e.detalhe)) : null));
+  }));
+}
+
+/* ---------- O que falta: funções por pilar */
+function renderLacunas() {
+  const faltam = FUNCOES.filter((f) => pontos(f, "vyra") < 1);
+  $("#lacunas-contagem").textContent = `${faltam.length} de ${FUNCOES.length} funções`;
+  $("#lacunas").replaceChildren(...PILARES.map((p) => {
+    const lista = faltam.filter((f) => f.pilar === p.id);
+    if (!lista.length) return null;
+    return h("div", {},
+      h("p", { class: "m-0 text-xs font-semibold uppercase tracking-[.08em] text-ink-2" }, `${p.nome} · ${lista.length}`),
+      h("ul", { class: "list-none p-0 m-0 mt-2 grid gap-2.5 text-sm" }, lista.map((f) => {
+        const nv = NIVEL_VYRA[f.vyra[0]];
+        return h("li", { class: "grid grid-cols-[auto_minmax(0,1fr)] gap-x-2.5 items-baseline" },
+          iconeNivel(nv.valor, nv.cor),
+          h("div", {},
+            h("div", { class: "flex flex-wrap items-baseline gap-x-2" },
+              h("span", { class: "font-medium" }, f.nome),
+              h("span", { class: "text-xs text-ink-2" }, `${nv.rotulo} · Fase ${f.fase}`)),
+            h("span", { class: "nota" }, f.vyra[1])));
+      })));
+  }).filter(Boolean));
+}
+
+/* ---------- Concorrentes */
+let pilarAtivo = "todos";
+let soLacunas = false;
+
+function funcsDoPilar() { return pilarAtivo === "todos" ? FUNCOES : FUNCOES.filter((f) => f.pilar === pilarAtivo); }
+function nomePilar() { return pilarAtivo === "todos" ? "Todas as funções" : PILARES.find((p) => p.id === pilarAtivo).nome; }
+
+function renderFiltrosPilar() {
+  const opcoes = [["todos", "Todos os pilares", FUNCOES.length], ...PILARES.map((p) => [p.id, p.nome, FUNCOES.filter((f) => f.pilar === p.id).length])];
+  $("#filtros-pilar").replaceChildren(...opcoes.map(([id, rotulo, n]) =>
+    h("button", { type: "button", class: "filtro", "aria-pressed": String(pilarAtivo === id), onclick: () => { pilarAtivo = id; renderConcorrentes(); } },
+      rotulo, h("span", { class: "contagem" }, String(n)))));
+  const funcs = funcsDoPilar();
+  $("#pilar-legenda").textContent = `Mostrando: ${nomePilar()} (${funcs.length} ${funcs.length === 1 ? "função" : "funções"}). O filtro vale para o gráfico, o mapa de calor e a tabela abaixo.`;
+}
+
+function renderCobertura() {
+  const funcs = funcsDoPilar();
+  const linhas = PRODUTOS.map((p) => ({
+    rotulo: p.nome,
+    valor: cobertura(funcs, p.id),
+    cor: p.id === "vyra" ? "var(--viz-emph)" : "var(--viz-muted)",
+    destaque: p.id === "vyra",
+    dica: [pct(cobertura(funcs, p.id)), `${p.nome} · ${nomePilar()}`, `${num(soma(funcs, p.id))} de ${funcs.length} pontos`],
+  }));
+  const media = mediaConcorrentes(funcs);
+  const mercado = coberturaMercado(funcs);
+  graficoBarras($("#cobertura-grafico"), {
+    linhas,
+    refs: [
+      { valor: media, rotulo: `média · ${pct(media)}` },
+      { valor: mercado, rotulo: `mercado · ${pct(mercado)}` },
+    ],
+  });
+  $("#cobertura-titulo").textContent = `Cobertura das funções de mercado · ${nomePilar()}`;
+  $("#cobertura-tabela").replaceChildren(tabela(["Produto", "Pontos", "Cobertura"], [
+    ...PRODUTOS.map((p) => [p.nome, `${num(soma(funcs, p.id))} de ${funcs.length}`, pct(cobertura(funcs, p.id))]),
+    ["Média dos três", "—", pct(media)],
+    ["Mercado somado", `${num(somaMercado(funcs))} de ${funcs.length}`, pct(mercado)],
+  ]));
+}
+
+function nivelCalor(v) {
+  if (v <= 0) return 0;
+  if (v <= 0.2) return 1;
+  if (v <= 0.4) return 2;
+  if (v <= 0.6) return 3;
+  if (v <= 0.8) return 4;
+  return 5;
+}
+
+function renderCalor() {
+  const colunas = [...PRODUTOS, { id: "mercado", nome: "Mercado somado" }];
+  const linhas = [...PILARES.map((p) => ({ id: p.id, nome: p.nome, funcs: FUNCOES.filter((f) => f.pilar === p.id) })), { id: "todos", nome: "Todas as funções", funcs: FUNCOES }];
+  const corpo = linhas.map((l) =>
+    h("tr", { class: l.id === pilarAtivo ? "ativa" : null },
+      h("th", { scope: "row" }, `${l.nome} (${l.funcs.length})`),
+      colunas.map((c) => {
+        const v = c.id === "mercado" ? coberturaMercado(l.funcs) : cobertura(l.funcs, c.id);
+        const pts = c.id === "mercado" ? somaMercado(l.funcs) : soma(l.funcs, c.id);
+        const k = nivelCalor(v);
+        const td = h("td", { class: "hm", style: { background: `var(--hm-${k})`, color: `var(--hm-ink-${k})` } }, pct(v));
+        ligarDica(td, () => [pct(v), `${c.nome} · ${l.nome}`, `${num(pts)} de ${l.funcs.length} pontos`]);
+        return td;
+      })));
+  $("#calor").replaceChildren(h("table", { class: "tabela calor min-w-[32rem]" },
+    h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Pilar"), colunas.map((c) => h("th", { scope: "col", class: "text-center" }, c.nome)))),
+    h("tbody", {}, corpo)));
+}
+
+function renderLegendaCalor() {
+  const faixas = [["0%", 0], ["1 a 20%", 1], ["21 a 40%", 2], ["41 a 60%", 3], ["61 a 80%", 4], ["81 a 100%", 5]];
+  $("#calor-legenda").replaceChildren(...faixas.map(([r, k]) =>
+    h("li", {}, h("span", { class: "chave", style: { background: `var(--hm-${k})`, outline: k === 0 ? "1px solid var(--line)" : null } }), r)));
+}
+
+function renderCartoes() {
+  $("#cartoes-concorrentes").replaceChildren(...CONCORRENTES.map((c) => {
+    const cob = cobertura(FUNCOES, c.id);
+    return h("article", { class: "cartao p-4 sm:p-5 flex flex-col gap-4" },
+      h("header", { class: "flex items-start justify-between gap-3" },
+        h("div", {},
+          h("h3", { class: "m-0 font-display text-2xl font-semibold" }, c.nome),
+          h("p", { class: "m-0 mt-1 text-sm text-ink-2" }, c.tipo)),
+        h("div", { class: "text-right shrink-0" },
+          h("p", { class: "m-0 text-2xl font-semibold" }, pct(cob)),
+          h("p", { class: "m-0 text-xs text-ink-2" }, "das 25 funções"))),
+      h("dl", { class: "m-0 grid gap-2 text-sm" }, c.fatos.map(([t, d]) =>
+        h("div", {}, h("dt", { class: "text-xs font-semibold uppercase tracking-[.08em] text-ink-2" }, t), h("dd", { class: "m-0" }, d)))),
+      h("div", { class: "grid gap-3 text-sm" },
+        h("div", {}, h("p", { class: "m-0 font-semibold" }, "Onde é forte"), h("ul", { class: "lista-simples mt-1.5" }, c.forte.map((t) => h("li", {}, t)))),
+        h("div", {}, h("p", { class: "m-0 font-semibold" }, "Onde é fraco"), h("ul", { class: "lista-simples mt-1.5" }, c.fraco.map((t) => h("li", {}, t)))),
+        h("div", { class: "rounded-lg bg-accent-soft p-3" }, h("p", { class: "m-0 font-semibold" }, "O que o VYRA aprende"), h("ul", { class: "lista-simples mt-1.5" }, c.aprende.map((t) => h("li", {}, t))))));
+  }));
+}
+
+function celulaMatriz(f, id) {
+  const [nivel, nota] = f[id];
+  const tabelaNivel = id === "vyra" ? NIVEL_VYRA : NIVEL_MERCADO;
+  const nv = tabelaNivel[nivel];
+  const cor = id === "vyra" ? nv.cor : (nv.valor > 0 ? "var(--ink-2)" : "var(--ink-3)");
+  return h("td", { class: id === "vyra" ? "col-vyra" : null },
+    h("span", { class: "celula" }, iconeNivel(nv.valor, cor), nv.rotulo),
+    h("span", { class: "nota" }, nota));
+}
+
+function renderMatriz() {
+  const funcs = funcsDoPilar().filter((f) => !soLacunas || pontos(f, "vyra") < 1);
+  const corpo = [];
+  for (const p of PILARES) {
+    const doPilar = funcs.filter((f) => f.pilar === p.id);
+    if (!doPilar.length) continue;
+    corpo.push(h("tr", { class: "grupo" }, h("th", { colspan: "6", scope: "colgroup" }, `${p.nome} · ${doPilar.length}`)));
+    for (const f of doPilar) {
+      corpo.push(h("tr", {},
+        h("th", { scope: "row", class: "font-medium min-w-[12rem]" }, f.nome),
+        PRODUTOS.map((pr) => celulaMatriz(f, pr.id)),
+        h("td", { class: "num text-ink-2" }, f.fase === 0 ? "Pronta" : `Fase ${f.fase}`)));
+    }
+  }
+  if (!corpo.length) corpo.push(h("tr", {}, h("td", { colspan: "6", class: "text-ink-2" }, "Nenhuma função neste filtro.")));
+  $("#matriz").replaceChildren(h("table", { class: "tabela min-w-[56rem]" },
+    h("thead", {}, h("tr", {},
+      h("th", { scope: "col" }, "Função"),
+      PRODUTOS.map((p) => h("th", { scope: "col", class: p.id === "vyra" ? "col-vyra" : null }, p.nome)),
+      h("th", { scope: "col", class: "num" }, "No VYRA"))),
+    h("tbody", {}, corpo)));
+}
+
+function renderConcorrentes() {
+  renderFiltrosPilar();
+  renderCobertura();
+  renderCalor();
+  renderMatriz();
+}
+
+/* ---------- Destino */
+function renderPromessas() {
+  $("#promessas").replaceChildren(...PROMESSAS.map((p) => {
+    const nv = NIVEL_VYRA[p.nivel];
+    return h("li", { class: "grid grid-cols-[auto_minmax(0,1fr)] gap-x-2.5 items-baseline" },
+      iconeNivel(nv.valor, nv.cor),
+      h("div", {},
+        h("div", { class: "flex flex-wrap items-baseline gap-x-2" }, h("span", { class: "font-semibold" }, p.titulo), h("span", { class: "text-xs text-ink-2" }, nv.rotulo)),
+        h("span", { class: "nota" }, p.nota)));
+  }));
+}
+
+function renderPlanos() {
+  $("#planos-vyra").replaceChildren(...PLANOS_VYRA.map((pl) =>
+    h("div", { class: "cartao p-4 sm:p-5" },
+      h("div", { class: "flex flex-wrap items-baseline justify-between gap-2" },
+        h("p", { class: "m-0 font-display text-xl font-semibold tracking-wide" }, pl.nome),
+        h("p", { class: "m-0 text-sm" }, h("strong", {}, pl.preco), h("span", { class: "text-ink-2" }, ` · ${pl.anual}`))),
+      h("p", { class: "m-0 mt-1 text-xs text-ink-2" }, "O que o plano promete e o que existe hoje"),
+      h("ul", { class: "list-none p-0 m-0 mt-3 grid gap-2 text-sm" }, pl.recursos.map(([t, nivel, nota]) => {
+        const nv = NIVEL_VYRA[nivel];
+        return h("li", { class: "grid grid-cols-[auto_minmax(0,1fr)] gap-x-2.5 items-baseline" },
+          iconeNivel(nv.valor, nv.cor),
+          h("span", {}, h("span", { class: "font-medium" }, t), h("span", { class: "text-ink-2" }, ` · ${nv.rotulo}${nota ? `: ${nota}` : ""}`)));
+      })))));
+}
+
+function renderRoteiro() {
+  const valores = [0, 1, 2, 3, 4, 5].map(projecao);
+  const media = mediaConcorrentes(FUNCOES);
+  const mercado = coberturaMercado(FUNCOES);
+  const melhor = Math.max(...CONC.map((c) => cobertura(FUNCOES, c)));
+  const melhorNome = CONCORRENTES.find((c) => cobertura(FUNCOES, c.id) === melhor).nome;
+
+  const linhas = valores.map((v, i) => ({
+    rotulo: i === 0 ? "Hoje" : `Fase ${i}`,
+    valor: v,
+    cor: i === 0 ? "var(--viz-emph)" : "var(--viz-proj)",
+    destaque: i === 0,
+    dica: i === 0
+      ? [pct(v), "Hoje", `${num(v * FUNCOES.length)} de ${FUNCOES.length} pontos`]
+      : [pct(v), `Fase ${i} · ${FASES[i - 1].nome}`, `+${num((v - valores[i - 1]) * FUNCOES.length)} pontos sobre a fase anterior`],
+  }));
+  graficoBarras($("#roteiro-grafico"), {
+    linhas,
+    refs: [
+      { valor: media, rotulo: `média · ${pct(media)}` },
+      { valor: mercado, rotulo: `mercado · ${pct(mercado)}` },
+    ],
+  });
+
+  $("#roteiro-tabela").replaceChildren(tabela(["Momento", "Pontos", "Cobertura"],
+    valores.map((v, i) => [i === 0 ? "Hoje" : `Fase ${i} · ${FASES[i - 1].nome}`, `${num(v * FUNCOES.length)} de ${FUNCOES.length}`, pct(v)])));
+
+  const passaMedia = valores.findIndex((v) => v > media);
+  const passaMelhor = valores.findIndex((v) => v > melhor);
+  const chegaMercado = valores.findIndex((v) => v >= mercado - 1e-9);
+  $("#metas-texto").textContent =
+    `Em números: o VYRA cobre ${pct(valores[0])} hoje. Passa a média dos três (${pct(media)}) e o melhor deles, o ${melhorNome} (${pct(melhor)}), ` +
+    `ao fim da Fase ${Math.max(passaMedia, passaMelhor)}. Chega a ${pct(mercado)}, tudo o que os três oferecem somados, ao fim da Fase ${chegaMercado}.`;
+
+  $("#fases").replaceChildren(...FASES.map((f) => {
+    const antes = valores[f.n - 1];
+    const depois = valores[f.n];
+    const funcs = FUNCOES.filter((x) => x.fase === f.n);
+    return h("li", { class: "cartao p-4 sm:p-5" },
+      h("p", { class: "m-0 text-xs font-semibold uppercase tracking-[.08em] text-accent" }, `Fase ${f.n}`),
+      h("h3", { class: "m-0 mt-1 font-display text-xl font-semibold" }, f.nome),
+      h("p", { class: "m-0 mt-1 text-sm text-ink-2" }, f.resumo),
+      h("p", { class: "m-0 mt-3 text-sm" }, h("strong", {}, `${pct(antes)} → ${pct(depois)}`), h("span", { class: "text-ink-2" }, ` · +${num((depois - antes) * FUNCOES.length)} pontos`)),
+      h("p", { class: "m-0 mt-3 text-xs font-semibold uppercase tracking-[.08em] text-ink-2" }, "Funções que ficam prontas"),
+      h("ul", { class: "list-none p-0 m-0 mt-1.5 grid gap-1.5 text-sm" }, funcs.map((x) => {
+        const nv = NIVEL_VYRA[x.vyra[0]];
+        return h("li", { class: "grid grid-cols-[auto_minmax(0,1fr)] gap-x-2 items-baseline" }, iconeNivel(nv.valor, nv.cor), h("span", {}, x.nome, h("span", { class: "text-ink-2" }, ` · hoje ${nv.rotulo.toLowerCase()}`)));
+      })),
+      f.extras.length ? h("p", { class: "m-0 mt-3 text-xs font-semibold uppercase tracking-[.08em] text-ink-2" }, "Também entra") : null,
+      f.extras.length ? h("ul", { class: "lista-simples mt-1.5 text-sm" }, f.extras.map((t) => h("li", {}, t))) : null);
+  }));
+}
+
+/* ---------- Tema: Dia · Noite · Automático, como no app */
+const CHAVE_TEMA = "vyra-manual-tema";
+const TEMAS = {
+  auto:  { rotulo: "Automático", icone: '<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none"/>' },
+  light: { rotulo: "Dia", icone: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>' },
+  dark:  { rotulo: "Noite", icone: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/>' },
+};
+const CICLO = { auto: "light", light: "dark", dark: "auto" };
+
+function temaAtual() {
+  const t = document.documentElement.dataset.theme;
+  return t === "light" || t === "dark" ? t : "auto";
+}
+function desenharBotaoTema() {
+  const t = temaAtual();
+  const botao = $("#botao-tema");
+  const svg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TEMAS[t].icone}</svg>`;
+  botao.innerHTML = svg;
+  botao.append(document.createTextNode(`Tema: ${TEMAS[t].rotulo}`));
+  botao.setAttribute("aria-label", `Tema ${TEMAS[t].rotulo}. Clique para mudar para ${TEMAS[CICLO[t]].rotulo}.`);
+}
+$("#botao-tema").addEventListener("click", () => {
+  const proximo = CICLO[temaAtual()];
+  if (proximo === "auto") delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = proximo;
+  try {
+    if (proximo === "auto") localStorage.removeItem(CHAVE_TEMA);
+    else localStorage.setItem(CHAVE_TEMA, proximo);
+  } catch (e) { /* armazenamento bloqueado: a escolha vale só nesta visita */ }
+  desenharBotaoTema();
+});
+
+/* ---------- Botões "Ver como tabela" */
+document.querySelectorAll("[data-alterna]").forEach((botao) => {
+  botao.addEventListener("click", () => {
+    const alvo = document.getElementById(botao.dataset.alterna);
+    const abrir = alvo.hidden;
+    alvo.hidden = !abrir;
+    botao.setAttribute("aria-expanded", String(abrir));
+    botao.textContent = abrir ? "Esconder tabela" : "Ver como tabela";
+  });
+});
+
+$("#so-lacunas").addEventListener("change", (e) => { soLacunas = e.target.checked; renderMatriz(); });
+
+/* ---------- Primeira pintura */
+desenharBotaoTema();
+renderKpis();
+renderNiveisVyra();
+renderResumo();
+renderPlanoGrafico();
+renderFiltrosEtapas();
+renderListaEtapas();
+renderLacunas();
+renderConcorrentes();
+renderLegendaCalor();
+renderCartoes();
+renderPromessas();
+renderPlanos();
+renderRoteiro();
+</script>
+</body>
+</html>

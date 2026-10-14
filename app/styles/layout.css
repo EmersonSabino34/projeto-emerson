@@ -1,0 +1,324 @@
+/* ==========================================================================
+   LAYOUT · shell do app, navegação adaptativa, contêiner de página
+   --------------------------------------------------------------------------
+   Três regimes, uma única árvore de DOM:
+     < 1024px   barra inferior fixa  ·  coluna única
+     >= 1024px  trilha lateral fixa  ·  conteúdo ao lado
+     >= 1320px  trilha + conteúdo + coluna auxiliar (.page-split)
+   ========================================================================== */
+
+.app-shell {
+  width: 100%;
+  min-height: 100svh;
+}
+
+.app-main {
+  width: 100%;
+  min-height: 100svh;
+}
+
+/* ---------- Contêiner de página ---------- */
+.page {
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--sp-7) var(--gutter) calc(var(--nav-h) + var(--sp-9));
+}
+
+/* ---------- Cabeçalho de página ---------- */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+.page-header h1 {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-2xl);
+}
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   NAVEGAÇÃO · barra inferior (mobile)
+   ========================================================================== */
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  border-top: 1px solid var(--border);
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  padding-bottom: env(safe-area-inset-bottom);
+  transition: background var(--t-mid) var(--ease-out),
+              border-color var(--t-mid) var(--ease-out);
+}
+
+/* Marca e rodapé da trilha só existem no layout lateral */
+.nav-brand,
+.nav-footer { display: none; }
+
+.nav-items {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--sp-1);
+  max-width: 520px;
+  margin: 0 auto;
+  padding: var(--sp-2) var(--sp-3);
+}
+
+.nav-item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: var(--sp-1) 2px;
+  border-radius: var(--r-md);
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  transition: color var(--t-fast) var(--ease-out),
+              transform var(--t-fast) var(--ease-spring);
+}
+.nav-item:active { transform: scale(.9); }
+.nav-item[aria-current="page"] { color: var(--accent-text); }
+
+.nav-icon {
+  display: grid;
+  place-items: center;
+  height: 34px;
+  width: 34px;
+  border-radius: var(--r-sm);
+  font-size: 1.0625rem;
+  line-height: 1;
+  transition: background var(--t-mid) var(--ease-out),
+              transform var(--t-mid) var(--ease-spring);
+}
+.nav-item[aria-current="page"] .nav-icon {
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   O botão central de criar.
+   Nas telas de referência ele é um círculo dourado que flutua acima da barra,
+   então aqui ele sai do fluxo vertical dos outros itens: sobe, ganha o
+   gradiente da marca e some com o rótulo, que não caberia dentro do círculo.
+   -------------------------------------------------------------------------- */
+.nav-item-fab {
+  justify-content: center;
+  color: var(--text-on-accent);
+}
+.nav-item-fab .nav-label { display: none; }
+.nav-item-fab::after { content: none; }
+
+.nav-item-fab .nav-icon {
+  height: 52px;
+  width: 52px;
+  margin-top: -20px;
+  border-radius: var(--r-full);
+  border: 3px solid var(--bg);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  box-shadow: 0 10px 24px var(--brand-glow);
+}
+.nav-item-fab[aria-current="page"] .nav-icon {
+  transform: translateY(-2px) scale(1.04);
+}
+.nav-item-fab:active .nav-icon { transform: scale(.92); }
+
+/* pontinho que marca a rota ativa */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  height: 2px;
+  width: 0;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  transform: translateX(-50%);
+  transition: width var(--t-mid) var(--ease-out);
+}
+.nav-item[aria-current="page"]::after { width: 22px; }
+
+/* ==========================================================================
+   NAVEGAÇÃO · trilha lateral (desktop)
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+  .app-shell {
+    display: grid;
+    grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    left: auto;
+    right: auto;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    border-top: 0;
+    border-right: 1px solid var(--border);
+    padding: var(--sp-7) var(--sp-4);
+    background: var(--surface-glass);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    margin: 0 0 var(--sp-8);
+    padding: 0 var(--sp-2);
+  }
+  /* O símbolo em si é .brand-mark (app/styles/brand.css); aqui só o texto. */
+  .nav-brand strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-md);
+    font-weight: 600;
+    /* A palavra VYRA é o único texto do app com tracking positivo. */
+    letter-spacing: .2em;
+    line-height: 1.15;
+  }
+  .nav-brand span {
+    color: var(--text-muted);
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .nav-items {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--sp-1);
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-item {
+    flex: 0 0 auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--sp-3);
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-sm);
+  }
+  .nav-item:hover { color: var(--text); background: var(--surface-subtle); }
+  .nav-item[aria-current="page"] { background: var(--accent-soft); }
+  .nav-item[aria-current="page"] .nav-icon { transform: none; }
+  .nav-item:active { transform: scale(.98); }
+
+  .nav-icon {
+    height: 30px;
+    width: 30px;
+    background: transparent;
+  }
+
+  /* no desktop o indicador vira uma barra vertical à esquerda */
+  .nav-item::after {
+    top: 50%;
+    inset-inline-start: calc(var(--sp-4) * -1);
+    height: 0;
+    width: 3px;
+    border-radius: var(--r-full);
+    transform: translateY(-50%);
+    transition: height var(--t-mid) var(--ease-out);
+  }
+  .nav-item[aria-current="page"]::after { height: 22px; width: 3px; }
+
+  /* Na trilha lateral o "+" deixa de flutuar e vira a linha em destaque do
+     menu: o círculo dourado encolhe para o tamanho dos outros ícones e o
+     rótulo volta, porque aqui há largura para ele. */
+  .nav-item-fab {
+    justify-content: flex-start;
+    margin-top: var(--sp-2);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+  .nav-item-fab .nav-label { display: block; }
+  .nav-item-fab .nav-icon {
+    height: 30px;
+    width: 30px;
+    margin-top: 0;
+    border: 0;
+    border-radius: var(--r-sm);
+    box-shadow: 0 4px 12px var(--brand-glow);
+  }
+  .nav-item-fab[aria-current="page"] .nav-icon { transform: none; }
+
+  .nav-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    margin-top: auto;
+    padding: var(--sp-4) var(--sp-2) 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-footer-note {
+    color: var(--text-muted);
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  /* O toggle passa a morar no pé da trilha, então sai do cabeçalho para
+     não existir duas vezes na mesma tela. */
+  .page-header-actions .theme-toggle { display: none; }
+
+  .page {
+    max-width: calc(var(--page-max) + 80px);
+    padding-block: var(--sp-9) var(--sp-9);
+  }
+}
+
+/* ==========================================================================
+   LAYOUT AMPLO · conteúdo principal + coluna auxiliar
+   ========================================================================== */
+
+@media (min-width: 1320px) {
+  .page-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--aside-w);
+    gap: var(--sp-8);
+    align-items: start;
+    max-width: 1140px;
+  }
+
+  .page-aside {
+    position: sticky;
+    top: var(--sp-9);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5);
+  }
+}
+
+/* a coluna auxiliar só existe no layout amplo; abaixo disso ela volta
+   para o fluxo normal da página */
+.page-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  margin-top: var(--sp-8);
+}
+@media (min-width: 1320px) {
+  .page-aside { margin-top: 0; }
+}

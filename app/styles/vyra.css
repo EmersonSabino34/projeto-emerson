@@ -1,0 +1,1252 @@
+/* ==========================================================================
+   VYRA · componentes das telas novas
+   --------------------------------------------------------------------------
+   Tudo aqui consome os tokens semânticos, nunca as primitivas. É por isso que
+   a mesma regra serve ao dia e à noite sem um único seletor [data-theme].
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Vidro · o cartão-base do VYRA
+   -------------------------------------------------------------------------- */
+.glass {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  box-shadow: var(--shadow-md);
+  transition: background var(--t-mid) var(--ease-out),
+              border-color var(--t-mid) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+/* O fio de luz na aresta superior — é ele que dá o acabamento "premium" e
+   some quando o cartão está sobre fundo claro demais para justificá-lo. */
+.glass::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--sp-5);
+  right: var(--sp-5);
+  height: 1px;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, transparent, var(--glass-edge), transparent);
+  pointer-events: none;
+}
+
+.glass-pad { padding: var(--sp-5); }
+
+/* --------------------------------------------------------------------------
+   Cabeçalho da Home · avatar, saudação e sino
+   -------------------------------------------------------------------------- */
+.greet {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.greet-copy { flex: 1; min-width: 0; }
+
+.greet-copy strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1.15;
+}
+
+.greet-copy span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* --------------------------------------------------------------------------
+   Segmentado · Hoje | Semana | Mês
+   O indicador é o próprio fundo do item ativo, não um elemento que desliza:
+   sem JS, sem medir largura, e o teclado continua navegando por links reais.
+   -------------------------------------------------------------------------- */
+.segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: var(--surface-sunken);
+}
+
+.segmented-option {
+  padding: 6px var(--sp-4);
+  border-radius: var(--r-full);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  transition: background var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+
+.segmented-option[aria-pressed="true"],
+.segmented-option[aria-current="true"] {
+  background: var(--surface-raised);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Cartão de frase sobre foto · abre a Home e as telas de área
+   -------------------------------------------------------------------------- */
+.quote-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  min-height: 210px;
+  padding: var(--sp-6);
+  border-radius: var(--r-2xl);
+  background-position: center;
+  background-size: cover;
+  box-shadow: var(--shadow-lg);
+}
+
+/* A foto some por baixo de um véu escuro para o texto ficar legível nos DOIS
+   tipos — o cartão é o único lugar do app sempre claro-sobre-escuro. */
+.quote-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 6, 20, .12) 0%,
+    rgba(8, 6, 20, .58) 62%,
+    rgba(8, 6, 20, .82) 100%
+  );
+}
+
+.quote-hero-copy {
+  position: relative;
+  z-index: 1;
+  color: var(--text-on-media);
+}
+
+.quote-hero-copy blockquote {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.quote-hero-copy cite {
+  display: block;
+  margin-top: var(--sp-3);
+  color: rgba(255, 255, 255, .78);
+  font-size: var(--fs-xs);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Grade de áreas · o 3×3 da Home
+   -------------------------------------------------------------------------- */
+.area-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.area-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  color: var(--text-secondary);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-spring),
+              border-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.area-tile:active { transform: scale(.95); }
+
+@media (hover: hover) {
+  .area-tile:hover {
+    border-color: var(--border-accent);
+    color: var(--text);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.area-tile-icon {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  width: 40px;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  transition: background var(--t-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .area-tile:hover .area-tile-icon { background: var(--accent-soft-hover); }
+}
+
+/* --------------------------------------------------------------------------
+   Linha de objetivo · miniatura, título e progresso
+   -------------------------------------------------------------------------- */
+.goal-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.goal-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .goal-row:hover {
+    border-color: var(--border-accent);
+    transform: translateX(3px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.goal-thumb {
+  height: 46px;
+  width: 46px;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  background-position: center;
+  background-size: cover;
+}
+
+.goal-body { flex: 1; min-width: 0; }
+
+.goal-body strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goal-percent {
+  flex-shrink: 0;
+  color: var(--accent-text);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   Anel de progresso · a tela "Meu Progresso"
+   Desenhado com conic-gradient em vez de SVG: a porcentagem entra por uma
+   custom property e dá para animar direto, sem calcular stroke-dasharray.
+   -------------------------------------------------------------------------- */
+/* Sem @property, --ring-value é só um texto e o navegador não sabe
+   interpolá-lo: o anel apareceria cheio de uma vez. Registrando-o como
+   <number>, a animação ring-fill passa a funcionar de verdade. */
+@property --ring-value {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+.ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 188px;
+  width: 188px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    from -90deg,
+    var(--brand-from) 0deg,
+    var(--brand-to) calc(var(--ring-value, 0) * 3.6deg),
+    var(--track) calc(var(--ring-value, 0) * 3.6deg)
+  );
+  animation: ring-fill var(--t-lazy) var(--ease-out-expo) backwards;
+}
+
+/* O miolo vazado: um círculo com a cor do fundo por cima do gradiente. */
+.ring::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.ring-value {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl);
+  font-weight: 600;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   Plano de ação · a lista de etapas com caixa de marcar
+   -------------------------------------------------------------------------- */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  font-size: var(--fs-md);
+  text-align: start;
+  transition: border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out);
+}
+
+.check-box {
+  display: grid;
+  place-items: center;
+  height: 20px;
+  width: 20px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 6px;
+  color: transparent;
+  transition: background var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+
+.check-row[aria-pressed="true"] { border-color: var(--border-accent); }
+.check-row[aria-pressed="true"] .check-box {
+  border-color: transparent;
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+}
+.check-row[aria-pressed="true"] .check-label {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.check-label { flex: 1; }
+
+/* --------------------------------------------------------------------------
+   Lista de escolhas · Configurações, Ajuda, áreas internas
+   -------------------------------------------------------------------------- */
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.choice-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  color: var(--text);
+  font-size: var(--fs-md);
+  text-align: start;
+  transition: border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .choice-row:hover {
+    border-color: var(--border-accent);
+    background: var(--accent-soft);
+    transform: translateX(3px);
+  }
+}
+
+.choice-row .choice-icon {
+  display: grid;
+  place-items: center;
+  height: 32px;
+  width: 32px;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.choice-row .choice-label { flex: 1; }
+
+.choice-row .choice-value {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.choice-row .choice-chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Estatísticas em linha · "Etapas concluídas · 5 de 7"
+   -------------------------------------------------------------------------- */
+.fact-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.fact-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  font-size: var(--fs-sm);
+}
+
+.fact-row .choice-icon { height: 28px; width: 28px; }
+.fact-row span { flex: 1; color: var(--text-secondary); }
+.fact-row strong { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* --------------------------------------------------------------------------
+   Ícone dentro da caixa de marcar · o SVG padrão é 20px, a caixa também,
+   então aqui ele encolhe para caber com folga.
+   -------------------------------------------------------------------------- */
+.check-box svg { height: 13px; width: 13px; }
+
+/* --------------------------------------------------------------------------
+   Grade de humores e de indicadores · Vibração e Saúde
+   -------------------------------------------------------------------------- */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.mood-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-5) var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  color: var(--text-secondary);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-spring),
+              border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.mood-tile:active { transform: scale(.95); }
+
+@media (hover: hover) {
+  .mood-tile:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.mood-glyph {
+  display: grid;
+  place-items: center;
+  height: 42px;
+  width: 42px;
+  border-radius: var(--r-full);
+  background: linear-gradient(140deg, var(--accent-soft), var(--accent-soft-hover));
+  color: var(--accent-text);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.mood-value {
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   Sessões guiadas · Mentalizar
+   -------------------------------------------------------------------------- */
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.session-card,
+.place-card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  min-height: 150px;
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background-position: center;
+  background-size: cover;
+  color: var(--text-on-media);
+  text-align: start;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--t-mid) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+/* O mesmo véu do .quote-hero: a foto é imprevisível, o contraste do texto não
+   pode ser. */
+.session-card::after,
+.place-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 6, 20, .08), rgba(8, 6, 20, .76));
+}
+
+@media (hover: hover) {
+  .session-card:hover,
+  .place-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.session-card-copy,
+.place-card-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.session-card-copy strong,
+.place-card-copy strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.session-card-copy span,
+.place-card-copy span {
+  display: block;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, .8);
+  font-size: var(--fs-xs);
+}
+
+/* --------------------------------------------------------------------------
+   Galeria de lugares
+   -------------------------------------------------------------------------- */
+.place-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+.place-card { min-height: 170px; }
+
+/* --------------------------------------------------------------------------
+   Versículo · Religião / Espiritualidade
+   -------------------------------------------------------------------------- */
+.verse-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.verse-source {
+  display: block;
+  margin-top: var(--sp-3);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Seletor de tipo · Dia · Noite · Automático (Configurações)
+   --------------------------------------------------------------------------
+   Quem marca a opção ativa é o estado do <html>, não o React: sem data-theme
+   significa automático. Assim a marcação já sai correta no primeiro paint,
+   antes de qualquer JavaScript rodar.
+   -------------------------------------------------------------------------- */
+.theme-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.theme-picker-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  color: var(--text);
+  text-align: start;
+  transition: border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out);
+}
+
+.theme-picker-option .choice-label { flex: 1; }
+.theme-picker-option .choice-label strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+.theme-picker-option .choice-label span {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* A bolinha de rádio à direita. */
+.theme-picker-dot {
+  height: 18px;
+  width: 18px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 50%;
+  transition: border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out);
+}
+
+:root:not([data-theme]) .theme-picker-option[data-choice="auto"],
+:root[data-theme="light"] .theme-picker-option[data-choice="light"],
+:root[data-theme="dark"] .theme-picker-option[data-choice="dark"] {
+  border-color: var(--border-accent);
+  background: var(--accent-soft);
+}
+
+:root:not([data-theme]) .theme-picker-option[data-choice="auto"] .theme-picker-dot,
+:root[data-theme="light"] .theme-picker-option[data-choice="light"] .theme-picker-dot,
+:root[data-theme="dark"] .theme-picker-option[data-choice="dark"] .theme-picker-dot {
+  border-color: var(--accent);
+  /* o miolo é uma sombra interna, então não precisa de elemento extra */
+  box-shadow: inset 0 0 0 4px var(--accent);
+}
+
+/* ==========================================================================
+   MURAL · colagem, editor e papel de parede
+   ========================================================================== */
+
+.collage { position: relative; }
+
+/* A grade da colagem.
+   `dense` é o que fecha os buracos: quando uma foto 2x2 deixa um vão à
+   direita, a próxima célula 1x1 volta e ocupa esse espaço em vez de deixar
+   furo na composição. */
+.collage-grid {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-auto-rows: 1fr;
+  gap: 3px;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--surface-sunken);
+}
+
+/* Cada foto é recortada, nunca distorcida: cover ancorado no centro. */
+.collage-cell {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* A frase sobreposta à colagem. */
+.collage-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transform: translateX(-50%);
+  color: var(--text-on-media);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.25;
+  text-align: center;
+  text-shadow: 0 2px 18px rgba(8, 6, 20, .85);
+  pointer-events: none;
+}
+
+/* Dentro de um cartão a colagem não tem legenda nem raio próprio. */
+.collage-in-card .collage-grid {
+  gap: 2px;
+  border-radius: var(--r-md);
+}
+
+/* No aparelho ela preenche a tela inteira. */
+.collage-fill .collage-grid {
+  height: 100%;
+  border-radius: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Lista de murais
+   -------------------------------------------------------------------------- */
+.mural-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  margin-top: var(--sp-7);
+}
+
+.mural-card { overflow: hidden; }
+.mural-card .collage { padding: var(--sp-3) var(--sp-3) 0; }
+
+.mural-card-body { padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+
+.mural-card-body strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.mural-card-body > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.mural-card-actions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+.mural-card-actions .btn { flex: 1; }
+
+/* --------------------------------------------------------------------------
+   Escolha de layout
+   -------------------------------------------------------------------------- */
+.layout-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin-top: var(--sp-5);
+}
+
+.layout-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  text-align: start;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-spring),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.layout-card[aria-checked="true"] {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md), var(--ring);
+}
+
+@media (hover: hover) {
+  .layout-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+}
+
+.layout-card-body strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+.layout-card-body > span {
+  display: block;
+  color: var(--accent-text);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+.layout-card-note {
+  color: var(--text-muted) !important;
+  font-weight: 400 !important;
+  margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Editor
+   -------------------------------------------------------------------------- */
+.mural-stage {
+  margin-top: var(--sp-6);
+  /* o filtro escolhido é aplicado aqui, então vale para a colagem inteira */
+  transition: filter var(--t-mid) var(--ease-out);
+}
+
+.tool-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+}
+
+.tool-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  color: var(--text-secondary);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  transition: border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+
+.tool-button > span:first-child {
+  display: grid;
+  place-items: center;
+  height: 32px;
+  width: 32px;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: .95rem;
+  line-height: 1;
+}
+
+.tool-button[aria-pressed="true"] {
+  border-color: var(--border-accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.tool-panel { margin-top: var(--sp-4); }
+
+/* --------------------------------------------------------------------------
+   Aparelho da pré-visualização
+   -------------------------------------------------------------------------- */
+.phone {
+  width: min(300px, 78vw);
+  margin: var(--sp-6) auto 0;
+  padding: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 42px;
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-lg);
+}
+
+.phone-screen {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 9 / 16;
+  border-radius: 33px;
+  background: var(--i-950);
+}
+
+.phone-screen .collage,
+.phone-screen .collage-grid { height: 100%; }
+
+/* Escurece topo e rodapé: é o que garante contraste do relógio branco sobre
+   qualquer foto que caia ali. */
+.phone-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 6, 20, .62) 0%,
+    rgba(8, 6, 20, .34) 22%,
+    rgba(8, 6, 20, .04) 40%,
+    rgba(8, 6, 20, .04) 62%,
+    rgba(8, 6, 20, .62) 100%
+  );
+  pointer-events: none;
+}
+
+/* Área reservada ao relógio, data e notificações — nenhuma foto importante
+   deve ser posicionada aqui embaixo. */
+.wallpaper-safe {
+  position: absolute;
+  top: 8%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+  pointer-events: none;
+}
+
+.phone-clock {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.1rem;
+  font-weight: 300;
+  letter-spacing: -.03em;
+  line-height: 1;
+  text-shadow: 0 2px 20px rgba(8, 6, 20, .6);
+}
+.phone-clock-sm { font-size: 1.1rem; font-weight: 600; }
+
+.phone-date {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-xs);
+  opacity: .88;
+  text-shadow: 0 2px 14px rgba(8, 6, 20, .7);
+}
+
+/* A grade de ícones da tela inicial, só para dar a sensação de contexto. */
+.phone-icons {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 9%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  pointer-events: none;
+}
+.phone-icons span {
+  aspect-ratio: 1;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .22);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.phone-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 26%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  transform: translateX(-50%);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-style: italic;
+  text-align: center;
+  text-shadow: 0 2px 16px rgba(8, 6, 20, .85);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Campo de busca · Explorar
+   -------------------------------------------------------------------------- */
+.search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: var(--sp-4);
+}
+
+.search-field-icon {
+  position: absolute;
+  left: var(--sp-4);
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-field input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: var(--surface-glass);
+  padding: var(--sp-3) var(--sp-5) var(--sp-3) calc(var(--sp-4) * 2 + 20px);
+  color: var(--text);
+  font-size: var(--fs-md);
+  transition: border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out);
+}
+.search-field input::placeholder { color: var(--text-muted); }
+
+.search-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--ring);
+}
+
+/* o "x" que o Chrome injeta em type=search desalinha o campo */
+.search-field input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+/* --------------------------------------------------------------------------
+   Conquistas
+   -------------------------------------------------------------------------- */
+.badge-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+
+.badge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-sm);
+}
+
+/* A medalha é o gradiente da marca em disco — o mesmo ouro do logo, para a
+   conquista parecer um selo do VYRA e não um ícone qualquer. */
+.badge-medal {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  width: 44px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1;
+  box-shadow: 0 8px 20px var(--brand-glow);
+}
+
+.badge-copy strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+.badge-copy > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* --------------------------------------------------------------------------
+   Sobre o VYRA
+   -------------------------------------------------------------------------- */
+.sobre-card {
+  margin-top: var(--sp-7);
+  text-align: center;
+}
+.sobre-card .vyra-logo { justify-content: center; }
+
+.sobre-claim {
+  margin: var(--sp-6) 0 var(--sp-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1.2;
+}
+
+/* --------------------------------------------------------------------------
+   Frases e Fotos · miniaturas
+   -------------------------------------------------------------------------- */
+.thumb-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+.thumb {
+  aspect-ratio: 3 / 4;
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
+  background-position: center;
+  background-size: cover;
+  opacity: .62;
+  transition: opacity var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-spring);
+}
+.thumb[aria-pressed="true"] {
+  border-color: var(--accent);
+  opacity: 1;
+  transform: translateY(-3px);
+}
+@media (hover: hover) {
+  .thumb:hover { opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   Criador de Posts · a arte
+   -------------------------------------------------------------------------- */
+.art-stage {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-6);
+}
+
+.art-frame {
+  position: relative;
+  overflow: hidden;
+  /* A altura é que manda, e a largura sai da proporção.
+     Se fosse o contrário, o formato Story (9:16) ficaria com 570px de altura
+     e jogaria a barra de ferramentas para fora da tela — justamente a barra
+     que a pessoa precisa alcançar para trocar de formato. */
+  height: min(46svh, 540px);
+  width: auto;
+  max-width: min(320px, 82vw);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  /* trocar de formato reenquadra suave, em vez de saltar */
+  transition: aspect-ratio var(--t-mid) var(--ease-out),
+              filter var(--t-mid) var(--ease-out);
+}
+
+.art-photo {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+}
+
+.art-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 6, 20, .38) 0%,
+    rgba(8, 6, 20, .22) 45%,
+    rgba(8, 6, 20, .72) 100%
+  );
+}
+
+.art-text {
+  position: absolute;
+  inset-inline: var(--sp-6);
+  margin: 0;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 20px rgba(8, 6, 20, .8);
+}
+
+.art-text blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.32;
+  text-wrap: balance;
+}
+
+.art-text figcaption {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  opacity: .85;
+}
+
+.art-text-centro { top: 50%; transform: translateY(-50%); }
+.art-text-base { bottom: var(--sp-7); }
+.art-text-topo { top: var(--sp-7); }
+
+/* O formato mostra a proporção embaixo do nome. */
+.chip-format small {
+  display: block;
+  margin-top: 1px;
+  font-size: var(--fs-eyebrow);
+  opacity: .7;
+}
+
+/* --------------------------------------------------------------------------
+   Painel de frase · vidro sobre o cenário
+   --------------------------------------------------------------------------
+   Substitui o .quote-hero nas telas em que a paisagem JÁ é o fundo. Ali, um
+   cartão com foto própria colocaria uma segunda fotografia sobre a primeira,
+   e as duas brigariam. O .quote-hero continua existindo onde a imagem é
+   informação — a foto daquele objetivo específico, por exemplo.
+   -------------------------------------------------------------------------- */
+.quote-panel {
+  position: relative;
+  padding: var(--sp-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  box-shadow: var(--shadow-md);
+}
+
+.quote-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--sp-6);
+  right: var(--sp-6);
+  height: 1px;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, transparent, var(--glass-edge), transparent);
+}
+
+.quote-panel blockquote {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.38;
+  text-wrap: balance;
+}
+
+.quote-panel cite {
+  display: block;
+  margin-top: var(--sp-3);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-style: normal;
+  font-weight: 600;
+}

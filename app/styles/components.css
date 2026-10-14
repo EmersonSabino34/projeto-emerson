@@ -1,0 +1,538 @@
+/* ==========================================================================
+   COMPONENTES · todos os controles e cartões do produto
+   Hover fica sempre dentro de @media (hover: hover) para o toque não
+   herdar estados presos. Press usa transform, que não causa reflow.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Botões
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-5);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  transition: transform var(--t-fast) var(--ease-spring),
+              box-shadow var(--t-mid) var(--ease-out),
+              background var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+.btn:active { transform: scale(.97); }
+
+.btn-arrow {
+  display: inline-block;
+  transition: transform var(--t-mid) var(--ease-spring);
+}
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--brand-from), var(--brand-to));
+  color: var(--text-on-accent);
+  box-shadow: 0 10px 26px var(--brand-glow);
+}
+
+/* brilho que cruza o botão no hover */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 38%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .38), transparent);
+  transform: translateX(-160%);
+  pointer-events: none;
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+  margin-top: var(--sp-5);
+}
+
+.btn-ghost {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-subtle);
+  color: var(--text);
+}
+
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px var(--brand-glow);
+  }
+  .btn-primary:hover::after { animation: shimmer 720ms var(--ease-out); }
+  .btn:hover .btn-arrow { transform: translateX(4px); }
+  .btn-ghost:hover {
+    border-color: var(--border-accent);
+    background: var(--accent-soft);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Botões-ícone: fechar, editar, tema
+   -------------------------------------------------------------------------- */
+.icon-button {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  width: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  line-height: 1;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-spring),
+              background var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+.icon-button:active { transform: scale(.9); }
+
+@media (hover: hover) {
+  .icon-button:hover {
+    border-color: var(--border-accent);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+    transform: rotate(90deg);
+  }
+}
+
+/* O toggle de tema: sol e lua empilhados, só um visível por vez */
+.theme-toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 40px;
+  width: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: var(--surface);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-fast) var(--ease-spring),
+              border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+.theme-toggle:active { transform: scale(.88); }
+
+@media (hover: hover) {
+  .theme-toggle:hover {
+    border-color: var(--border-accent);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+}
+
+.theme-toggle svg {
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  transition: transform var(--t-slow) var(--ease-spring),
+              opacity var(--t-mid) var(--ease-out);
+}
+
+/* Três ícones empilhados, um visível por vez — sol (dia), lua (noite) e o
+   disco meio-a-meio (automático). Quem decide qual aparece é o estado do
+   <html>, não o React: sem data-theme significa automático. */
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon,
+.theme-toggle .icon-auto { opacity: 0; transform: rotate(-90deg) scale(.4); }
+
+:root:not([data-theme]) .theme-toggle .icon-auto,
+:root[data-theme="light"] .theme-toggle .icon-sun,
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   Avatares
+   -------------------------------------------------------------------------- */
+.avatar {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  width: 44px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(135deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .04em;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--t-mid) var(--ease-spring),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .avatar:hover {
+    transform: scale(1.07) rotate(-4deg);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.avatar-lg {
+  height: 74px;
+  width: 74px;
+  margin: 0 auto var(--sp-4);
+  font-size: var(--fs-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Seções e seus cabeçalhos
+   -------------------------------------------------------------------------- */
+.section { margin-top: var(--sp-8); }
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+.section-heading h2 {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-xl);
+}
+.section-heading > strong {
+  color: var(--accent-text);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+}
+
+.step-count {
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  letter-spacing: .08em;
+}
+
+/* --------------------------------------------------------------------------
+   Barra de progresso — preenche a partir do zero, com varredura de luz
+   -------------------------------------------------------------------------- */
+.progress {
+  position: relative;
+  height: 7px;
+  margin-top: var(--sp-4);
+  overflow: hidden;
+  border-radius: var(--r-full);
+  background: var(--track);
+}
+
+.progress-fill {
+  position: relative;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--v-500), var(--v-300));
+  transform-origin: left center;
+  animation: fill-track var(--t-lazy) var(--ease-out-expo) backwards;
+  animation-delay: var(--fill-delay, 180ms);
+}
+
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .5), transparent);
+  animation: shimmer 2.4s var(--ease-in-out) 1.1s infinite;
+}
+
+.progress-sm { height: 4px; margin-top: var(--sp-2); }
+
+/* --------------------------------------------------------------------------
+   CHIPS · opções selecionáveis (editor do mural, criador de posts)
+   -------------------------------------------------------------------------- */
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+.chip {
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-fast) var(--ease-spring),
+              border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+.chip:active { transform: scale(.94); }
+.chip[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+@media (hover: hover) {
+  .chip:hover { border-color: var(--border-accent); color: var(--text); }
+  .chip[aria-pressed="true"]:hover { color: var(--accent-text); }
+}
+
+.chip-format {
+  display: flex;
+  min-height: 82px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  text-align: center;
+}
+.chip-format span {
+  color: var(--accent-text);
+  font-size: 1.35rem;
+  line-height: 1;
+  transition: transform var(--t-mid) var(--ease-spring);
+}
+.chip-format[aria-pressed="true"] span { transform: scale(1.2); }
+
+/* --------------------------------------------------------------------------
+   ABERTURA DE PÁGINA · o parágrafo de apoio sob o título
+   -------------------------------------------------------------------------- */
+.page-lede {
+  max-width: 46ch;
+  margin-top: var(--sp-5);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+}
+
+/* --------------------------------------------------------------------------
+   PERFIL
+   -------------------------------------------------------------------------- */
+.profile-card {
+  margin-top: var(--sp-8);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  padding: var(--sp-7) var(--sp-5) var(--sp-5);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: background var(--t-mid) var(--ease-out),
+              border-color var(--t-mid) var(--ease-out);
+}
+.profile-card h2 { margin: 0; font-size: var(--fs-2xl); }
+.profile-card > p {
+  margin: var(--sp-2) 0 var(--sp-6);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-5);
+}
+.profile-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.profile-stats div + div { border-left: 1px solid var(--border); }
+.profile-stats strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+}
+.profile-stats span {
+  color: var(--text-muted);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.settings-list {
+  margin-top: var(--sp-7);
+  border-top: 1px solid var(--border);
+}
+/* As linhas do perfil são <a> quando a tela existe e <button> quando ainda
+   não existe, então as duas precisam do mesmo desenho. */
+.settings-list a,
+.settings-list button {
+  display: flex;
+  width: 100%;
+  text-align: start;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: var(--sp-4) var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  transition: background var(--t-fast) var(--ease-out),
+              padding var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+.settings-list b {
+  color: var(--accent-text);
+  font-weight: 400;
+  transition: transform var(--t-mid) var(--ease-spring);
+}
+@media (hover: hover) {
+  .settings-list a:hover,
+  .settings-list button:hover {
+    background: var(--surface-subtle);
+    padding-inline: var(--sp-4) var(--sp-3);
+    color: var(--accent-text);
+  }
+  .settings-list a:hover b,
+  .settings-list button:hover b { transform: translateX(5px); }
+}
+
+/* --------------------------------------------------------------------------
+   DETALHE DE CATEGORIA E DE SONHO
+   -------------------------------------------------------------------------- */
+.detail-hero {
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--sp-6);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+}
+.detail-hero img {
+  height: clamp(260px, 42vw, 340px);
+  width: 100%;
+  object-fit: cover;
+  animation: scale-in var(--t-lazy) var(--ease-out-expo);
+}
+.detail-hero::after {
+  content: "";
+  position: absolute;
+  inset: 32% 0 0;
+  background: linear-gradient(transparent, rgba(8, 6, 13, .92));
+}
+.detail-hero-copy {
+  position: absolute;
+  z-index: 1;
+  right: var(--sp-5);
+  bottom: var(--sp-5);
+  left: var(--sp-5);
+  color: #fff;
+}
+.detail-hero-copy .eyebrow { color: rgba(255, 255, 255, .72); }
+.detail-hero-copy h2 {
+  margin: var(--sp-2) 0 var(--sp-1);
+  font-size: var(--fs-2xl);
+  color: #fff;
+}
+.detail-hero-copy p:not(.eyebrow) {
+  margin: 0;
+  max-width: 46ch;
+  color: rgba(255, 255, 255, .82);
+  font-size: var(--fs-xs);
+}
+.detail-hero-fav {
+  position: absolute;
+  z-index: 2;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  display: grid;
+  place-items: center;
+  height: 40px;
+  width: 40px;
+  border: 1px solid rgba(255, 255, 255, .26);
+  border-radius: var(--r-full);
+  background: rgba(10, 9, 16, .38);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 1.15rem;
+  transition: transform var(--t-mid) var(--ease-spring),
+              background var(--t-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .detail-hero-fav:hover { background: rgba(10, 9, 16, .6); transform: scale(1.12); }
+}
+
+.empty-state {
+  margin-top: var(--sp-5);
+  border: 1px dashed var(--border-accent);
+  border-radius: var(--r-xl);
+  background: var(--accent-soft);
+  padding: var(--sp-8) var(--sp-6);
+  text-align: center;
+}
+.empty-state > span {
+  display: inline-block;
+  color: var(--accent-text);
+  font-size: 1.75rem;
+  animation: float-soft 5.5s var(--ease-in-out) infinite;
+}
+.empty-state h2 { margin: var(--sp-3) 0 var(--sp-2); font-size: var(--fs-xl); }
+.empty-state p {
+  margin: 0 auto var(--sp-5);
+  max-width: 34ch;
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+}
+.empty-state .btn { margin: 0 auto; }
+
+.dream-detail-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+.dream-detail-title h2 { margin: var(--sp-2) 0 0; font-size: var(--fs-2xl); }
+.dream-detail-title strong {
+  color: var(--accent-text);
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+}
+
+.goal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+.goal-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-out),
+              border-color var(--t-mid) var(--ease-out);
+}
+.goal-grid span {
+  color: var(--text-muted);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.goal-grid b {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+@media (hover: hover) {
+  .goal-grid div:hover { transform: translateY(-3px); border-color: var(--border-accent); }
+}

@@ -1,0 +1,173 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "Ana Silva",
+      "email": "ana@exemplo.com",
+      "senha": "123456",
+      "iniciais": "AS",
+      "bio": "Construindo uma vida com intenção.",
+      "criadoEm": "2026-09-01T12:00:00.000Z"
+    },
+    {
+      "nome": "Emerson Sabino",
+      "email": "emersonsabino34@gmail.com",
+      "senha": "150110",
+      "iniciais": "ES",
+      "bio": "Construindo uma vida com intenção.",
+      "criadoEm": "2026-09-24T17:00:43.310Z",
+      "id": 2
+    },
+    {
+      "nome": "Fixá-las Sabino",
+      "email": "fixalassabino@gmail.com",
+      "senha": "150110",
+      "iniciais": "FS",
+      "bio": "Construindo uma vida com intenção.",
+      "criadoEm": "2026-10-11T15:51:26.105Z",
+      "id": 3
+    }
+  ],
+  "desejos": [
+    {
+      "id": 1,
+      "usuarioId": 1,
+      "titulo": "Conhecer Paris",
+      "categoriaSlug": "lugares",
+      "categoria": "Lugares",
+      "progresso": 35,
+      "meta": "€ 3.000",
+      "prazo": "2027",
+      "imagem": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+      "id": 2,
+      "usuarioId": 1,
+      "titulo": "Meu cantinho",
+      "categoriaSlug": "casa",
+      "categoria": "Casa e patrimônio",
+      "progresso": 20,
+      "meta": "R$ 80.000",
+      "prazo": "2028",
+      "imagem": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+      "id": 3,
+      "usuarioId": 1,
+      "titulo": "Mais tempo em família",
+      "categoriaSlug": "familia",
+      "categoria": "Família",
+      "progresso": 68,
+      "meta": "2026",
+      "prazo": "2026",
+      "imagem": "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=85"
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "slug": "lugares",
+      "titulo": "Lugares que desejo conhecer",
+      "curto": "Lugares",
+      "icone": "✈️",
+      "descricao": "Viagens, destinos e experiências pelo mundo."
+    },
+    {
+      "id": 2,
+      "slug": "carreira",
+      "titulo": "Trabalho e carreira",
+      "curto": "Carreira",
+      "icone": "💼",
+      "descricao": "Profissão, negócios, crescimento e conquistas."
+    },
+    {
+      "id": 3,
+      "slug": "familia",
+      "titulo": "Família",
+      "curto": "Família",
+      "icone": "👨‍👩‍👧",
+      "descricao": "Momentos, pessoas e sonhos em família."
+    },
+    {
+      "id": 4,
+      "slug": "casa",
+      "titulo": "Casa e patrimônio",
+      "curto": "Casa",
+      "icone": "🏡",
+      "descricao": "Casa própria, decoração, carros e patrimônio."
+    },
+    {
+      "id": 5,
+      "slug": "financas",
+      "titulo": "Finanças",
+      "curto": "Finanças",
+      "icone": "💰",
+      "descricao": "Liberdade financeira, investimentos e prosperidade."
+    },
+    {
+      "id": 6,
+      "slug": "relacionamentos",
+      "titulo": "Relacionamentos",
+      "curto": "Amor",
+      "icone": "❤️",
+      "descricao": "Amor, casamento e conexões especiais."
+    },
+    {
+      "id": 7,
+      "slug": "saude",
+      "titulo": "Saúde e bem-estar",
+      "curto": "Saúde",
+      "icone": "🧘",
+      "descricao": "Saúde física, mental e qualidade de vida."
+    },
+    {
+      "id": 8,
+      "slug": "espiritualidade",
+      "titulo": "Religião / Espiritualidade",
+      "curto": "Fé",
+      "icone": "🙏",
+      "descricao": "Fé, espiritualidade, propósito e paz."
+    },
+    {
+      "id": 9,
+      "slug": "estudos",
+      "titulo": "Estudos",
+      "curto": "Estudos",
+      "icone": "🎓",
+      "descricao": "Cursos, formação, idiomas e conhecimento."
+    },
+    {
+      "id": 10,
+      "slug": "lazer",
+      "titulo": "Lazer e hobbies",
+      "curto": "Lazer",
+      "icone": "🎨",
+      "descricao": "Hobbies, diversão, criatividade e experiências."
+    },
+    {
+      "id": 11,
+      "slug": "outros",
+      "titulo": "Outros sonhos",
+      "curto": "Outros",
+      "icone": "🌟",
+      "descricao": "Tudo aquilo que você deseja realizar."
+    }
+  ],
+  "frases": [
+    {
+      "id": 1,
+      "tema": "Para hoje",
+      "texto": "A vida fica mais bonita quando a gente escolhe acreditar nos próprios sonhos."
+    },
+    {
+      "id": 2,
+      "tema": "Motivação",
+      "texto": "Tudo o que você precisa para começar já existe dentro de você."
+    },
+    {
+      "id": 3,
+      "tema": "Sonhos",
+      "texto": "Que nunca falte coragem para transformar planos em memórias."
+    }
+  ]
+}

@@ -1,0 +1,417 @@
+/* ==========================================================================
+   VYRA · DESIGN TOKENS
+   --------------------------------------------------------------------------
+   Fonte única de verdade do design system.
+
+   O VYRA tem DOIS TIPOS de atmosfera, não apenas duas cores:
+
+     DIA   · nascer do sol, montanhas douradas, marfim quente, luz baixa.
+     NOITE · aurora boreal, céu estrelado, violeta profundo, brilho lilás.
+
+   O ouro é a assinatura da marca e aparece nos DOIS tipos — é ele que está
+   em todo botão principal das telas de referência. O violeta é o ambiente
+   da noite; de dia ele recua e quem conduz é o âmbar.
+
+   Dia é a base em :root; noite sobrescreve em dois lugares:
+     1. @media (prefers-color-scheme: dark) — para quem nunca tocou no toggle
+        (guardado por :not([data-theme="light"]) para o toggle sempre ganhar)
+     2. [data-theme="dark"] — escolha explícita do usuário
+   Nenhuma cor é definida APENAS dentro de media query.
+   ========================================================================== */
+
+:root {
+  /* ---------- Primitivas · rampa ouro (assinatura VYRA, vale nos dois tipos) ---------- */
+  --g-50:  #fdf7ee;
+  --g-100: #faecd8;
+  --g-200: #f3d9b4;
+  --g-300: #e9c08a;
+  --g-400: #dda765;
+  --g-500: #c98b4b;
+  --g-600: #b0722f;
+  --g-700: #8e5a23;
+  --g-800: #6d451c;
+  --g-900: #4b2f13;
+
+  /* ---------- Primitivas · rampa violeta (ambiente da noite) ---------- */
+  --v-50:  #f6f3ff;
+  --v-100: #ece4ff;
+  --v-200: #dccdff;
+  --v-300: #c4a9ff;
+  --v-400: #a78bfa;
+  --v-500: #8b5cf6;
+  --v-600: #7c3aed;
+  --v-700: #6927d4;
+  --v-800: #551fae;
+  --v-900: #3f1780;
+
+  /* ---------- Primitivas · neutros quentes (base do DIA) ---------- */
+  --w-0:   #ffffff;
+  --w-50:  #fbf7f1;
+  --w-100: #f5eee4;
+  --w-200: #e9ded0;
+  --w-300: #d5c6b4;
+  --w-400: #ab9d8c;
+  /* Degrau do texto muted no dia, usado em 9–11px: escuro o bastante para
+     cumprir WCAG AA em texto pequeno sobre o marfim. */
+  --w-500: #77695a;
+  --w-600: #635648;
+  --w-700: #4a3f34;
+  --w-800: #2e2721;
+  --w-900: #1c1712;
+
+  /* ---------- Primitivas · índigos (base da NOITE) ---------- */
+  --i-100: #e7e2f6;
+  --i-200: #b8b0d4;
+  --i-300: #8d85ad;
+  --i-400: #635c83;
+  --i-500: #453f61;
+  --i-600: #2f2a48;
+  --i-700: #221d38;
+  --i-800: #171229;
+  --i-900: #100c1e;
+  --i-950: #080614;
+
+  /* ---------- Primitivas · apoio ---------- */
+  --rose: #f0a6b8;
+  --teal: #6fd7c4;
+
+  /* ---------- Raio ---------- */
+  --r-xs: 8px;
+  --r-sm: 11px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-2xl: 30px;
+  --r-full: 999px;
+
+  /* ---------- Movimento ---------- */
+  --t-fast: 150ms;
+  --t-mid: 280ms;
+  --t-slow: 520ms;
+  --t-lazy: 900ms;
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-out-expo: cubic-bezier(.16, 1, .3, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-in-out: cubic-bezier(.65, .05, .36, 1);
+
+  /* ---------- Tipografia ---------- */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-ui: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --fs-eyebrow: .5625rem;
+  --fs-2xs: .625rem;
+  --fs-xs: .6875rem;
+  --fs-sm: .75rem;
+  --fs-base: .8125rem;
+  --fs-md: .875rem;
+  --fs-lg: clamp(1rem, .95rem + .3vw, 1.125rem);
+  --fs-xl: clamp(1.1rem, 1.02rem + .4vw, 1.35rem);
+  --fs-2xl: clamp(1.3rem, 1.15rem + .7vw, 1.7rem);
+  --fs-3xl: clamp(1.5rem, 1.28rem + 1.1vw, 2.15rem);
+  --fs-display: clamp(2.35rem, 1.85rem + 2.5vw, 3.7rem);
+
+  /* ---------- Espaçamento ---------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 30px;
+  --sp-8: 38px;
+  --sp-9: 48px;
+  --sp-10: 64px;
+
+  /* ---------- Layout ---------- */
+  --rail-w: 236px;
+  --page-max: 620px;
+  --aside-w: 312px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --nav-h: 66px;
+
+  /* ======================= SEMÂNTICO · DIA ======================= */
+  color-scheme: light;
+
+  --bg: var(--w-50);
+
+  /* As três manchas de ambiente. O que muda de uma tela para outra é só a
+     cor delas — ver [data-ambience] no fim do arquivo. */
+  --bg-aurora-1: rgba(221, 167, 101, .30);
+  --bg-aurora-2: rgba(240, 196, 166, .30);
+  --bg-aurora-3: rgba(167, 139, 250, .10);
+
+  --surface: var(--w-0);
+  --surface-raised: var(--w-0);
+  --surface-sunken: var(--w-100);
+  --surface-glass: rgba(255, 253, 249, .88);
+  --surface-subtle: rgba(28, 23, 18, .028);
+
+  --text: var(--w-900);
+  --text-secondary: var(--w-600);
+  --text-muted: var(--w-500);
+  /* Branco sobre o ouro do botão. O gradiente da marca desce até --g-700
+     justamente para essa combinação passar de 4.5:1. */
+  --text-on-accent: #ffffff;
+  --text-on-media: #ffffff;
+
+  --border: rgba(28, 23, 18, .085);
+  --border-strong: rgba(28, 23, 18, .16);
+  --border-accent: rgba(176, 114, 47, .26);
+
+  --accent: var(--g-600);
+  --accent-hover: var(--g-700);
+  /* Ouro puro não passa em corpo pequeno; o link usa o degrau escuro. */
+  --accent-text: var(--g-700);
+  --accent-soft: rgba(176, 114, 47, .09);
+  --accent-soft-hover: rgba(176, 114, 47, .16);
+
+  /* Gradiente da marca: pinta botão principal, logo e realces. */
+  --brand-from: var(--g-400);
+  --brand-to: var(--g-700);
+  --brand-glow: rgba(176, 114, 47, .34);
+
+  --hero-from: #fbeedd;
+  --hero-to: #fffaf3;
+  --hero-glow: rgba(233, 192, 138, .60);
+  --hero-text: var(--w-900);
+  --hero-body: var(--w-600);
+
+  --track: rgba(28, 23, 18, .08);
+
+  /* Véu sobre a fotografia do cenário: sólido no topo, onde mora o texto, e
+     abrindo para baixo até a foto aparecer. É o que faz a paisagem estar
+     presente na tela inteira sem nunca disputar com a leitura. */
+  --veil-top: rgba(251, 247, 241, 1);
+  --veil-mid: rgba(251, 247, 241, .74);
+  --veil-end: rgba(251, 247, 241, .46);
+
+  /* A paisagem é puxada para a paleta do tipo ativo em vez de depender de a
+     foto já vir na cor certa. De dia ela vira dourada; de noite, violeta e
+     escura. Assim qualquer foto do banco serve de cenário sem brigar com a
+     interface. */
+  --scene-filter: sepia(.45) saturate(1.35) hue-rotate(-8deg) brightness(1.02);
+
+  /* Vidro: de dia o blur é mais seco e a borda é um fio de luz branca. */
+  --glass-blur: 18px;
+  --glass-edge: rgba(255, 255, 255, .80);
+  /* Estrelas só existem à noite. */
+  --star-opacity: 0;
+
+  --shadow-sm: 0 1px 2px rgba(46, 39, 33, .05), 0 2px 8px rgba(46, 39, 33, .045);
+  --shadow-md: 0 4px 10px rgba(46, 39, 33, .05), 0 12px 28px rgba(46, 39, 33, .075);
+  --shadow-lg: 0 10px 24px rgba(46, 39, 33, .07), 0 28px 60px rgba(46, 39, 33, .11);
+  --shadow-accent: 0 10px 26px rgba(176, 114, 47, .28);
+  --ring: 0 0 0 3px rgba(176, 114, 47, .34);
+}
+
+/* ==========================================================================
+   SEMÂNTICO · NOITE
+   --------------------------------------------------------------------------
+   O bloco abaixo aparece duas vezes de propósito: uma media query não pode
+   ser reaproveitada por um seletor de atributo, e o projeto não usa
+   pré-processador. Ao mexer em um, mexa no outro.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg: var(--i-950);
+
+    --bg-aurora-1: rgba(139, 92, 246, .34);
+    --bg-aurora-2: rgba(111, 215, 196, .14);
+    --bg-aurora-3: rgba(221, 167, 101, .16);
+
+    --surface: var(--i-800);
+    --surface-raised: var(--i-700);
+    --surface-sunken: var(--i-900);
+    --surface-glass: rgba(23, 18, 41, .80);
+    --surface-subtle: rgba(255, 255, 255, .04);
+
+    --text: #f3f0fb;
+    --text-secondary: var(--i-200);
+    --text-muted: var(--i-300);
+    --text-on-accent: #ffffff;
+    --text-on-media: #ffffff;
+
+    --border: rgba(255, 255, 255, .10);
+    --border-strong: rgba(255, 255, 255, .20);
+    --border-accent: rgba(196, 169, 255, .30);
+
+    --accent: var(--v-400);
+    --accent-hover: var(--v-300);
+    --accent-text: var(--v-300);
+    --accent-soft: rgba(167, 139, 250, .15);
+    --accent-soft-hover: rgba(167, 139, 250, .24);
+
+    --brand-from: var(--g-300);
+    --brand-to: var(--g-600);
+    --brand-glow: rgba(233, 192, 138, .30);
+
+    --hero-from: #2a1f4d;
+    --hero-to: #0f0b20;
+    --hero-glow: rgba(167, 139, 250, .38);
+    --hero-text: #f6f3fb;
+    --hero-body: var(--i-200);
+
+    --track: rgba(255, 255, 255, .09);
+
+    --veil-top: rgba(8, 6, 20, 1);
+    --veil-mid: rgba(8, 6, 20, .82);
+    --veil-end: rgba(8, 6, 20, .58);
+
+    --scene-filter: saturate(1.2) brightness(.66);
+
+    --glass-blur: 24px;
+    --glass-edge: rgba(196, 169, 255, .18);
+    --star-opacity: 1;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .45);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, .50);
+    --shadow-lg: 0 18px 48px rgba(0, 0, 0, .60);
+    --shadow-accent: 0 12px 30px rgba(109, 74, 224, .40);
+    --ring: 0 0 0 3px rgba(167, 139, 250, .42);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: var(--i-950);
+
+  --bg-aurora-1: rgba(139, 92, 246, .34);
+  --bg-aurora-2: rgba(111, 215, 196, .14);
+  --bg-aurora-3: rgba(221, 167, 101, .16);
+
+  --surface: var(--i-800);
+  --surface-raised: var(--i-700);
+  --surface-sunken: var(--i-900);
+  --surface-glass: rgba(23, 18, 41, .80);
+  --surface-subtle: rgba(255, 255, 255, .04);
+
+  --text: #f3f0fb;
+  --text-secondary: var(--i-200);
+  --text-muted: var(--i-300);
+  --text-on-accent: #ffffff;
+  --text-on-media: #ffffff;
+
+  --border: rgba(255, 255, 255, .10);
+  --border-strong: rgba(255, 255, 255, .20);
+  --border-accent: rgba(196, 169, 255, .30);
+
+  --accent: var(--v-400);
+  --accent-hover: var(--v-300);
+  --accent-text: var(--v-300);
+  --accent-soft: rgba(167, 139, 250, .15);
+  --accent-soft-hover: rgba(167, 139, 250, .24);
+
+  --brand-from: var(--g-300);
+  --brand-to: var(--g-600);
+  --brand-glow: rgba(233, 192, 138, .30);
+
+  --hero-from: #2a1f4d;
+  --hero-to: #0f0b20;
+  --hero-glow: rgba(167, 139, 250, .38);
+  --hero-text: #f6f3fb;
+  --hero-body: var(--i-200);
+
+  --track: rgba(255, 255, 255, .09);
+
+  --veil-top: rgba(8, 6, 20, 1);
+  --veil-mid: rgba(8, 6, 20, .82);
+  --veil-end: rgba(8, 6, 20, .58);
+
+  --scene-filter: saturate(1.2) brightness(.66);
+
+  --glass-blur: 24px;
+  --glass-edge: rgba(196, 169, 255, .18);
+  --star-opacity: 1;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .45);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, .50);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, .60);
+  --shadow-accent: 0 12px 30px rgba(109, 74, 224, .40);
+  --ring: 0 0 0 3px rgba(167, 139, 250, .42);
+}
+
+/* ==========================================================================
+   AMBIENTAÇÃO POR TELA
+   --------------------------------------------------------------------------
+   "Cada página deve possuir uma ambientação diferente, mantendo a mesma
+   identidade." Cada tela declara data-ambience no <main> e só as três
+   manchas de fundo mudam — texto, superfície e marca continuam sendo as do
+   tipo ativo, então a legibilidade nunca depende da ambientação escolhida.
+   ========================================================================== */
+
+/* Todas as fotos saem do mesmo banco do app e já são as que as telas usam
+   em outros lugares — nenhuma imagem nova entra só para servir de fundo. */
+[data-ambience="sunrise"] {
+  --bg-aurora-1: rgba(233, 192, 138, .50);
+  --bg-aurora-2: rgba(240, 166, 150, .38);
+  --bg-aurora-3: rgba(255, 214, 150, .30);
+  --scene: url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80");
+}
+
+[data-ambience="aurora"] {
+  --bg-aurora-1: rgba(139, 92, 246, .46);
+  --bg-aurora-2: rgba(111, 215, 196, .30);
+  --bg-aurora-3: rgba(196, 169, 255, .28);
+  --scene: url("https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&q=80");
+}
+
+[data-ambience="mountains"] {
+  --bg-aurora-1: rgba(124, 58, 237, .30);
+  --bg-aurora-2: rgba(221, 167, 101, .36);
+  --bg-aurora-3: rgba(99, 92, 131, .26);
+  --scene: url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80");
+}
+
+[data-ambience="stars"] {
+  --bg-aurora-1: rgba(124, 58, 237, .38);
+  --bg-aurora-2: rgba(63, 23, 128, .34);
+  --bg-aurora-3: rgba(196, 169, 255, .20);
+  --scene: url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80");
+}
+
+[data-ambience="horizon"] {
+  --bg-aurora-1: rgba(240, 166, 184, .42);
+  --bg-aurora-2: rgba(167, 139, 250, .32);
+  --bg-aurora-3: rgba(233, 192, 138, .30);
+  --scene: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80");
+}
+
+/* ==========================================================================
+   O CENÁRIO DA NOITE
+   --------------------------------------------------------------------------
+   Não basta escurecer a foto do dia: de noite a paisagem é OUTRA. Onde o dia
+   mostra o nascer do sol sobre as montanhas, a noite mostra aurora boreal e
+   céu estrelado — é essa troca que faz os dois tipos parecerem dois mundos, e
+   não o mesmo mundo com o brilho baixado.
+
+   Os dois blocos abaixo são idênticos pelo mesmo motivo de sempre: media
+   query e seletor de atributo não se reaproveitam. Ao mexer em um, mexa no outro.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-ambience="sunrise"],
+  :root:not([data-theme="light"]) [data-ambience="aurora"],
+  :root:not([data-theme="light"]) [data-ambience="horizon"] {
+    --scene: url("https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&w=1200&q=80");
+  }
+
+  :root:not([data-theme="light"]) [data-ambience="mountains"],
+  :root:not([data-theme="light"]) [data-ambience="stars"] {
+    --scene: url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80");
+  }
+}
+
+:root[data-theme="dark"] [data-ambience="sunrise"],
+:root[data-theme="dark"] [data-ambience="aurora"],
+:root[data-theme="dark"] [data-ambience="horizon"] {
+  --scene: url("https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&w=1200&q=80");
+}
+
+:root[data-theme="dark"] [data-ambience="mountains"],
+:root[data-theme="dark"] [data-ambience="stars"] {
+  --scene: url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80");
+}

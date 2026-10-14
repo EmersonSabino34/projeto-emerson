@@ -1,0 +1,137 @@
+/* ==========================================================================
+   CENÁRIO · a paisagem do VYRA
+   --------------------------------------------------------------------------
+   Renderizado por <Ambience /> dentro de cada tela. Fica atrás de tudo
+   (z-index negativo) e nunca captura clique.
+
+   A ordem das camadas aqui é a ordem em que elas pintam: foto, véu, manchas
+   de cor, estrelas. Mexer na ordem do DOM muda o resultado.
+   ========================================================================== */
+
+.ambience {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   1 · A fotografia
+   --------------------------------------------------------------------------
+   Ancorada em "center bottom": o horizonte e o chão da imagem ficam na parte
+   baixa da tela, que é justamente onde o véu abre. Ancorar no centro jogaria
+   o céu para baixo e a parte interessante da foto para trás do texto.
+   -------------------------------------------------------------------------- */
+.ambience-scene {
+  position: absolute;
+  inset: 0;
+  background-image: var(--scene);
+  background-position: center bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* puxa a foto para a paleta do tipo ativo — ver --scene-filter */
+  filter: var(--scene-filter);
+  /* a troca de tipo (dia/noite) troca a foto; o fade evita o corte seco */
+  animation: scene-in var(--t-lazy) var(--ease-out);
+  transition: filter var(--t-slow) var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   2 · O véu de leitura
+   --------------------------------------------------------------------------
+   Sólido no topo (onde ficam cabeçalho e títulos), abrindo para baixo até a
+   paisagem aparecer. É o que permite ter foto na tela inteira sem que nenhum
+   texto dependa da sorte de cair sobre uma parte escura da imagem.
+   -------------------------------------------------------------------------- */
+.ambience-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--veil-top) 0%,
+    var(--veil-top) 30%,
+    var(--veil-mid) 58%,
+    var(--veil-end) 100%
+  );
+  transition: background var(--t-slow) var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   3 · As manchas de cor
+   -------------------------------------------------------------------------- */
+.ambience-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+  transition: background var(--t-slow) var(--ease-out);
+}
+
+.ambience-blob-1 {
+  top: -18vh;
+  right: -12vw;
+  width: 62vw;
+  height: 62vw;
+  max-width: 720px;
+  max-height: 720px;
+  background: radial-gradient(circle at 50% 50%, var(--bg-aurora-1), transparent 68%);
+  animation: aurora-drift-a 26s var(--ease-in-out) infinite alternate;
+}
+
+.ambience-blob-2 {
+  bottom: -22vh;
+  left: -18vw;
+  width: 56vw;
+  height: 56vw;
+  max-width: 640px;
+  max-height: 640px;
+  background: radial-gradient(circle at 50% 50%, var(--bg-aurora-2), transparent 68%);
+  animation: aurora-drift-b 32s var(--ease-in-out) infinite alternate;
+}
+
+/* A terceira mancha é o "véu" da aurora: mais larga, mais lenta e ancorada no
+   topo, como a faixa de luz que atravessa o céu nas referências. */
+.ambience-blob-3 {
+  top: -10vh;
+  left: 50%;
+  width: 120vw;
+  height: 46vh;
+  max-width: none;
+  margin-left: -60vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(ellipse at 50% 50%, var(--bg-aurora-3), transparent 70%);
+  animation: aurora-veil 38s var(--ease-in-out) infinite alternate;
+}
+
+/* --------------------------------------------------------------------------
+   4 · O campo de estrelas · só acende à noite (--star-opacity: 0 no dia)
+   --------------------------------------------------------------------------
+   São gradientes radiais repetidos, então não há imagem nem um nó de DOM por
+   estrela.
+   -------------------------------------------------------------------------- */
+.ambience-stars {
+  position: absolute;
+  inset: 0;
+  opacity: var(--star-opacity);
+  transition: opacity var(--t-lazy) var(--ease-out);
+  background-image:
+    radial-gradient(1.4px 1.4px at 18% 22%, rgba(255, 255, 255, .85), transparent),
+    radial-gradient(1.1px 1.1px at 62% 14%, rgba(232, 226, 255, .75), transparent),
+    radial-gradient(1.6px 1.6px at 84% 36%, rgba(255, 255, 255, .70), transparent),
+    radial-gradient(1.1px 1.1px at 34% 48%, rgba(214, 205, 255, .65), transparent),
+    radial-gradient(1.3px 1.3px at 76% 62%, rgba(255, 255, 255, .60), transparent),
+    radial-gradient(1px 1px at 12% 70%, rgba(232, 226, 255, .55), transparent),
+    radial-gradient(1.2px 1.2px at 48% 84%, rgba(255, 255, 255, .50), transparent);
+  background-repeat: repeat;
+  background-size: 620px 620px;
+  animation: star-breathe 9s var(--ease-in-out) infinite alternate;
+}
+
+/* --------------------------------------------------------------------------
+   A tela que já é uma foto em si (Boas-vindas) desliga o cenário: duas
+   paisagens sobrepostas viram sujeira.
+   -------------------------------------------------------------------------- */
+.onboarding-cover .ambience-scene,
+.onboarding-cover .ambience-veil { display: none; }
