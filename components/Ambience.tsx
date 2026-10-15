@@ -24,6 +24,7 @@
  */
 export default function Ambience() {
   return (
+    
     <div className="ambience" aria-hidden="true">
       <span className="ambience-scene" />
       <span className="ambience-veil" />
