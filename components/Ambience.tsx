@@ -8,7 +8,6 @@
  *
  * São quatro camadas, de baixo para cima:
  *
- 
  *   1. foto     · a paisagem, ancorada embaixo (--scene, por data-ambience)
  *   2. véu      · sólido no topo, onde mora o texto, abrindo até a foto
  *                 aparecer embaixo — é ele que garante a leitura
