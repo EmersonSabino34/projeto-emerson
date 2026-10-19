@@ -1,4 +1,5 @@
 /**
+
  * O cenário da tela — a paisagem do VYRA.
  *
  * Esta é a camada que faz o app parecer o que as telas de referência mostram:
