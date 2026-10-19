@@ -523,9 +523,11 @@ tela de referência.
    saiu na Etapa 2. Dá para religar a rota em algum lugar ou removê-la junto
    com `dreams` de `lib/data.ts`. Se ela ficar, a "Data desejada" mostra "2027"
    fixo para todos os sonhos.
-2. **Telas sem cenário.** `/perfil`, `/sonho/[id]` e `/categoria/[slug]` não
+2. **Telas sem cenário.** `/sonho/[id]` e `/categoria/[slug]` não
    renderizam `<Ambience />`, mas o README diz que toda tela tem a paisagem de
    fundo. Falta escolher o `data-ambience` de cada uma pelas referências.
+   O `/perfil` ganhou `horizon` em 18/10, na revisão de design; troque se a
+   referência pedir outro.
 3. **"Sem cartão de crédito"** aparece na landing, mas o onboarding (telas 6 e
    7) pede plano e forma de pagamento.
 4. **"Meta mais próxima"**, na `/inicio`, é `goals[1]` fixo. Os prazos são texto

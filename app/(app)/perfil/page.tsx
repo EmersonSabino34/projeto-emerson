@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Ambience from "@/components/Ambience";
 import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
 import { BotaoSair, IdentidadeSessao } from "@/components/SessaoUI";
+import { IconArrowLeft } from "@/components/icons";
 import { goalProgress, goals } from "@/lib/data";
 
 export const metadata = { title: "Perfil" };
@@ -10,10 +12,10 @@ export const metadata = { title: "Perfil" };
     catálogo inteiro de categorias, que é igual para todo mundo. */
 const areasComObjetivo = new Set(goals.map((goal) => goal.category)).size;
 
-/** As linhas do perfil (tela 29). Só Configurações já tem tela; as outras
-    ficam como botões para não virarem links quebrados. */
+/** As linhas do perfil (tela 29). As que ainda não têm tela ficam como
+    botões, para não virarem links quebrados. */
 const settings = [
-  { label: "Minha conta", href: null },
+  { label: "Minha conta", href: "/conta" },
   { label: "Meu plano", href: "/planos" },
   { label: "Meus murais", href: "/mural" },
   { label: "Minhas conquistas", href: "/conquistas" },
@@ -24,14 +26,18 @@ const settings = [
 
 export default function ProfilePage() {
   return (
-    <main className="page">
+    /* Horizonte: o perfil era a única aba da navegação sem cenário, e aparecia
+       como uma tela lisa entre telas com paisagem. */
+    <main className="page" data-ambience="horizon">
+      <Ambience />
+
       <div className="stagger">
         <PageHeader
           eyebrow="Seu espaço"
           title="Perfil"
           action={
             <Link href="/inicio" className="icon-button" aria-label="Voltar para o início">
-              ×
+              <IconArrowLeft />
             </Link>
           }
         />

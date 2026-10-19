@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { IconUser } from "@/components/icons";
 import { encerrarSessao, useSessao } from "@/lib/auth";
 
 /**
@@ -12,7 +13,13 @@ import { encerrarSessao, useSessao } from "@/lib/auth";
  * de um fallback para o primeiro render.
  */
 
-const VISITANTE = { nome: "Visitante", iniciais: "··" };
+const VISITANTE = { nome: "Visitante" };
+
+/** Iniciais de quem está logado; para o visitante, a silhueta no lugar do
+    "··" que parecia texto quebrado dentro do disco dourado. */
+function Iniciais({ iniciais }: { iniciais?: string }) {
+  return iniciais ? <>{iniciais}</> : <IconUser />;
+}
 
 function primeiroNome(nome: string) {
   return nome.trim().split(/\s+/)[0] ?? nome;
@@ -37,7 +44,7 @@ export function AvatarSessao() {
 
   return (
     <Link href="/perfil" className="avatar" aria-label="Abrir perfil">
-      {carregando ? "" : (sessao?.iniciais ?? VISITANTE.iniciais)}
+      {carregando ? "" : <Iniciais iniciais={sessao?.iniciais} />}
     </Link>
   );
 }
@@ -59,7 +66,9 @@ export function IdentidadeSessao() {
 
   return (
     <>
-      <div className="avatar avatar-lg">{sessao?.iniciais ?? VISITANTE.iniciais}</div>
+      <div className="avatar avatar-lg">
+        <Iniciais iniciais={sessao?.iniciais} />
+      </div>
       <h2>{sessao?.nome ?? VISITANTE.nome}</h2>
       <p>{sessao ? sessao.email : "Você não está em nenhuma conta."}</p>
     </>

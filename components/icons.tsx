@@ -236,6 +236,76 @@ export function IconCheck({ className }: IconProps) {
   );
 }
 
+/* --------------------------------------------------------------------------
+   Jornadas de atração · temas e reprodutor
+   -------------------------------------------------------------------------- */
+
+export function IconCoins({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} width="20" height="20">
+      <ellipse cx="9.6" cy="7.4" rx="5.6" ry="2.6" />
+      <path d="M4 7.4v3.8c0 1.4 2.5 2.6 5.6 2.6s5.6-1.2 5.6-2.6V7.4" />
+      <path d="M8.8 15.8v1.4c0 1.4 2.5 2.6 5.6 2.6s5.6-1.2 5.6-2.6v-3.8c0-1.3-2.1-2.4-4.9-2.6" />
+    </svg>
+  );
+}
+
+export function IconLeaf({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} width="20" height="20">
+      <path d="M5.2 18.8c-.6-6.8 3.4-13 13.6-14 .6 9.6-4.4 14.4-10.6 14.4-1.1 0-2.1-.1-3-.4Z" />
+      <path d="M5.2 18.8C8.4 14.6 11.4 12 15 10.2" />
+    </svg>
+  );
+}
+
+export function IconFamily({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} width="20" height="20">
+      <circle cx="8" cy="7.2" r="2.6" />
+      <circle cx="16.4" cy="8.4" r="2.1" />
+      <path d="M3.4 19.4c.5-3.4 2.3-5.4 4.6-5.4s4.1 2 4.6 5.4" />
+      <path d="M13.4 15.2c.8-1.2 1.8-1.8 3-1.8 1.9 0 3.4 1.7 3.8 4.6" />
+    </svg>
+  );
+}
+
+export function IconPlay({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} width="20" height="20">
+      <path d="M8 5.6v12.8L18.2 12Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconPause({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} width="20" height="20">
+      <rect x="6.4" y="5.4" width="3.8" height="13.2" rx="1.2" fill="currentColor" />
+      <rect x="13.8" y="5.4" width="3.8" height="13.2" rx="1.2" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconLock({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} width="20" height="20">
+      <rect x="5" y="10.6" width="14" height="9.6" rx="2.4" />
+      <path d="M8.2 10.6V8a3.8 3.8 0 0 1 7.6 0v2.6" />
+    </svg>
+  );
+}
+
+export function IconHeadphones({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} width="20" height="20">
+      <path d="M4.2 15.6v-3a7.8 7.8 0 0 1 15.6 0v3" />
+      <rect x="3.4" y="14" width="4" height="6.2" rx="1.6" />
+      <rect x="16.6" y="14" width="4" height="6.2" rx="1.6" />
+    </svg>
+  );
+}
+
 /** Terceiro estado do seletor de tipo: seguir o sistema. */
 export function IconAuto({ className }: IconProps) {
   return (

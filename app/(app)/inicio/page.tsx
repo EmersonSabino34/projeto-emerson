@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Ambience from "@/components/Ambience";
 import AreaGrid from "@/components/AreaGrid";
+import CartaoJornada from "@/components/CartaoJornada";
 import DataDeHoje from "@/components/DataDeHoje";
+import GoalRow from "@/components/GoalRow";
 import PeriodTabs from "@/components/PeriodTabs";
 import ProgressRing from "@/components/ProgressRing";
 import Reveal from "@/components/Reveal";
@@ -48,7 +50,7 @@ export default function HomePage() {
             </button>
           </header>
 
-          <div className="section">
+          <div className="section" style={{ marginBottom: "var(--sp-4)" }}>
             <PeriodTabs />
           </div>
 
@@ -59,6 +61,21 @@ export default function HomePage() {
             <cite>— {quote.author}</cite>
           </section>
         </div>
+
+        <Reveal>
+          <section className="section">
+            <SectionTitle
+              eyebrow="Todo dia"
+              title="Jornada de atração"
+              action={
+                <Link href="/jornadas" className="text-link">
+                  Ver todas <span aria-hidden="true">→</span>
+                </Link>
+              }
+            />
+            <CartaoJornada />
+          </section>
+        </Reveal>
 
         <Reveal>
           <section className="section">
@@ -87,21 +104,8 @@ export default function HomePage() {
               }
             />
             <div className="goal-list">
-              {goals.slice(0, 3).map((goal) => (
-                <Link href={`/objetivos/${goal.id}`} key={goal.id} className="goal-row">
-                  <span
-                    className="goal-thumb"
-                    style={{ backgroundImage: `url(${goal.image})` }}
-                    aria-hidden="true"
-                  />
-                  <span className="goal-body">
-                    <strong>{goal.title}</strong>
-                    <span className="muted-copy" style={{ marginTop: 2 }}>
-                      {goal.category} · {goal.deadline}
-                    </span>
-                  </span>
-                  <span className="goal-percent">{goal.progress}%</span>
-                </Link>
+              {goals.slice(0, 3).map((goal, index) => (
+                <GoalRow goal={goal} key={goal.id} delay={180 + index * 60} />
               ))}
             </div>
           </section>

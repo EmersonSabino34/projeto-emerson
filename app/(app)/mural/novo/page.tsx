@@ -1,40 +1,20 @@
-import Link from "next/link";
 import Ambience from "@/components/Ambience";
-import EscolhaLayout from "@/components/EscolhaLayout";
-import PageHeader from "@/components/PageHeader";
-import { IconArrowLeft } from "@/components/icons";
+import CriadorMural from "@/components/CriadorMural";
 
 export const metadata = { title: "Novo mural" };
 
 /**
- * Escolher o layout do mural (tela 25).
+ * Criar mural por toque (telas 25 e 26).
  *
- * A página fica no servidor para exportar `metadata`; a escolha de layout,
- * que tem estado, vai para o cliente (components/EscolhaLayout).
+ * A página fica no servidor para exportar `metadata`; as perguntas, que têm
+ * estado, vão para o cliente (components/CriadorMural). O cabeçalho mora lá
+ * dentro porque o título é a pergunta da vez.
  */
 export default function NovoMuralPage() {
   return (
-    <main className="page" data-ambience="aurora">
+    <main className="page page-wizard" data-ambience="aurora">
       <Ambience />
-
-      <div className="stagger">
-        <PageHeader
-          eyebrow="Passo 1 de 2"
-          title="Escolha um layout"
-          action={
-            <Link href="/mural" className="icon-button" aria-label="Voltar para os murais">
-              <IconArrowLeft />
-            </Link>
-          }
-        />
-
-        <p className="page-lede">
-          De 10 a 20 fotos. O VYRA enquadra cada imagem para caber na grade sem
-          cortar o que importa.
-        </p>
-      </div>
-
-      <EscolhaLayout />
+      <CriadorMural />
     </main>
   );
 }

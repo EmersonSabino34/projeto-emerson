@@ -197,10 +197,13 @@
 }
 
 /* Faixa de números sob o hero */
+/* Grade, e não flex com quebra: no celular o terceiro número caía sozinho
+   numa segunda linha. Na grade os três ficam lado a lado e, se faltar
+   largura, quem quebra é o rótulo dentro da própria coluna. */
 .lp-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-7);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  gap: var(--sp-4) clamp(var(--sp-5), 6vw, var(--sp-7));
   margin-top: var(--sp-8);
   border-top: 1px solid var(--border);
   padding-top: var(--sp-5);

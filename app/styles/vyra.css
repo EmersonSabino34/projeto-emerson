@@ -170,7 +170,7 @@
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   color: var(--text-secondary);
-  font-size: var(--fs-2xs);
+  font-size: var(--fs-xs);
   font-weight: 600;
   text-align: center;
   box-shadow: var(--shadow-sm);
@@ -178,6 +178,20 @@
               border-color var(--t-fast) var(--ease-out),
               color var(--t-fast) var(--ease-out),
               box-shadow var(--t-mid) var(--ease-out);
+}
+
+/* Com a trilha lateral a coluna fica larga, e o ícone empilhado sobre o
+   rótulo deixava cada tile alto e quase vazio. Lado a lado, a grade vira uma
+   fileira de atalhos com a metade da altura. */
+@media (min-width: 1024px) {
+  .area-tile {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--fs-sm);
+    text-align: start;
+  }
 }
 
 .area-tile:active { transform: scale(.95); }
@@ -240,8 +254,8 @@
 }
 
 .goal-thumb {
-  height: 46px;
-  width: 46px;
+  height: 52px;
+  width: 52px;
   flex-shrink: 0;
   border-radius: var(--r-md);
   background-position: center;
@@ -249,6 +263,17 @@
 }
 
 .goal-body { flex: 1; min-width: 0; }
+
+.goal-meta {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* A barra fina embaixo do título: o número sozinho à direita não dava a
+   medida do caminho. */
+.goal-body .progress { margin-top: var(--sp-2); }
 
 .goal-body strong {
   display: block;
@@ -275,9 +300,11 @@
 /* Sem @property, --ring-value é só um texto e o navegador não sabe
    interpolá-lo: o anel apareceria cheio de uma vez. Registrando-o como
    <number>, a animação ring-fill passa a funcionar de verdade. */
+/* inherits: true porque quem desenha o arco é o ::before, que precisa ler o
+   valor animado no .ring. */
 @property --ring-value {
   syntax: "<number>";
-  inherits: false;
+  inherits: true;
   initial-value: 0;
 }
 
@@ -285,9 +312,20 @@
   position: relative;
   display: grid;
   place-items: center;
-  height: 188px;
-  width: 188px;
-  margin: 0 auto;
+  height: 172px;
+  width: 172px;
+  margin: var(--sp-4) auto 0;
+  border-radius: 50%;
+  animation: ring-fill var(--t-lazy) var(--ease-out-expo) backwards;
+}
+
+/* O arco é vazado por máscara, e não coberto por um círculo da cor do fundo:
+   assim o miolo mostra o vidro do cartão por trás, em vez de um disco chapado
+   de --bg que, à noite, virava um buraco preto no meio do cartão. */
+.ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
   background: conic-gradient(
     from -90deg,
@@ -295,16 +333,8 @@
     var(--brand-to) calc(var(--ring-value, 0) * 3.6deg),
     var(--track) calc(var(--ring-value, 0) * 3.6deg)
   );
-  animation: ring-fill var(--t-lazy) var(--ease-out-expo) backwards;
-}
-
-/* O miolo vazado: um círculo com a cor do fundo por cima do gradiente. */
-.ring::after {
-  content: "";
-  position: absolute;
-  inset: 14px;
-  border-radius: 50%;
-  background: var(--bg);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 11px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 11px));
 }
 
 .ring-value {
@@ -337,7 +367,8 @@
   font-size: var(--fs-md);
   text-align: start;
   transition: border-color var(--t-fast) var(--ease-out),
-              background var(--t-fast) var(--ease-out);
+              background var(--t-fast) var(--ease-out),
+              transform var(--t-fast) var(--ease-out);
 }
 
 .check-box {
@@ -352,6 +383,13 @@
   transition: background var(--t-fast) var(--ease-out),
               border-color var(--t-fast) var(--ease-out),
               color var(--t-fast) var(--ease-out);
+}
+
+.check-row:active { transform: scale(.99); }
+
+@media (hover: hover) {
+  .check-row:hover { border-color: var(--border-accent); }
+  .check-row:hover .check-box { border-color: var(--accent); }
 }
 
 .check-row[aria-pressed="true"] { border-color: var(--border-accent); }
@@ -444,8 +482,23 @@
   font-size: var(--fs-sm);
 }
 
-.fact-row .choice-icon { height: 28px; width: 28px; }
-.fact-row span { flex: 1; color: var(--text-secondary); }
+/* O desenho do .choice-icon vivia só dentro de .choice-row; aqui ele aparecia
+   como um ícone solto, e um número ficava torto no alto da linha. */
+.fact-row .choice-icon {
+  display: grid;
+  place-items: center;
+  height: 28px;
+  width: 28px;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+/* :not(.choice-icon): o ícone também é um <span>, e com flex: 1 ele esticava
+   e empurrava o rótulo para o meio da linha. */
+.fact-row span:not(.choice-icon) { flex: 1; color: var(--text-secondary); }
 .fact-row strong { font-weight: 700; font-variant-numeric: tabular-nums; }
 
 /* --------------------------------------------------------------------------
@@ -475,7 +528,7 @@
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   color: var(--text-secondary);
-  font-size: var(--fs-2xs);
+  font-size: var(--fs-xs);
   font-weight: 600;
   text-align: center;
   box-shadow: var(--shadow-sm);
@@ -796,7 +849,10 @@
               box-shadow var(--t-mid) var(--ease-out);
 }
 
-.layout-card[aria-checked="true"] {
+/* aria-pressed: no criador por toque o cartão marca a escolha por um
+   instante antes de avançar. */
+.layout-card[aria-checked="true"],
+.layout-card[aria-pressed="true"] {
   border-color: var(--accent);
   box-shadow: var(--shadow-md), var(--ring);
 }
@@ -1250,3 +1306,748 @@
   font-style: normal;
   font-weight: 600;
 }
+
+/* ==========================================================================
+   CRIAÇÃO POR TOQUE · criador de mural e criador de objetivo
+   --------------------------------------------------------------------------
+   Cada tela é uma pergunta e cada opção é um botão grande: um toque escolhe
+   e avança. As opções são alvos de toque inteiros (foto ou linha), nunca um
+   rádio pequeno ao lado de um texto.
+   ========================================================================== */
+
+.wizard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.wizard-lede {
+  margin: 0 0 var(--sp-5);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   O mural em construção
+   No celular ele vem ANTES das opções, como uma barra de status: miniatura,
+   contagem e progresso. No desktop vira uma coluna fixa ao lado, grande o
+   bastante para ver cada foto entrar.
+   -------------------------------------------------------------------------- */
+.wizard-mural {
+  order: -1;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-3);
+  border-radius: var(--r-lg);
+}
+
+.wizard-mural-art {
+  width: 64px;
+  flex-shrink: 0;
+}
+
+.wizard-mural-info { flex: 1; min-width: 0; }
+
+.wizard-mural-info strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.wizard-mural-info > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* A barra acompanha cada toque em vez de recomeçar do zero. */
+.wizard-mural .progress-fill { transition: width var(--t-mid) var(--ease-out); }
+
+/* Na miniatura a frase não teria tamanho para ser lida. */
+.wizard-mural .collage-caption { display: none; }
+
+/* Foto que acabou de entrar: nasce no lugar em vez de aparecer de uma vez. */
+.wizard-mural .collage-cell:not(.collage-cell-empty) {
+  animation: scale-in var(--t-slow) var(--ease-out-expo);
+}
+
+@media (min-width: 1024px) {
+  .page-wizard { max-width: 1040px; }
+
+  .wizard-com-mural {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: var(--sp-8);
+    align-items: start;
+  }
+  .wizard-com-mural .wizard-main { grid-column: 1; grid-row: 1; }
+
+  .wizard-mural {
+    position: sticky;
+    top: var(--sp-9);
+    grid-column: 2;
+    grid-row: 1;
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--sp-4);
+    border-radius: var(--r-xl);
+  }
+  .wizard-mural-art { width: 100%; }
+  /* Sem largura própria, a legenda (left: 50%) só podia ocupar metade da
+     colagem e quebrava cada palavra numa linha. */
+  .wizard-mural .collage-caption {
+    display: flex;
+    width: 88%;
+    font-size: var(--fs-md);
+  }
+}
+
+/* As posições ainda vazias do mural, e a próxima a ser preenchida. */
+.collage-cell-empty { background: var(--accent-soft); }
+
+.collage-cell-next {
+  background: var(--accent-soft-hover);
+  box-shadow: inset 0 0 0 2px var(--accent);
+  animation: cell-breathe 1.6s var(--ease-in-out) infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Grades de opções
+   -------------------------------------------------------------------------- */
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.pick-grid-layouts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.pick-grid-climas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+@media (min-width: 700px) {
+  .pick-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pick-grid-layouts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pick-grid-climas { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .pick-grid-layouts { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+.pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* --------------------------------------------------------------------------
+   O selo de escolhido · aparece no instante do toque, antes de avançar
+   -------------------------------------------------------------------------- */
+.pick-check {
+  display: grid;
+  place-items: center;
+  height: 26px;
+  width: 26px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  box-shadow: 0 4px 12px var(--brand-glow);
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-spring);
+}
+.pick-check svg { height: 14px; width: 14px; }
+
+[aria-pressed="true"] > .pick-check {
+  opacity: 1;
+  transform: none;
+}
+
+.pick-photo .pick-check,
+.pick-mini .pick-check {
+  position: absolute;
+  z-index: 2;
+  top: var(--sp-2);
+  right: var(--sp-2);
+}
+
+/* --------------------------------------------------------------------------
+   Opção com foto · desejos e áreas
+   -------------------------------------------------------------------------- */
+.pick-photo {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 1;
+  overflow: hidden;
+  padding: var(--sp-3);
+  border-radius: var(--r-lg);
+  background-color: var(--surface-sunken);
+  background-position: center;
+  background-size: cover;
+  color: var(--text-on-media);
+  text-align: start;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-spring),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.pick-photo-wide { aspect-ratio: 16 / 10; }
+
+/* O mesmo véu dos cartões de lugar: a foto é imprevisível, o rótulo não. */
+.pick-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 6, 20, 0) 35%, rgba(8, 6, 20, .8));
+}
+
+.pick-photo-label {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.25;
+  text-shadow: 0 1px 8px rgba(8, 6, 20, .5);
+}
+
+.pick-photo:active { transform: scale(.96); }
+
+@media (hover: hover) {
+  .pick-photo:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+}
+
+.pick-photo[aria-pressed="true"] {
+  transform: scale(.97);
+  box-shadow: 0 0 0 3px var(--accent), var(--shadow-md);
+}
+
+/* --------------------------------------------------------------------------
+   Opção de texto · frase, prazo e motivo
+   -------------------------------------------------------------------------- */
+.pick-text {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--sp-3) var(--sp-5);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  text-align: start;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-out);
+}
+
+.pick-text-label { flex: 1; }
+
+.pick-text-quote .pick-text-label {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-style: italic;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+}
+
+.pick-text:active { transform: scale(.98); }
+
+@media (hover: hover) {
+  .pick-text:hover { border-color: var(--border-accent); transform: translateX(3px); }
+}
+
+.pick-text[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Opção de mural em miniatura · o clima (filtro) do mural
+   -------------------------------------------------------------------------- */
+.pick-mini {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-spring),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.pick-mini:active { transform: scale(.96); }
+
+@media (hover: hover) {
+  .pick-mini:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+}
+
+.pick-mini[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow: var(--shadow-md), var(--ring);
+}
+
+/* --------------------------------------------------------------------------
+   Ações abaixo das opções · pular a área e "O VYRA completa"
+   -------------------------------------------------------------------------- */
+.wizard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+}
+
+.wizard-actions .text-link { font-size: var(--fs-sm); }
+
+/* A tela final centraliza o seletor de tela e o aparelho. */
+.wizard-pronto { text-align: center; }
+
+/* ==========================================================================
+   JORNADAS DE ATRAÇÃO · lista, jornada e reprodutor do dia
+   ========================================================================== */
+
+/* O disco dourado com o ícone da jornada: o mesmo ouro do símbolo do VYRA. */
+.jornada-icone {
+  display: grid;
+  place-items: center;
+  height: 46px;
+  width: 46px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  box-shadow: 0 8px 20px var(--brand-glow);
+}
+
+.jornada-icone-lg { height: 64px; width: 64px; }
+.jornada-icone-lg svg { height: 28px; width: 28px; }
+
+/* --------------------------------------------------------------------------
+   Cartão de jornada · lista, Home e fim do criador de objetivo
+   -------------------------------------------------------------------------- */
+.jornada-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.jornada-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-mid) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-mid) var(--ease-out);
+}
+
+.jornada-card:active { transform: scale(.98); }
+
+@media (hover: hover) {
+  .jornada-card:hover {
+    border-color: var(--border-accent);
+    transform: translateX(3px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.jornada-card-body { flex: 1; min-width: 0; }
+
+.jornada-card-body strong {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.jornada-card-body > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+}
+
+.jornada-card-body > .jornada-card-meta {
+  margin-top: var(--sp-2);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.jornada-card .choice-chevron { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   Página da jornada
+   -------------------------------------------------------------------------- */
+.jornada-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+}
+
+.jornada-freq {
+  margin: 0;
+  color: var(--accent-text);
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+}
+
+.jornada-hero-chamada {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-md);
+  line-height: 1.5;
+}
+
+.jornada-hero .muted-copy { margin-top: var(--sp-2); }
+
+/* A segunda linha das opções de duração. */
+.pick-text-nota {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 400;
+}
+
+.jornada-dica,
+.player-dica {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  line-height: 1.5;
+}
+.jornada-dica svg,
+.player-dica svg { flex-shrink: 0; height: 16px; width: 16px; margin-top: 1px; }
+
+.jornada-hoje {
+  padding: var(--sp-5);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--r-xl);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  box-shadow: var(--shadow-md);
+}
+
+.jornada-hoje h2 {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-2xl);
+}
+
+.jornada-hoje .btn svg { height: 16px; width: 16px; }
+
+.jornada-progresso {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-5);
+}
+.jornada-progresso .progress { flex: 1; margin-top: 0; }
+.jornada-progresso span {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A lista de dias: os liberados são links, os futuros ficam trancados. */
+.dia-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dia-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-glass);
+  font-size: var(--fs-sm);
+  transition: border-color var(--t-fast) var(--ease-out),
+              transform var(--t-mid) var(--ease-out);
+}
+
+@media (hover: hover) {
+  a.dia-row:hover { border-color: var(--border-accent); transform: translateX(3px); }
+}
+
+.dia-row[data-bloqueado="true"] { opacity: .55; }
+
+.dia-badge {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  width: 30px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.dia-badge svg { height: 15px; width: 15px; }
+
+.dia-row[data-feito="true"] .dia-badge {
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+}
+
+.dia-titulo { flex: 1; min-width: 0; font-weight: 500; }
+
+.dia-numero {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.dia-status {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.dia-row[data-feito="true"] .dia-status { color: var(--accent-text); font-weight: 600; }
+
+.jornada-recomecar {
+  margin-top: var(--sp-7);
+  text-align: center;
+}
+.jornada-recomecar .muted-copy { margin-bottom: var(--sp-3); }
+
+/* --------------------------------------------------------------------------
+   Reprodutor do dia
+   -------------------------------------------------------------------------- */
+/* Fixo no topo: enquanto a leitura rola o texto até a frase da vez, o botão
+   de pausar não pode sumir da tela. O fundo é sólido, e não vidro, porque o
+   texto rola por baixo dele e aparecia através do cartão. */
+.player {
+  position: sticky;
+  top: var(--sp-3);
+  z-index: 5;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  padding: var(--sp-5);
+}
+
+/* O botão de tocar é um disco dourado; tocando, dois anéis pulsam em volta
+   dele, no ritmo lento de uma respiração. */
+.player-orb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 84px;
+  width: 84px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+}
+
+.player-orb-core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+  box-shadow: 0 12px 30px var(--brand-glow);
+  transition: transform var(--t-mid) var(--ease-spring);
+}
+.player-orb-core svg { height: 30px; width: 30px; }
+.player-orb:active .player-orb-core { transform: scale(.94); }
+
+.player-orb-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, var(--brand-glow), transparent 70%);
+  opacity: 0;
+}
+
+.player[data-estado="tocando"] .player-orb-ring {
+  animation: pulse-ring 3.6s var(--ease-in-out) infinite;
+}
+.player[data-estado="tocando"] .player-orb-ring + .player-orb-ring { animation-delay: 1.8s; }
+
+.player-info { flex: 1; min-width: 0; }
+
+.player-freq {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--accent-text);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+.player-freq svg { height: 16px; width: 16px; }
+
+.player-status {
+  display: block;
+  margin-top: var(--sp-1);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.player-fim {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+.player-fim > div { flex: 1; min-width: 0; }
+.player-fim strong { font-size: var(--fs-md); }
+.player-fim .muted-copy { margin-top: 2px; }
+.player-fim .btn-block { margin-top: 0; }
+
+.player-fim-check {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  width: 40px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
+  color: #fff;
+}
+
+.player-ajustes { margin-top: var(--sp-4); }
+.player-ajustes .chip-wrap { margin-top: var(--sp-3); }
+.player-ajustes-titulo { margin-top: var(--sp-5); }
+
+.player-volume {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+}
+.player-volume input {
+  flex: 1;
+  accent-color: var(--accent);
+}
+
+.player-dica { margin-top: var(--sp-4); }
+
+/* --------------------------------------------------------------------------
+   O texto do dia · a frase lida acende, as outras recuam
+   -------------------------------------------------------------------------- */
+/* Em vidro, e não solto sobre o cenário: no dia, a parte de baixo da tela é a
+   foto clara da paisagem, e o texto que recua para dar destaque à frase da
+   vez ficava ilegível em cima dela. */
+.roteiro {
+  margin-top: var(--sp-5);
+  padding: var(--sp-6) var(--sp-5) var(--sp-3);
+}
+
+.fala {
+  margin: 0 0 var(--sp-4);
+  color: var(--text-secondary);
+  font-size: var(--fs-md);
+  line-height: 1.7;
+  transition: color var(--t-mid) var(--ease-out),
+              opacity var(--t-mid) var(--ease-out);
+}
+
+.fala-abertura,
+.fala-fechamento,
+.fala-silencio,
+.fala-chamada {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-style: italic;
+}
+
+.fala-titulo {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.25;
+}
+
+/* A afirmação é a frase que fica: em destaque, como uma citação. */
+.fala-afirmacao {
+  padding: var(--sp-5);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--r-lg);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-style: italic;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.fala-contagem {
+  display: block;
+  margin-top: var(--sp-2);
+  color: var(--accent-text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-xs);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.fala[data-ativa="true"] { color: var(--text); }
+.fala-afirmacao[data-ativa="true"] { box-shadow: var(--ring); }
+
+/* Enquanto toca, o que não está sendo lido recua um pouco. */
+.player[data-estado="tocando"] ~ .roteiro .fala:not([data-ativa="true"]) { opacity: .6; }

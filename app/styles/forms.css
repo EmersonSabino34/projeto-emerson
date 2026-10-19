@@ -240,3 +240,82 @@
 }
 
 .field select[aria-invalid="true"] { border-color: #d4183d; }
+
+/* ==========================================================================
+   PAINEL DA CONTA (/conta) · ver, editar e excluir o cadastro
+   ========================================================================== */
+
+.conta-carregando { margin-top: var(--sp-6); }
+
+.conta-secao { margin-top: var(--sp-5); }
+
+.conta-vazia h2 {
+  margin: 0;
+  font-size: var(--fs-xl);
+}
+
+.conta-resumo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.conta-resumo strong {
+  display: block;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+.conta-resumo div > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* Telefone e nascimento, nova senha e confirmação: lado a lado quando cabe. */
+.campos-duplos {
+  display: grid;
+  gap: 0 var(--sp-4);
+}
+@media (min-width: 560px) {
+  .campos-duplos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.form-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+.form-sucesso {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 auto 0 0;
+  color: var(--accent-text);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  animation: slide-in-left var(--t-mid) var(--ease-out);
+}
+.form-sucesso::before { content: "✓"; }
+
+/* Excluir conta: o vermelho dos erros, para ninguém confundir com "salvar". */
+.zona-perigo { border-color: rgba(212, 24, 61, .3); }
+.zona-perigo .muted-copy { margin: 0 0 var(--sp-4); }
+
+.btn-perigo {
+  border: 1px solid rgba(212, 24, 61, .45);
+  background: rgba(212, 24, 61, .08);
+  color: #b3122f;
+}
+@media (hover: hover) {
+  .btn-perigo:hover { background: rgba(212, 24, 61, .16); }
+}
+:root[data-theme="dark"] .btn-perigo { color: #ff8fa6; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-perigo { color: #ff8fa6; }
+}

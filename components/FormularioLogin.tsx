@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { ApiError, autenticar } from "@/lib/api";
 import { salvarSessao, sessaoDoUsuario } from "@/lib/auth";
+import { emailValido } from "@/lib/validacao";
 
 type Campos = { email: string; senha: string };
 type Erros = Partial<Record<keyof Campos, string>>;
@@ -14,9 +15,7 @@ const DEMO = { email: "ana@exemplo.com", senha: "123456" };
 
 function validar({ email, senha }: Campos): Erros {
   const erros: Erros = {};
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
-    erros.email = "Digite um e-mail válido.";
-  }
+  if (!emailValido(email)) erros.email = "Digite um e-mail válido.";
   if (senha.length === 0) erros.senha = "Digite sua senha.";
   return erros;
 }
@@ -54,7 +53,10 @@ export default function FormularioLogin() {
     try {
       const usuario = await autenticar(campos.email, campos.senha);
       salvarSessao(sessaoDoUsuario(usuario));
-      router.push("/inicio");
+      // Quem chegou aqui vindo do painel da conta volta para ele. Só aceita
+      // caminho interno ("/conta"), nunca outro site ("//exemplo.com").
+      const voltar = new URLSearchParams(window.location.search).get("voltar");
+      router.push(voltar?.startsWith("/") && !voltar.startsWith("//") ? voltar : "/inicio");
     } catch (erro) {
       setErroApi(erro instanceof ApiError ? erro.message : "Algo deu errado. Tente de novo.");
       setEnviando(false);

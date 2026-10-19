@@ -100,9 +100,11 @@ export default function ExplorarBusca({
               className="place-card"
               style={{ backgroundImage: `url(${categoria.image})` }}
             >
+              {/* A descrição, e não o título longo: em Família e Finanças o
+                  título é igual ao rótulo curto e a linha saía repetida. */}
               <span className="place-card-copy">
                 <strong>{categoria.short}</strong>
-                <span>{categoria.title}</span>
+                <span>{categoria.description}</span>
               </span>
             </Link>
           ))}

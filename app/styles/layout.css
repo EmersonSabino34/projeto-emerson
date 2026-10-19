@@ -26,11 +26,14 @@
 }
 
 /* ---------- Cabeçalho de página ---------- */
+/* Mesma ideia do .section-heading: sem a margem de baixo, a foto do plano de
+   ação encostava no título. Colapsa com a margem de quem vem depois. */
 .page-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
 .page-header h1 {
   margin: var(--sp-2) 0 0;
@@ -133,7 +136,11 @@
   color: #fff;
   box-shadow: 0 10px 24px var(--brand-glow);
 }
+/* O fundo repete o gradiente: a regra de item ativo acima pinta o ícone com
+   --accent-soft e, sem isto, o "+" dourado virava um disco apagado
+   justamente na tela de criar. */
 .nav-item-fab[aria-current="page"] .nav-icon {
+  background: linear-gradient(140deg, var(--brand-from), var(--brand-to));
   transform: translateY(-2px) scale(1.04);
 }
 .nav-item-fab:active .nav-icon { transform: scale(.92); }
@@ -194,12 +201,15 @@
     letter-spacing: .2em;
     line-height: 1.15;
   }
-  .nav-brand span {
+  /* Em caixa alta e espaçado, o lema não cabia ao lado do símbolo e quebrava
+     com o "VIVA" sozinho na segunda linha. Em caixa normal ele cabe inteiro. */
+  .nav-brand div span {
+    display: block;
+    margin-top: 2px;
     color: var(--text-muted);
     font-size: var(--fs-eyebrow);
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
+    font-weight: 500;
+    white-space: nowrap;
   }
 
   .nav-items {
@@ -244,12 +254,14 @@
 
   /* Na trilha lateral o "+" deixa de flutuar e vira a linha em destaque do
      menu: o círculo dourado encolhe para o tamanho dos outros ícones e o
-     rótulo volta, porque aqui há largura para ele. */
+     rótulo volta, porque aqui há largura para ele.
+     O destaque é só o ícone dourado e o rótulo forte. Com fundo próprio, o
+     "Criar" parecia a página atual e a trilha mostrava dois itens ativos. */
   .nav-item-fab {
     justify-content: flex-start;
-    margin-top: var(--sp-2);
-    background: var(--accent-soft);
-    color: var(--accent-text);
+    margin-block: var(--sp-2);
+    color: var(--text);
+    font-weight: 700;
   }
   .nav-item-fab .nav-label { display: block; }
   .nav-item-fab .nav-icon {

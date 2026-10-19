@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { ApiError, criarUsuario } from "@/lib/api";
 import { salvarSessao, sessaoDoUsuario } from "@/lib/auth";
+import { SENHA_MINIMA, emailValido } from "@/lib/validacao";
 
 type Campos = { nome: string; email: string; senha: string; confirmacao: string };
 type Erros = Partial<Record<keyof Campos, string>>;
@@ -15,12 +16,10 @@ function validar({ nome, email, senha, confirmacao }: Campos): Erros {
   const erros: Erros = {};
 
   if (nome.trim().length < 2) erros.nome = "Digite seu nome.";
-  // Regex propositalmente simples: barra erro de digitação óbvio sem rejeitar
-  // endereços válidos e incomuns.
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
-    erros.email = "Digite um e-mail válido.";
+  if (!emailValido(email)) erros.email = "Digite um e-mail válido.";
+  if (senha.length < SENHA_MINIMA) {
+    erros.senha = `A senha precisa de pelo menos ${SENHA_MINIMA} caracteres.`;
   }
-  if (senha.length < 6) erros.senha = "A senha precisa de pelo menos 6 caracteres.";
   if (confirmacao !== senha) erros.confirmacao = "As senhas não são iguais.";
 
   return erros;

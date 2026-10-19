@@ -16,9 +16,25 @@ export type Usuario = {
   iniciais: string;
   bio: string;
   criadoEm: string;
+  /* Opcionais: o cadastro pede só nome, e-mail e senha; o resto a pessoa
+     completa depois, no painel da conta (/conta). */
+  telefone?: string;
+  /** "AAAA-MM-DD". */
+  nascimento?: string;
+  cidade?: string;
 };
 
 export type NovoUsuario = Omit<Usuario, "id">;
+
+/** O que o painel da conta deixa editar. Senha tem fluxo próprio. */
+export type DadosPessoais = {
+  nome: string;
+  email: string;
+  telefone: string;
+  nascimento: string;
+  cidade: string;
+  bio: string;
+};
 
 /** Erro com mensagem já pronta para exibir no formulário. */
 export class ApiError extends Error {
@@ -109,4 +125,71 @@ export async function autenticar(email: string, senha: string): Promise<Usuario>
   }
 
   return usuario;
+}
+
+/* ==========================================================================
+   Painel da conta · ler, editar e excluir o próprio cadastro
+   --------------------------------------------------------------------------
+   Junto com criarUsuario (cadastro) fecham o CRUD da pessoa.
+
+   ⚠️ Protótipo: o json-server aceita PATCH e DELETE de qualquer id, sem
+   saber quem pediu. Quem garante que a pessoa só mexe na própria conta é a
+   tela, que usa o id da sessão. Com o banco real, essa checagem vai para o
+   servidor (item 10 do plano).
+   ========================================================================== */
+
+export async function buscarUsuario(id: number): Promise<Usuario | null> {
+  try {
+    return await request<Usuario>(`/usuarios/${id}`);
+  } catch (erro) {
+    if (erro instanceof ApiError && erro.status === 404) return null;
+    throw erro;
+  }
+}
+
+export async function atualizarUsuario(id: number, dados: DadosPessoais): Promise<Usuario> {
+  const email = dados.email.trim().toLowerCase();
+
+  // A mesma checagem de unicidade do cadastro, ignorando a própria conta.
+  const dono = await buscarUsuarioPorEmail(email);
+  if (dono && dono.id !== id) {
+    throw new ApiError("Esse e-mail já é usado por outra conta.");
+  }
+
+  return request<Usuario>(`/usuarios/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      nome: dados.nome.trim(),
+      email,
+      // As iniciais acompanham o nome, senão o avatar ficaria com as antigas.
+      iniciais: iniciaisDoNome(dados.nome),
+      telefone: dados.telefone.trim(),
+      nascimento: dados.nascimento,
+      cidade: dados.cidade.trim(),
+      bio: dados.bio.trim(),
+    }),
+  });
+}
+
+/** Confere a senha atual antes de trocar: a sessão sozinha não basta. */
+export async function trocarSenha(id: number, atual: string, nova: string): Promise<void> {
+  const usuario = await buscarUsuario(id);
+  if (!usuario || usuario.senha !== atual) {
+    throw new ApiError("A senha atual não confere.");
+  }
+
+  await request<Usuario>(`/usuarios/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ senha: nova }),
+  });
+}
+
+/** Excluir é para sempre, então também pede a senha. */
+export async function excluirUsuario(id: number, senha: string): Promise<void> {
+  const usuario = await buscarUsuario(id);
+  if (!usuario || usuario.senha !== senha) {
+    throw new ApiError("A senha não confere.");
+  }
+
+  await request<unknown>(`/usuarios/${id}`, { method: "DELETE" });
 }

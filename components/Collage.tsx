@@ -3,8 +3,11 @@ import type { MuralLayout } from "@/lib/murais";
 
 type CollageProps = {
   layout: MuralLayout;
-  /** URLs das fotos, na ordem do layout. */
-  photos: string[];
+  /**
+   * URLs das fotos, na ordem do layout. `null` é uma posição ainda vazia: o
+   * criador de mural passa o layout inteiro e vai preenchendo a cada toque.
+   */
+  photos: ReadonlyArray<string | null>;
   /** Proporção da colagem — "9 / 16" no papel de parede, "3 / 4" no cartão. */
   ratio?: string;
   /** Texto que aparece sobreposto à colagem, como nas telas de referência. */
@@ -37,6 +40,9 @@ export default function Collage({
   filtro,
   className,
 }: CollageProps) {
+  // A primeira posição vazia é onde a próxima foto vai entrar; ela pulsa.
+  const next = photos.indexOf(null);
+
   return (
     <div className={className ? `collage ${className}` : "collage"}>
       <div
@@ -51,15 +57,25 @@ export default function Collage({
       >
         {layout.spans.map((span, index) => {
           const src = photos[index % photos.length];
+          const area = { gridColumn: `span ${span[0]}`, gridRow: `span ${span[1]}` };
+
+          if (!src) {
+            return (
+              <span
+                key={`vazio-${index}`}
+                className={
+                  index === next ? "collage-cell collage-cell-empty collage-cell-next" : "collage-cell collage-cell-empty"
+                }
+                style={area}
+              />
+            );
+          }
+
           return (
             <span
               key={`${src}-${index}`}
               className="collage-cell"
-              style={{
-                gridColumn: `span ${span[0]}`,
-                gridRow: `span ${span[1]}`,
-                backgroundImage: `url(${src})`,
-              }}
+              style={{ ...area, backgroundImage: `url(${src})` }}
             />
           );
         })}

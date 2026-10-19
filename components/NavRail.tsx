@@ -23,11 +23,11 @@ import {
  * referência flutua acima da barra.
  */
 const items = [
-  { href: "/inicio", label: "Início", Icon: IconHome, also: ["/sonho"], fab: false },
+  { href: "/inicio", label: "Início", Icon: IconHome, also: ["/sonho", "/jornadas"], fab: false },
   { href: "/explorar", label: "Explorar", Icon: IconSearch, also: ["/categoria", "/frases"], fab: false },
   { href: "/objetivos/novo", label: "Criar", Icon: IconPlus, also: [], fab: true },
   { href: "/mural", label: "Mural", Icon: IconLayers, also: [], fab: false },
-  { href: "/perfil", label: "Perfil", Icon: IconUser, also: ["/configuracoes"], fab: false },
+  { href: "/perfil", label: "Perfil", Icon: IconUser, also: ["/configuracoes", "/conta"], fab: false },
 ];
 
 export default function NavRail() {

@@ -98,12 +98,15 @@
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-ui: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --fs-eyebrow: .5625rem;
-  --fs-2xs: .625rem;
-  --fs-xs: .6875rem;
-  --fs-sm: .75rem;
-  --fs-base: .8125rem;
-  --fs-md: .875rem;
+  /* A escala de baixo sobe 1px por degrau em relação à primeira versão: em
+     9–13px o app ficava difícil de ler no celular, e os rótulos das grades
+     sumiam no vidro. O eyebrow fica em 10px, o corpo em 14px. */
+  --fs-eyebrow: .625rem;
+  --fs-2xs: .6875rem;
+  --fs-xs: .75rem;
+  --fs-sm: .8125rem;
+  --fs-base: .875rem;
+  --fs-md: .9375rem;
   --fs-lg: clamp(1rem, .95rem + .3vw, 1.125rem);
   --fs-xl: clamp(1.1rem, 1.02rem + .4vw, 1.35rem);
   --fs-2xl: clamp(1.3rem, 1.15rem + .7vw, 1.7rem);

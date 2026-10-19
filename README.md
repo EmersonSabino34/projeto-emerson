@@ -169,15 +169,23 @@ app/
     ├── mural/              lista, novo/, [id]/editar e [id]/preview
     ├── area/[slug]/        vibração, mentalizar, saúde, profissão, religião, lugares
     ├── frases/             galeria e criar/
+    ├── jornadas/           jornadas de atração: lista, [modulo]/ e [modulo]/dia/[dia]
     ├── categoria/[slug]/   detalhe de categoria
     ├── sonho/[id]/         detalhe de sonho (modelo antigo, sem link de entrada)
+    ├── conta/              painel da conta: ver, editar e excluir o cadastro
     └── perfil/  configuracoes/  conquistas/  ajuda/  sobre/
+
+app/api/voz/route.ts        API de voz: texto entra, áudio sai (ver "Voz do servidor")
 
 components/                 UI compartilhada: NavRail, PageHeader, Ambience, Collage…
 lib/
 ├── api.ts                  cliente da API mock — o único lugar que chama fetch
 ├── auth.ts                 sessão do protótipo (localStorage)
 ├── data.ts                 categorias, objetivos, plano de ação, frase do dia
+├── desejos.ts              opções da criação por toque (mural e objetivo)
+├── jornadas/               textos dos 31 dias de cada jornada, roteiro da voz, progresso
+├── trilha.ts               música das jornadas, gerada na frequência de cada uma
+├── voz.ts                  leitura em voz alta (síntese de voz do aparelho)
 └── areas.ts  frases.ts  murais.ts  planos.ts  conquistas.ts
 ```
 
@@ -194,14 +202,78 @@ O caminho do onboarding é: `/splash` → `/bem-vindo` → `/idioma` → `/cadas
 As fontes são **Fraunces** (display) e **Inter** (interface), auto-hospedadas via
 `next/font` — sem requisição ao Google e sem salto de layout.
 
+## Jornadas de atração
+
+Seis jornadas (amor, carreira, prosperidade, saúde, família e fé), cada uma
+com 31 dias de texto guiado, todos diferentes e no sentido daquele desejo. A
+pessoa escolhe 7, 21 ou 31 dias; as mais curtas saltam pelo mesmo arco
+(soltar → merecer → sentir → agir → agradecer). Um dia libera por dia de
+calendário.
+
+- **Voz:** a voz neural do servidor (`/api/voz`, abaixo) quando há chave
+  configurada; sem chave, ou se ela falhar, a síntese de voz do próprio
+  navegador (`lib/voz.ts`), frase por frase.
+- **Música:** `lib/trilha.ts` gera os quatro timbres (tigela tibetana, pad,
+  piano e ondas do mar) com a Web Audio API, afinados na frequência da jornada
+  (528 Hz no amor, 741 Hz na carreira...). Nenhum arquivo de áudio é baixado.
+  As frequências seguem a tradição do solfejo e aparecem como "associadas a",
+  nunca como efeito garantido.
+- **Progresso:** `lib/jornadas/progresso.ts`, em `localStorage`, como a sessão.
+- **Peso:** os 186 textos ficam no servidor (`lib/jornadas/index.ts`); o
+  cliente recebe só o texto do dia que vai tocar.
+
+### Voz do servidor (`/api/voz`)
+
+Texto entra, voz sai:
+
+```http
+POST /api/voz
+Content-Type: application/json
+
+{ "texto": "Eu abro espaço para um amor novo e leve.", "voz": "francisca" }
+```
+
+| Resposta | Quando |
+| --- | --- |
+| `200 audio/mpeg` | o áudio da frase |
+| `400` / `413` | texto vazio, longo demais (>1000) ou voz desconhecida |
+| `403` | o texto não é de uma jornada |
+| `501` | sem `AZURE_SPEECH_KEY`: o app usa a voz do aparelho |
+| `502` | o provedor falhou |
+
+`GET /api/voz` diz se a voz está configurada e lista as vozes: `francisca`
+(estilo calmo), `thalita`, `antonio` e `fabio`.
+
+- **Provedor:** Azure AI Speech, por REST. Para ligar, copie `.env.example`
+  para `.env.local` e preencha `AZURE_SPEECH_KEY` e `AZURE_SPEECH_REGION`
+  (recurso "Speech" no portal do Azure; o plano gratuito F0 dá 500 mil
+  caracteres por mês). Reinicie o `npm run dev` depois.
+- **Custo:** cada frase é gerada uma vez por voz e guardada em `.cache/voz`
+  (fora do git). As jornadas somam ~43 mil caracteres únicos por voz.
+- **Só textos das jornadas:** a rota recusa (403) qualquer outro texto, para
+  ninguém usar a chave do app como serviço de voz. Para ler outros textos,
+  acrescente-os em `textoPermitido` (`lib/vozServidor.ts`).
+
 ## Dados
 
 Duas fontes, por enquanto:
 
 - **`db.json` + json-server** (porta 3333) — `usuarios`, `desejos`, `categorias`
-  e `frases`. Cadastro e login já usam. Todo acesso passa por `lib/api.ts`.
-- **`lib/*.ts`** — mock estático em código (`data`, `areas`, `frases`, `murais`,
-  `planos`, `conquistas`), ainda usado pelas telas internas. A migração para a
+  e `frases`. Todo acesso passa por `lib/api.ts`. O cadastro da pessoa é um
+  CRUD completo:
+
+  | | Tela | Função em `lib/api.ts` | json-server |
+  | --- | --- | --- | --- |
+  | Criar | `/cadastro` | `criarUsuario` | `POST /usuarios` |
+  | Ler | `/login`, `/conta` | `autenticar`, `buscarUsuario` | `GET /usuarios?email=`, `GET /usuarios/:id` |
+  | Editar | `/conta` (painel) | `atualizarUsuario`, `trocarSenha` | `PATCH /usuarios/:id` |
+  | Excluir | `/conta` (painel) | `excluirUsuario` | `DELETE /usuarios/:id` |
+
+  No painel a pessoa edita nome, e-mail, telefone, nascimento, cidade e bio,
+  troca a senha (pedindo a atual) e exclui a conta (pedindo a senha). O login
+  aceita `?voltar=/conta` para devolver a pessoa ao painel.
+- **`lib/*.ts`** — mock estático em código (`data`, `areas`, `desejos`, `frases`,
+  `murais`, `planos`, `conquistas`), ainda usado pelas telas internas. A migração para a
   API é o item 9 do plano.
 
 Banco de dados real e autenticação de verdade são o item 10. Enquanto isso a

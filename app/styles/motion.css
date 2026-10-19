@@ -77,6 +77,11 @@
   100% { opacity: 0;   transform: scale(1.5); }
 }
 
+/* A posição do mural que espera a próxima foto respira devagar. */
+@keyframes cell-breathe {
+  50% { opacity: .45; }
+}
+
 @keyframes theme-sweep {
   from { clip-path: circle(0% at var(--sweep-x, 50%) var(--sweep-y, 50%)); }
   to   { clip-path: circle(150% at var(--sweep-x, 50%) var(--sweep-y, 50%)); }
