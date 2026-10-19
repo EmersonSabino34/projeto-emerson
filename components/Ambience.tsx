@@ -6,7 +6,6 @@
  * por cima dela. Não é um cartão com foto dentro de uma tela lisa — é a tela
  * que é a paisagem.
  *
- 
  * São quatro camadas, de baixo para cima:
  *
  
