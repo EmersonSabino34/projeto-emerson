@@ -4,6 +4,7 @@ import type { MuralLayout } from "@/lib/murais";
 
 type CollageProps = {
   layout: MuralLayout;
+  
   /**
    * URLs das fotos, na ordem do layout. `null` é uma posição ainda vazia: o
    * criador de mural passa o layout inteiro e vai preenchendo a cada toque.
