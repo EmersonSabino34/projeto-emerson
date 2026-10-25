@@ -17,7 +17,6 @@ type CollageProps = {
   className?: string;
 };
 
-
 /**
  * A colagem do Mural VYRA.
  *
