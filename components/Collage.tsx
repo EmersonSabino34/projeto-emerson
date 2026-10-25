@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import type { MuralLayout } from "@/lib/murais";
 
-
 type CollageProps = {
   layout: MuralLayout;
   
